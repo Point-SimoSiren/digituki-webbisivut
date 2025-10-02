@@ -4,10 +4,30 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Linux-videot | Linux asennus ja IT-tuki Porvoossa</title>
-		<meta name="description" content="Linux Mint, Ubuntu ja Lubuntu -videot. Katso esittelyt ja opi lisää Linuxin asennuksesta ja käytöstä Porvoossa.">
-		<meta name="keywords" content="atk apu, it apu, it tuki, porvoo, koodaus porvoo, Linux asennus, linux asennus porvoo">
+		<meta name="description" content="Linux Mint, Ubuntu ja Lubuntu -videot. Katso esittelyt ja valitse sopiva Linux käyttöjärjestelmä.">
+		<meta name="keywords" content="Koodaus porvoo, Linux asennus Porvoo, Linux palvelu">
 		<meta name="author" content="Simo Sirén">
 	<style>
+		.logo-anim {
+			display: inline-block;
+			transform: scale(3.5) translateY(160px);
+			opacity: 0;
+			transition: transform 2.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.7s;
+		}
+		.logo-anim.visible {
+			transform: scale(1) translateY(0);
+			opacity: 1;
+		}
+		.word-anim {
+			display: inline-block;
+			opacity: 0;
+			transform: scale(2.7) translateY(80px);
+			transition: transform 1.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.5s;
+		}
+		.word-anim.visible {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
 		.nav-links {
 			display: flex;
 			justify-content: center;
@@ -90,7 +110,13 @@
 				   <a href="esittely.html">Esittely</a>
 				   <a href="videot.html">Linux esittely</a>
 			   </nav>
-			   <h1>Linux versioiden esittelyjä videoiden muodossa</h1>
+				<h1>
+					<img src="TuxiC.png" alt="Logo" class="logo-anim" id="tux-logo" style="height:2.5em; vertical-align:middle; margin-right:0.5em;">
+					<span class="word-anim" id="word-linux">Linux</span>
+					<span class="word-anim" id="word-service"> Service</span>
+					<span class="word-anim" id="word-porvoo"> Porvoo</span>
+				</h1>
+			   <h2>Linux versioiden esittelyjä videoiden muodossa</h2>
 			<div class="card">
 				<h2>Mint</h2>
 				<div class="video-embed">
@@ -107,5 +133,25 @@
 			</div>
 		</div>
 	</div>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+	var logo = document.getElementById('tux-logo');
+	var word1 = document.getElementById('word-linux');
+	var word2 = document.getElementById('word-service');
+	var word3 = document.getElementById('word-porvoo');
+	setTimeout(function() {
+		logo.classList.add('visible');
+		setTimeout(function() {
+			word1.classList.add('visible');
+			setTimeout(function() {
+				word3.classList.add('visible');
+				setTimeout(function() {
+					word2.classList.add('visible');
+				}, 1200);
+			}, 1200);
+		}, 1400);
+	}, 350);
+});
+</script>
 </body>
 </html>

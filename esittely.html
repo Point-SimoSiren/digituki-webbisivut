@@ -3,11 +3,31 @@
 <head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Kokenut ohjelmistokehittäjä Porvoossa | Esittely</title>
-		<meta name="description" content="Kokenut ohjelmistokehittäjä, perheen isä ja kevytyrittäjä Porvoossa. IT-tuki, Linux asennus ja koodauspalvelut luotettavasti.">
-		<meta name="keywords" content="atk apu, it apu, it tuki, porvoo, koodaus porvoo, Linux asennus, linux asennus porvoo">
+		<title>Linux Service Porvoo | Esittely</title>
+		<meta name="description" content="Linux asennus Porvoossa, IT-tuki Porvoo, Koodaus työt.">
+		<meta name="keywords" content="Linux asennus, Linux myynti, atk-apu, it-apu, it-tuki, koodaus porvoo.">
 		<meta name="author" content="Simo Sirén">
 	<style>
+		.logo-anim {
+			display: inline-block;
+			transform: scale(3.5) translateY(160px);
+			opacity: 0;
+			transition: transform 2.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.7s;
+		}
+		.logo-anim.visible {
+			transform: scale(1) translateY(0);
+			opacity: 1;
+		}
+		.word-anim {
+			display: inline-block;
+			opacity: 0;
+			transform: scale(2.7) translateY(80px);
+			transition: transform 1.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.5s;
+		}
+		.word-anim.visible {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
 		body {
 			margin: 0;
 			font-family: 'Segoe UI', Arial, sans-serif;
@@ -51,11 +71,37 @@
 				   <a href="esittely.html" style="margin:0 1rem; color:#2a4d69; text-decoration:underline; font-weight:bold;">Esittely</a>
 				   <a href="videot.html" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
 			   </nav>
-			   <h1>Esittely</h1>
+			   <h1>
+				   <img src="TuxiC.png" alt="Logo" class="logo-anim" id="tux-logo" style="height:2.5em; vertical-align:middle; margin-right:0.5em;">
+				   <span class="word-anim" id="word-linux">Linux</span>
+				   <span class="word-anim" id="word-service"> Service</span>
+				   <span class="word-anim" id="word-porvoo"> Porvoo</span>
+			   </h1>
+			   <h2>Esittely</h2>
 			<div class="card">
 				<p>Olen ammattitaitoinen ohjelmistokehittäjä, ICT kouluttaja, 6 lapsisen perheen isä ja toimin OP kevytyrittäjänä Porvoossa. Minulla on kokemusta erilaisista ohjelmointikielistä ja teknologioista sekä käytännön osaamista tietokoneiden ja ohjelmistokehityksen parissa. Käytän työkaverinani AI työkalua, joka on lisännyt työn tehokkuutta ja kilpailukykyä merkittävästi, vaikka osaamiseni on hankittu jo ennen AI aikakautta. Tarjoan osaamistani palveluna yksityishenkilöille ja yrityksille.</p>
 			</div>
 		</div>
 	</div>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+	var logo = document.getElementById('tux-logo');
+	var word1 = document.getElementById('word-linux');
+	var word2 = document.getElementById('word-service');
+	var word3 = document.getElementById('word-porvoo');
+	setTimeout(function() {
+		logo.classList.add('visible');
+		setTimeout(function() {
+			word1.classList.add('visible');
+			setTimeout(function() {
+				word3.classList.add('visible');
+				setTimeout(function() {
+					word2.classList.add('visible');
+				}, 1200);
+			}, 1200);
+		}, 1400);
+	}, 350);
+});
+</script>
 </body>
 </html>

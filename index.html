@@ -5,10 +5,42 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Digituki ja IT-tuki Porvoossa | Linux asennus ja koodaus</title>
-		<meta name="description" content="Digituki, IT-tuki, Linux asennuspalvelu ja koodaus Porvoossa. Kotikäynnit, ohjelmistokehitys ja asiantunteva apu tietokoneisiin ja älylaitteisiin.">
-		<meta name="keywords" content="atk apu porvoo, it apu porvoo, it tuki porvoo, porvoo, koodaus porvoo, Linux asennus, linux asennus porvoo, tietokoneen kierrätys porvoo">
+		<meta name="description" content="Linux asennuspalvelu Porvoo, Digituki Porvoo, IT-tuki Porvoo.">
+		<meta name="keywords" content="atk apu porvoo, it apu porvoo, it-tuki porvoo, koodari porvoo, Linux asennus, linux asennus porvoo">
 		<meta name="author" content="Simo Sirén">
 	<style>
+		   /* Animoitu TuxiC.png -kuva */
+		   .logo-anim {
+			   display: inline-block;
+			   transform: scale(3.5) translateY(160px);
+			   opacity: 0;
+			   transition: transform 2.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.7s;
+		   }
+		   .logo-anim.visible {
+			   transform: scale(1) translateY(0);
+			   opacity: 1;
+		   }
+		   .word-anim {
+			   display: inline-block;
+			   opacity: 0;
+			   transform: scale(2.7) translateY(80px);
+			   transition: transform 1.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.5s;
+		   }
+		   .word-anim.visible {
+			   opacity: 1;
+			   transform: scale(1) translateY(0);
+		   }
+		   /* Animoitu TuxiC.png -kuva */
+		   .logo-anim {
+			   display: inline-block;
+			   transform: scale(3) translateY(120px);
+			   opacity: 0;
+			   transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s;
+		   }
+		   .logo-anim.visible {
+			   transform: scale(1) translateY(0);
+			   opacity: 1;
+		   }
 		   body {
 			   margin: 0;
 			   font-family: 'Segoe UI', Arial, sans-serif;
@@ -58,8 +90,14 @@
 <body>
 	<div class="overlay">
 		   <div class="container">
-		
-			   <marquee><h1>Linux asennuspalvelu, IT-tuen kotikäynnit ja koodaripalvelut</h1></marquee>
+
+				   <h1>
+					   <img src="TuxiC.png" alt="Logo" class="logo-anim" id="tux-logo" style="height:2.5em; vertical-align:middle; margin-right:0.5em;">
+					   <span class="word-anim" id="word-linux">Linux</span>
+					   <span class="word-anim" id="word-service"> Service</span>
+					   <span class="word-anim" id="word-porvoo"> Porvoo</span>
+				   </h1>
+			   <marquee><h1>Linux asennus- ja opastuspalvelu, IT-tuki kotikäynnit, koodarin konsulttipalvelut yrityksille ja yhteisöille, verkkosivujen luominen ja päivitykset.</h1></marquee>
 			
 			   <nav style="text-align:center; margin-top:1.5rem; margin-bottom:1.5rem;">
 				   <a href="index.html" style="margin:0 1rem; color:#2a4d69; text-decoration:underline; font-weight:bold;">Etusivu</a>
@@ -99,6 +137,27 @@
 			</div>
 		</div>
 	</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+	var logo = document.getElementById('tux-logo');
+	var word1 = document.getElementById('word-linux');
+	var word2 = document.getElementById('word-service');
+	var word3 = document.getElementById('word-porvoo');
+	setTimeout(function() {
+		logo.classList.add('visible');
+		setTimeout(function() {
+			word1.classList.add('visible');
+			setTimeout(function() {
+				word3.classList.add('visible');
+				setTimeout(function() {
+					word2.classList.add('visible');
+				}, 1200);
+			}, 1200);
+		}, 1400);
+	}, 350);
+});
+</script>
 </body>
 
 </html>
