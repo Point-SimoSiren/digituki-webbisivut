@@ -8,11 +8,21 @@
 		<meta name="keywords" content="Koodaus porvoo, Linux asennus Porvoo, Linux palvelu">
 		<meta name="author" content="Simo Sirén">
 	<style>
+		.nav-link-anim {
+			opacity: 0;
+			transform: translateY(40px) scale(1.2);
+			display: inline-block;
+			transition: opacity 0.7s, transform 0.7s;
+		}
+		.nav-link-anim.visible {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
 		.logo-anim {
 			display: inline-block;
 			transform: scale(3.5) translateY(160px);
 			opacity: 0;
-			transition: transform 2.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.7s;
+			transition: transform 1.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s;
 		}
 		.logo-anim.visible {
 			transform: scale(1) translateY(0);
@@ -22,7 +32,7 @@
 			display: inline-block;
 			opacity: 0;
 			transform: scale(2.7) translateY(80px);
-			transition: transform 1.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.5s;
+			transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s;
 		}
 		.word-anim.visible {
 			opacity: 1;
@@ -106,9 +116,9 @@
 	<div class="overlay">
 		   <div class="container">
 			   <nav style="text-align:center; margin-top:1.5rem; margin-bottom:1.5rem;">
-				   <a href="index.html">Etusivu</a>
-				   <a href="esittely.html">Esittely</a>
-				   <a href="videot.html">Linux esittely</a>
+				   <a href="index.html" class="nav-link-anim" id="nav-link-1" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Etusivu</a>
+				   <a href="esittely.html" class="nav-link-anim" id="nav-link-2" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Esittely</a>
+				   <a href="videot.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline; font-weight:bold;">Linux esittely</a>
 			   </nav>
 				<h1>
 					<img src="TuxiC.png" alt="Logo" class="logo-anim" id="tux-logo" style="height:2.5em; vertical-align:middle; margin-right:0.5em;">
@@ -134,6 +144,19 @@
 		</div>
 	</div>
 <script>
+	// Navigointilinkit animaatio
+	var nav1 = document.getElementById('nav-link-1');
+	var nav2 = document.getElementById('nav-link-2');
+	var nav3 = document.getElementById('nav-link-3');
+	setTimeout(function() {
+		nav1.classList.add('visible');
+		setTimeout(function() {
+			nav2.classList.add('visible');
+			setTimeout(function() {
+				nav3.classList.add('visible');
+			}, 350);
+		}, 350);
+	}, 2100);
 window.addEventListener('DOMContentLoaded', function() {
 	var logo = document.getElementById('tux-logo');
 	var word1 = document.getElementById('word-linux');
@@ -147,10 +170,10 @@ window.addEventListener('DOMContentLoaded', function() {
 				word3.classList.add('visible');
 				setTimeout(function() {
 					word2.classList.add('visible');
-				}, 1200);
-			}, 1200);
-		}, 1400);
-	}, 350);
+				}, 600);
+			}, 600);
+		}, 700);
+	}, 180);
 });
 </script>
 </body>
