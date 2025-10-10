@@ -87,6 +87,27 @@
       font-size: 1.1rem;
       margin-top: 1rem;
     }
+
+    /* Asennusvinkin tyyli */
+    #installHint {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(42,77,105,0.95);
+      color: #fff;
+      padding: 0.6em 1em;
+      border-radius: 10px;
+      font-size: 0.95em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      cursor: pointer;
+      display: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+    #installHint:hover {
+      background: rgba(42,77,105,1);
+    }
+
     @media (max-width: 700px) {
       .container { max-width: 98vw; }
     }
@@ -143,6 +164,9 @@
     </div>
   </div>
 
+  <!-- Asennusvinkin elementti -->
+  <div id="installHint">💾 Asenna sovelluksena</div>
+
   <script>
   // Animaatiot
   window.addEventListener('DOMContentLoaded', function() {
@@ -165,7 +189,7 @@
     }, 2100);
   });
 
-  // Rekisteröidään service worker PWA:ta varten
+  // PWA: Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
       navigator.serviceWorker.register('service-worker.js')
@@ -173,6 +197,24 @@
         .catch(err => console.log('❌ SW virhe:', err));
     });
   }
+
+  // PWA-asennusvinkki
+  let deferredPrompt;
+  const installHint = document.getElementById('installHint');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installHint.style.display = 'block';
+  });
+
+  installHint.addEventListener('click', async () => {
+    installHint.style.display = 'none';
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('PWA-asennuksen valinta:', outcome);
+    deferredPrompt = null;
+  });
   </script>
 </body>
 </html>
