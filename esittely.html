@@ -79,7 +79,8 @@
 			   <nav style="text-align:center; margin-top:1.5rem; margin-bottom:1.5rem;">
 				   <a href="index.html" class="nav-link-anim" id="nav-link-1" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Etusivu</a>
 				   <a href="esittely.html" class="nav-link-anim" id="nav-link-2" style="margin:0 1rem; color:#2a4d69; text-decoration:underline; font-weight:bold;">Esittely</a>
-				   <a href="videot.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
+        			<a href="crmsivu.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">UUTTA! Mini CRM sovellus</a>
+				   <a href="videot.html" class="nav-link-anim" id="nav-link-4" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
 			   </nav>
 			   <h1>
 				   <img src="TuxiC.png" alt="Logo" class="logo-anim" id="tux-logo" style="height:2.5em; vertical-align:middle; margin-right:0.5em;">
@@ -92,36 +93,21 @@
 				<p>Olen ammattitaitoinen ohjelmistokehittäjä, ICT kouluttaja, 6 lapsisen perheen isä ja toimin OP kevytyrittäjänä Porvoossa. Minulla on kokemusta erilaisista ohjelmointikielistä ja teknologioista sekä käytännön osaamista tietokoneiden ja ohjelmistokehityksen parissa. Käytän työkaverinani AI työkalua, joka on lisännyt työn tehokkuutta ja kilpailukykyä merkittävästi, vaikka osaamiseni on hankittu jo ennen AI aikakautta. Tarjoan osaamistani palveluna yksityishenkilöille ja yrityksille.</p>
 			</div>
 
-			<h2>Asikastietojen tallennusohjelma</h2>
-			
-				<strong>Myytävänä asiakastapahtumatietojen kirjaamiseen ja selaamiseen
-					 tarkoitettu räätälöitävissä oleva ohjelma, joka on suunnattu
-					  pienyritysten käyttöön.</strong>
-				<p>Toimii Windows, Linux, macOS.</p>
-				<p>Kirjoitettu Python kielellä.</p>
-				<p>Hinta perusversiona 50€ sis. ALV asennettuna koneeseen</p>
-				<p>Uusi asennus vanhalle asiakkaalle 20€ sis. ALV</p>
-				<p>Räätälöinnit 40€ / tunti. AI avusteisesti työ on nykyisin nopeaa!</p>
-
-				<img src="image.png" width="auto">
-
 			</div>
 		</div>
 	</div>
 <script>
-	// Navigointilinkit animaatio
+		// Navigointilinkit animaatio
 	var nav1 = document.getElementById('nav-link-1');
 	var nav2 = document.getElementById('nav-link-2');
 	var nav3 = document.getElementById('nav-link-3');
-	setTimeout(function() {
-		nav1.classList.add('visible');
-		setTimeout(function() {
-			nav2.classList.add('visible');
-			setTimeout(function() {
-				nav3.classList.add('visible');
-			}, 350);
-		}, 350);
-	}, 2100);
+	var nav4 = document.getElementById('nav-link-4');
+
+	 const links = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4'].map(id => document.getElementById(id));
+    setTimeout(() => {
+      links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 100));
+    }, 900);
+
 window.addEventListener('DOMContentLoaded', function() {
 	var logo = document.getElementById('tux-logo');
 	var word1 = document.getElementById('word-linux');

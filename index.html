@@ -127,7 +127,8 @@
       <nav style="text-align:center; margin-top:1.5rem; margin-bottom:1.5rem;">
         <a href="index.html" class="nav-link-anim" id="nav-link-1" style="margin:0 1rem; color:#2a4d69; text-decoration:underline; font-weight:bold;">Etusivu</a>
         <a href="esittely.html" class="nav-link-anim" id="nav-link-2" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Esittely</a>
-        <a href="videot.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
+        <a href="crmsivu.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">UUTTA! Mini CRM sovellus</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
       </nav>
 
       <div class="card">
@@ -137,7 +138,7 @@
           <li>Tukea Windows tai Linux tietokoneiden ja älylaitteiden käytössä</li>
           <li>Päivitykset, ongelmanratkaisu ja ohjelmien asennukset</li>
           <li>Koodin muutokset ja bugikorjaukset yrityssovelluksissa...</li>
-          <li>Verkkosivujen päivitykset ja uusien verkkosivujen toteutus</li>
+          <li>Verkkosivutyöt</li>
           <li>Kierrätyskoneiden vastaanotto, tyhjennys, Linux-asennus ja uusiokäyttöön välittäminen</li>
         </ul>
       </div>
@@ -183,10 +184,10 @@
       }, 700);
     }, 180);
 
-    const links = ['nav-link-1', 'nav-link-2', 'nav-link-3'].map(id => document.getElementById(id));
+    const links = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4'].map(id => document.getElementById(id));
     setTimeout(() => {
-      links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 350));
-    }, 2100);
+      links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 400));
+    }, 3000);
   });
 
   // PWA: Service Worker
