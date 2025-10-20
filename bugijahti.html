@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bugijahti | Metsästetään bugeja</title>
+  <meta name="description" content="Leikkimielinen bugien metsästys. Nappaa kaikki bugit ja aloita peli uudelleen.">
+  <meta name="author" content="Simo Sirén">
+  <style>
+    :root {
+      --bug-size-desktop: 1cm;
+      --bug-size-mobile: 0.4cm;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: url('BugfixKuva.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: #111;
+    }
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.45rem 0.95rem;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      border-radius: 999px;
+      color: #1d3557;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      z-index: 30;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .back-button:hover,
+    .back-button:focus {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-1px);
+    }
+    .game-area {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+    .bug {
+      position: absolute;
+      width: var(--bug-size-desktop);
+      height: var(--bug-size-desktop);
+      transition: top 0.9s ease, left 0.9s ease, transform 0.6s ease, opacity 0.4s ease;
+      pointer-events: auto;
+      user-select: none;
+      touch-action: none;
+      z-index: 2;
+    }
+    .bug.caught {
+      pointer-events: none;
+    }
+    #completion-message {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(13, 13, 13, 0.55);
+      z-index: 15;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    #completion-message.visible {
+      display: flex;
+    }
+    #completion-message .message-box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem 1.5rem;
+      border-radius: 16px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+    #completion-message h2 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      color: #1d3557;
+      font-size: 1.5rem;
+    }
+    #completion-message p {
+      margin: 0 0 1.2rem 0;
+      font-size: 1rem;
+      color: #333;
+    }
+    #restart-button {
+      padding: 0.6rem 1.4rem;
+      font-size: 1rem;
+      background: #1d3557;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(29, 53, 87, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    #restart-button:hover,
+    #restart-button:focus {
+      transform: translateY(-1px);
+      background: #264d7a;
+      box-shadow: 0 6px 16px rgba(29, 53, 87, 0.45);
+      outline: none;
+    }
+    @media (max-width: 720px) {
+      .bug {
+        width: var(--bug-size-mobile);
+        height: var(--bug-size-mobile);
+      }
+      .back-button {
+        top: 0.75rem;
+        left: 0.75rem;
+        font-size: 0.9rem;
+        padding: 0.4rem 0.85rem;
+      }
+      #completion-message .message-box {
+        max-width: 280px;
+      }
+      #completion-message h2 {
+        font-size: 1.35rem;
+      }
+      #completion-message p {
+        font-size: 0.95rem;
+      }
+      #restart-button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back-button" href="index.html">Takaisin sivustolle</a>
+  <div class="game-area" id="game-area">
+    <div id="completion-message" aria-hidden="true">
+      <div class="message-box">
+        <h2>Kiitos kun olet mukana!</h2>
+        <p>Kaikki bugit on metsästetty. Haluatko aloittaa uudestaan?</p>
+        <button id="restart-button" type="button">Aloita bugijahti uudelleen</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const gameArea = document.getElementById('game-area');
+      const message = document.getElementById('completion-message');
+      const restartButton = document.getElementById('restart-button');
+      const TOTAL_BUGS = 14;
+      const MOVE_MIN = 900;
+      const MOVE_VARIATION = 1400;
+      let caught = 0;
+
+      const activeTimers = new Map();
+
+      function randomPosition(bug) {
+        const areaWidth = gameArea.clientWidth;
+        const areaHeight = gameArea.clientHeight;
+        const bugWidth = bug.offsetWidth;
+        const bugHeight = bug.offsetHeight;
+
+        const maxX = Math.max(0, areaWidth - bugWidth);
+        const maxY = Math.max(0, areaHeight - bugHeight);
+
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+
+        bug.style.left = `${newX}px`;
+        bug.style.top = `${newY}px`;
+        bug.style.transform = `rotate(${Math.random() * 80 - 40}deg)`;
+      }
+
+      function scheduleMove(bug) {
+        const timerId = setTimeout(() => {
+          if (bug.dataset.caught === 'true') {
+            return;
+          }
+          randomPosition(bug);
+          scheduleMove(bug);
+        }, MOVE_MIN + Math.random() * MOVE_VARIATION);
+        activeTimers.set(bug, timerId);
+        bug.dataset.timerId = String(timerId);
+      }
+
+      function clearMoveTimer(bug) {
+        const timerId = activeTimers.get(bug);
+        if (timerId) {
+          clearTimeout(timerId);
+          activeTimers.delete(bug);
+        }
+      }
+
+      function catchBug(bug) {
+        if (bug.dataset.caught === 'true') {
+          return;
+        }
+        bug.dataset.caught = 'true';
+        clearMoveTimer(bug);
+        bug.classList.add('caught');
+        const dropY = Math.max(0, gameArea.clientHeight - bug.offsetHeight - 6);
+        bug.style.top = `${dropY}px`;
+        bug.style.transform = 'rotate(92deg)';
+        setTimeout(() => {
+          bug.style.opacity = '0';
+          setTimeout(() => {
+            bug.remove();
+            caught += 1;
+            if (caught === TOTAL_BUGS) {
+              showCompletion();
+            }
+          }, 280);
+        }, 520);
+      }
+
+      function createBug(index) {
+        const bug = document.createElement('img');
+        bug.src = 'BugKuva.png';
+        bug.alt = `Bugi ${index + 1}`;
+        bug.className = 'bug';
+        bug.draggable = false;
+        gameArea.appendChild(bug);
+        requestAnimationFrame(() => {
+          randomPosition(bug);
+          scheduleMove(bug);
+        });
+        bug.addEventListener('pointerdown', () => catchBug(bug));
+      }
+
+      function removeExistingBugs() {
+        document.querySelectorAll('.bug').forEach((bug) => {
+          clearMoveTimer(bug);
+          bug.remove();
+        });
+      }
+
+      function showCompletion() {
+        message.classList.add('visible');
+        message.setAttribute('aria-hidden', 'false');
+        setTimeout(() => {
+          restartButton.focus();
+        }, 200);
+      }
+
+      function hideCompletion() {
+        message.classList.remove('visible');
+        message.setAttribute('aria-hidden', 'true');
+      }
+
+      function startGame() {
+        hideCompletion();
+        caught = 0;
+        removeExistingBugs();
+        for (let i = 0; i < TOTAL_BUGS; i += 1) {
+          createBug(i);
+        }
+      }
+
+      restartButton.addEventListener('click', () => {
+        restartButton.blur();
+        startGame();
+      });
+
+      window.addEventListener('resize', () => {
+        document.querySelectorAll('.bug').forEach((bug) => {
+          if (bug.dataset.caught !== 'true') {
+            randomPosition(bug);
+          }
+        });
+      });
+
+      startGame();
+    });
+  </script>
+</body>
+</html>

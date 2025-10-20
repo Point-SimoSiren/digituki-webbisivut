@@ -129,6 +129,7 @@
         <a href="esittely.html" class="nav-link-anim" id="nav-link-2" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Esittely</a>
         <a href="crmsivu.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">UUTTA! Mini CRM sovellus</a>
         <a href="videot.html" class="nav-link-anim" id="nav-link-4" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
+        <a href="bugijahti.html" class="nav-link-anim" id="nav-link-5" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Bugijahti</a>
       </nav>
 
       <div class="card">
@@ -188,7 +189,7 @@
       }, 700);
     }, 180);
 
-    const links = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4'].map(id => document.getElementById(id));
+    const links = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4', 'nav-link-5'].map(id => document.getElementById(id));
     setTimeout(() => {
       links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 400));
     }, 3000);
