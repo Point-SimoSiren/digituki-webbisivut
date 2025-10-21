@@ -63,7 +63,7 @@
     .bug.caught {
       pointer-events: none;
     }
-    #completion-message {
+    .message-overlay {
       position: absolute;
       inset: 0;
       display: none;
@@ -74,10 +74,10 @@
       padding: 2rem 1.5rem;
       text-align: center;
     }
-    #completion-message.visible {
+    .message-overlay.visible {
       display: flex;
     }
-    #completion-message .message-box {
+    .message-overlay .message-box {
       background: rgba(255, 255, 255, 0.9);
       padding: 2rem 1.5rem;
       border-radius: 16px;
@@ -85,17 +85,23 @@
       width: 100%;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     }
-    #completion-message h2 {
+    .message-overlay h2 {
       margin-top: 0;
       margin-bottom: 0.75rem;
       color: #1d3557;
       font-size: 1.5rem;
     }
-    #completion-message p {
+    .message-overlay p {
       margin: 0 0 1.2rem 0;
       font-size: 1rem;
       color: #333;
     }
+    .message-overlay .message-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    #start-button,
     #restart-button {
       padding: 0.6rem 1.4rem;
       font-size: 1rem;
@@ -107,11 +113,34 @@
       box-shadow: 0 4px 12px rgba(29, 53, 87, 0.35);
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
+    #start-button:hover,
+    #start-button:focus,
     #restart-button:hover,
     #restart-button:focus {
       transform: translateY(-1px);
       background: #264d7a;
       box-shadow: 0 6px 16px rgba(29, 53, 87, 0.45);
+      outline: none;
+    }
+    #visit-button {
+      display: inline-block;
+      padding: 0.55rem 1.3rem;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      color: #1d3557;
+      border: 1px solid rgba(29, 53, 87, 0.3);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(29, 53, 87, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+    #visit-button:hover,
+    #visit-button:focus {
+      transform: translateY(-1px);
+      background: rgba(229, 236, 244, 0.96);
+      color: #1d3557;
+      box-shadow: 0 4px 14px rgba(29, 53, 87, 0.3);
       outline: none;
     }
     @media (max-width: 720px) {
@@ -125,16 +154,20 @@
         font-size: 0.9rem;
         padding: 0.4rem 0.85rem;
       }
-      #completion-message .message-box {
+      .message-overlay .message-box {
         max-width: 280px;
       }
-      #completion-message h2 {
+      .message-overlay h2 {
         font-size: 1.35rem;
       }
-      #completion-message p {
+      .message-overlay p {
         font-size: 0.95rem;
       }
+      #start-button,
       #restart-button {
+        font-size: 0.95rem;
+      }
+      #visit-button {
         font-size: 0.95rem;
       }
     }
@@ -143,25 +176,51 @@
 <body>
   <a class="back-button" href="index.html">Takaisin sivustolle</a>
   <div class="game-area" id="game-area">
-    <div id="completion-message" aria-hidden="true">
+    <div id="intro-message" class="message-overlay visible" aria-hidden="false">
       <div class="message-box">
-        <h2>Kiitos kun olet mukana!</h2>
-        <p>Kaikki bugit on metsästetty. Haluatko aloittaa uudestaan?</p>
-        <button id="restart-button" type="button">Aloita bugijahti uudelleen</button>
+        <h2>Bugijahti alkaa!</h2>
+        <p>Hoidat bugit napsauttamalla hiirellä tai napauttamalla ruutua.</p>
+        <p>Mobiililaitteella peli toimii parhaiten, kun käännät laitteen vaakatasoon.</p>
+        <div class="message-actions">
+          <button id="start-button" type="button">Aloita bugijahti</button>
+        </div>
+      </div>
+    </div>
+    <div id="completion-message" class="message-overlay" aria-hidden="true">
+      <div class="message-box">
+        <h2>Hienoa suoritusta!</h2>
+        <p>Kaikki kaksi tasoa on nyt selätetty. Jatketaanko vielä vai piipahdetaan kotisivulla?</p>
+        <div class="message-actions">
+          <button id="restart-button" type="button">Aloita bugijahti uudelleen</button>
+          <a id="visit-button" href="index.html">Vieraile sivustollamme</a>
+        </div>
       </div>
     </div>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const gameArea = document.getElementById('game-area');
+      const introMessage = document.getElementById('intro-message');
+      const startButton = document.getElementById('start-button');
       const message = document.getElementById('completion-message');
       const restartButton = document.getElementById('restart-button');
-      const TOTAL_BUGS = 14;
+      const BUGS_PER_LEVEL = 14;
+      const LEVELS = [
+        { desktopSize: '2cm', mobileSize: '0.8cm' }, // Level 1: bigger bugs
+        { desktopSize: '1cm', mobileSize: '0.4cm' }, // Level 2: original size
+      ];
       const MOVE_MIN = 900;
       const MOVE_VARIATION = 1400;
+      let levelIndex = 0;
       let caught = 0;
 
       const activeTimers = new Map();
+
+      function applyLevelStyles() {
+        const currentLevel = LEVELS[levelIndex];
+        document.documentElement.style.setProperty('--bug-size-desktop', currentLevel.desktopSize);
+        document.documentElement.style.setProperty('--bug-size-mobile', currentLevel.mobileSize);
+      }
 
       function randomPosition(bug) {
         const areaWidth = gameArea.clientWidth;
@@ -215,8 +274,8 @@
           setTimeout(() => {
             bug.remove();
             caught += 1;
-            if (caught === TOTAL_BUGS) {
-              showCompletion();
+            if (caught === BUGS_PER_LEVEL) {
+              advanceLevel();
             }
           }, 280);
         }, 520);
@@ -243,7 +302,21 @@
         });
       }
 
+      function showIntro() {
+        introMessage.classList.add('visible');
+        introMessage.setAttribute('aria-hidden', 'false');
+        setTimeout(() => {
+          startButton.focus();
+        }, 200);
+      }
+
+      function hideIntro() {
+        introMessage.classList.remove('visible');
+        introMessage.setAttribute('aria-hidden', 'true');
+      }
+
       function showCompletion() {
+        hideIntro();
         message.classList.add('visible');
         message.setAttribute('aria-hidden', 'false');
         setTimeout(() => {
@@ -256,14 +329,38 @@
         message.setAttribute('aria-hidden', 'true');
       }
 
-      function startGame() {
-        hideCompletion();
+      function startLevel() {
         caught = 0;
         removeExistingBugs();
-        for (let i = 0; i < TOTAL_BUGS; i += 1) {
+        applyLevelStyles();
+        for (let i = 0; i < BUGS_PER_LEVEL; i += 1) {
           createBug(i);
         }
       }
+
+      function startGame() {
+        hideIntro();
+        hideCompletion();
+        levelIndex = 0;
+        startLevel();
+      }
+
+      function advanceLevel() {
+        levelIndex += 1;
+        if (levelIndex < LEVELS.length) {
+          setTimeout(() => {
+            startLevel();
+          }, 600);
+        } else {
+          showCompletion();
+        }
+      }
+
+      startButton.addEventListener('click', () => {
+        startButton.blur();
+        hideIntro();
+        startGame();
+      });
 
       restartButton.addEventListener('click', () => {
         restartButton.blur();
@@ -278,7 +375,7 @@
         });
       });
 
-      startGame();
+      showIntro();
     });
   </script>
 </body>

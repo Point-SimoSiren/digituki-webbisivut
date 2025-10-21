@@ -1,7 +1,7 @@
 {
-  "name": "Code Service Porvoo",
-  "short_name": "CodePorvoo",
-  "description": "Digituki ja IT-tuki Porvoossa | Linux asennus ja koodaus.",
+  "name": "Tarmola Code Garage",
+  "short_name": "TCG",
+  "description": "Edulliset yritysohjelmistot | Digituki ja IT-tuki Porvoossa | Linux asennus | Koodiapu.",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
