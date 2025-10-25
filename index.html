@@ -122,7 +122,7 @@
         <span class="word-anim" id="word-service"> Code</span>
         <span class="word-anim" id="word-porvoo"> Garage</span>
       </h1>
-      <marquee scrollamount="12"><h1>Hyvät mutta huippuhalvat softat pienyrittäjille, Linux käyttöjärjestelmän asennus- ja opastuspalvelu, IT-tuki kotikäynnit, Full Stack koodarin pienet konsultointityöt ja koodimuutokset, verkkosivujen luominen ja päivitykset.</h1></marquee>
+      <marquee scrollamount="12"><h1>Edulliset softat yhdistyksille ja pienyrittäjille, Linux käyttöjärjestelmän asennus- ja opastuspalvelu, IT-tuki kotikäynnit, Full Stack koodarin pienet konsultointityöt ja koodimuutokset, verkkosivujen luominen ja päivitykset.</h1></marquee>
 
       <nav style="text-align:center; margin-top:1.5rem; margin-bottom:1.5rem;">
         <a href="index.html" class="nav-link-anim" id="nav-link-1" style="margin:0 1rem; color:#2a4d69; text-decoration:underline; font-weight:bold;">Etusivu</a>
@@ -130,33 +130,35 @@
         <a href="crmsivu.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">UUTTA! Mini CRM sovellus</a>
         <a href="videot.html" class="nav-link-anim" id="nav-link-4" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
         <a href="bugijahti.html" class="nav-link-anim" id="nav-link-5" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Bugijahti</a>
+        <a href="halloweengame.html" class="nav-link-anim" id="nav-link-6" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Halloween peli</a>
       </nav>
 
       <div class="card">
         <h2>Tarjottavat palvelut Porvoon alueella</h2>
         <ul>
-          <li>Linux käyttöjärjestelmäversioiden esittely, asennus ja opastus palvelupakettina asiakkaan luona tai toimipisteessä</li>
+          <li>Linux käyttöjärjestelmäversioiden asennus ja opastus palvelupakettina asiakkaan luona tai toimipisteessä</li>
           <li>Tukea Windows tai Linux tietokoneiden ja älylaitteiden käytössä</li>
           <li>Päivitykset, ongelmanratkaisu ja ohjelmien asennukset</li>
           <li>Koodin muutokset ja bugikorjaukset yrityssovelluksissa...</li>
           <li>Verkkosivutyöt</li>
-          <li>Kohtuu hyvät mutta älyttömän halvat softatuotteet pienyrittäjille</li>
+          <li>Hyvät mutta halvat softatuotteet pienyrittäjille ja yhdistyksille</li>
           <li>Kierrätyskoneiden vastaanotto, tyhjennys, Linux-asennus ja uusiokäyttöön välittäminen</li>
         </ul>
       </div>
 
       <div class="card">
-        <h2>Hinnasto (yrityksemme ei ole ALV velvollinen)</h2>
+        <h2>Hinnasto (yrityksemme ei ole vielä ALV velvollinen)</h2>
         <ul>
           <li>IT- ja Digituen kotikäynti: 35 € / alkava 30 min</li>
           <li>Linux asennus- ja opastuspaketti 39 €</li>
           <li>Pelkkä Linux asennus 29 €</li>
-          <li>Uusi nopea SSD vanhan HDD:n tilalle, jäähdytystahnan vaihto ja Win/Linux alk. 99€</li>
+          <li>Uusi nopea SSD vanhan HDD:n tilalle ja Win tai Linux alk. 89€</li>
           <li>Koodaus- ja verkkosivutyöt sopimuksen mukaan</li>
           <li>Ilmainen 2kk kokeilumahdollisuus työpöytäsovellustuotteillemme:</li>
           <li>Mini CRM ja laskunluoja työpöytäsovellustuote 59€</li>
           <li>1-kertainen kirjanpito työpöytäsovellustuote 59€</li>
-          <li>Varaston- ja toimittajienhallinta työpöytäsovellustuote 59€</li>
+          <li>2-kertainen kirjanpito työpöytäsovellustuote 89€</li>
+          <li>Varaston- ja toimittajienhallinta työpöytäsovellustuote 49€</li>
           <li>Em. hinnalla saa loppuelämän käyttöoikeuden softiin</li>
           <li>Matkakulut sisältyy Porvoon alueella</li>
         </ul>
@@ -165,10 +167,10 @@
       <div class="card">
         <h2>Yhteystiedot</h2>
         <div class="contact">
-          <strong>Simo Sirén</strong><br>
           Puhelin ja WhatsApp: 050 910 9926<br>
           Sähköposti: simosiren1@gmail.com<br>
           Osoite: Tarmolankatu 5, 06100 PORVOO
+          Web: https://tarmola-code.fi
         </div>
       </div>
     </div>
@@ -196,7 +198,7 @@
       }, 700);
     }, 180);
 
-    const links = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4', 'nav-link-5'].map(id => document.getElementById(id));
+    const links = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4', 'nav-link-5', 'nav-link-6'].map(id => document.getElementById(id));
     setTimeout(() => {
       links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 400));
     }, 3000);
