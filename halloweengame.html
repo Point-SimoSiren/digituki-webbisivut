@@ -4,6 +4,18 @@
   <meta charset="UTF-8" />
   <title>TCG Halloween Hunt</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TCG Halloween Hunt on Tarmola Code Garagen rakentama selainpeli, joka esittelee web-pelikehitystä ja PWA-tekniikoita Porvoosta käsin.">
+  <meta name="keywords" content="web-peli, halloween peli, selainpeli porvoo, javascript peli, tarmola code garage">
+  <link rel="canonical" href="https://tarmola-code.fi/halloweengame.html">
+  <meta property="og:title" content="TCG Halloween Hunt | Tarmola Code Garagen selainpeli">
+  <meta property="og:description" content="Selviydy kurpitsapäiden hyökkäyksestä ja tutustu samalla Tarmola Code Garagen web-pelikehitykseen.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tarmola-code.fi/halloweengame.html">
+  <meta property="og:image" content="https://tarmola-code.fi/icons/icon-512.png">
+  <meta property="og:locale" content="fi_FI">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TCG Halloween Hunt | Tarmola Code Garagen selainpeli">
+  <meta name="twitter:description" content="Kokeile selaimessa toimivaa Halloween-ammuntapeliä ja tilaa oma gamification-projektisi Porvoosta.">
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +25,8 @@
       margin: 0;
       font-family: "Segoe UI", system-ui, sans-serif;
       background: #050608;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       color: #f4f4f4;
       position: relative;
     }
@@ -111,7 +124,56 @@
       transform: translateX(-50%);
       z-index: 40;
     }
+    .seo-panel {
+      position: relative;
+      z-index: 50;
+      max-width: 760px;
+      margin: 40px auto 80px;
+      background: rgba(8, 10, 16, 0.85);
+      border: 1px solid rgba(255, 224, 181, 0.4);
+      border-radius: 14px;
+      padding: 24px 28px;
+      line-height: 1.6;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+    }
+    .seo-panel h1,
+    .seo-panel h2 {
+      color: #ffe0b5;
+      margin-top: 0;
+    }
+    .seo-panel p,
+    .seo-panel li {
+      font-size: 16px;
+      color: #f4f4f4;
+    }
+    @media (max-width: 640px) {
+      .seo-panel {
+        margin: 24px 16px 60px;
+        padding: 18px;
+      }
+      .seo-panel p,
+      .seo-panel li {
+        font-size: 15px;
+      }
+    }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "TCG Halloween Hunt",
+    "applicationCategory": "GameApplication",
+    "gamePlatform": "Web browser",
+    "genre": "Arcade shooter",
+    "playMode": "SinglePlayer",
+    "author": {
+      "@type": "Organization",
+      "name": "Tarmola Code Garage"
+    },
+    "url": "https://tarmola-code.fi/halloweengame.html",
+    "operatingSystem": "Any modern browser with JavaScript enabled"
+  }
+  </script>
 </head>
 <body>
   <a href="pelit.html" class="nav-link-portal portal-return">Palaa Web-pelit-sivulle</a>
@@ -129,6 +191,19 @@
     <button id="touch-left" class="touch-button" type="button">◀</button>
     <button id="touch-right" class="touch-button" type="button">▶</button>
   </div>
+  <section class="seo-panel">
+    <h1>TCG Halloween Hunt – selainpeli ja pelillistämisen demo</h1>
+    <p>Tämä Porvoossa kehitetty selainpeli osoittaa, miten Tarmola Code Garage toteuttaa kevyitä, nopeasti avautuvia JavaScript-pelejä ja gamification-kokeiluja. Sama teknologia taipuu kampanjasivuille, tapahtumien kisailuihin sekä oppimisratkaisuihin.</p>
+    <h2>Pelimekaniikka ja ohjeet</h2>
+    <ul>
+      <li>Liiku painamalla A/D- tai nuolinäppäimiä, tähtää hiirellä ja ammu klikkaamalla</li>
+      <li>Puustot ja kivet estävät laukaukset, joten hyödynnä suojaa ja rytmitä kolmen laukauksen sarjat</li>
+      <li>Pelissä on juokseva pistelasku, elämälaskuri ja kasvava vaikeustaso – täydellinen nopeatempoiseen breakiin</li>
+    </ul>
+    <h2>Missä tätä voi hyödyntää?</h2>
+    <p>TCG Halloween Hunt toimii referenssinä yritysten ja yhdistysten kampanjoille, joissa halutaan sitouttaa kävijöitä tai kerätä liidejä viihdyttävän kokemuksen avulla. Peli voidaan brändätä, liittää PWA-toiminnallisuuksiin ja yhdistää esimerkiksi arvontalomakkeeseen.</p>
+    <p>Haluatko vastaavan pelin, mikrotehtävän tai pelillistetyn koulutuksen? <a href="index.html" style="color:#ffe0b5; text-decoration:underline;">Ota yhteyttä Tarmola Code Garageen</a> ja suunnitellaan tarpeisiisi sopiva ratkaisu.</p>
+  </section>
   <script>
     const canvas = document.getElementById("game");
     const ctx = canvas.getContext("2d");
