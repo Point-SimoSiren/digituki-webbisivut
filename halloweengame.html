@@ -351,10 +351,12 @@
         spawnY = source.ref.y - source.ref.height * 0.35;
       }
 
+      const visibilityDuration = 2.8 + Math.random() * 1.5;
+
       state.enemies.push({
         x: spawnX,
         y: spawnY,
-        timer: 2.8 + Math.random() * 1.5,
+        timer: visibilityDuration * 2,
         throwDelay: 0.7 + Math.random() * 0.6,
         fired: false,
         radius: 26,
@@ -764,11 +766,10 @@
         ctx.fillStyle = "#ffe0b5";
         ctx.font = "48px 'Segoe UI', sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText("Huh! .", state.width / 2, state.height / 2 - 30);
+        ctx.fillText("You have lost!", state.width / 2, state.height / 2 - 30);
         ctx.font = "24px 'Segoe UI', sans-serif";
         ctx.fillText(`Pisteesi: ${state.score}`, state.width / 2, state.height / 2 + 10);
-        ctx.fillText("Klikkaa tai paina R yrittääksesi uudelleen", state.width / 2, state.height / 2 + 48);
-        ctx.fillText("Visit: tarmola-code.fi", state.width / 2, state.height / 2 + 84);
+        ctx.fillText("Klikkaa ruutua tai paina R yrittääksesi uudelleen", state.width / 2, state.height / 2 + 48);
         ctx.textAlign = "left";
       }
     }
@@ -789,7 +790,7 @@
       }
       ctx.font = "16px 'Segoe UI', sans-serif";
       ctx.fillStyle = "rgba(255,255,255,0.85)";
-      ctx.fillText("Klikkaa jatkaaksesi peliin", state.width / 2, state.height / 2 + 80);
+      ctx.fillText("Click screen to skip", state.width / 2, state.height / 2 + 80);
       ctx.textAlign = "left";
     }
 
