@@ -55,6 +55,45 @@
       background: rgba(13, 13, 13, 0.95);
       color: #fff7df;
     }
+    .nav-link-portal {
+      padding: 0.45rem 1.3rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #5c17ff, #13b0ff 55%, #8dff8b);
+      color: #0b0618 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      box-shadow: 0 0 18px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(19, 176, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-link-portal::after {
+      content: '';
+      position: absolute;
+      inset: -130% 45% auto 45%;
+      width: 20%;
+      height: 300%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(35deg);
+      transition: transform 0.35s ease;
+      pointer-events: none;
+    }
+    .nav-link-portal:hover::after,
+    .nav-link-portal:focus::after {
+      transform: rotate(35deg) translateY(-40%);
+    }
+    .portal-return {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 35;
+    }
     .game-area {
       position: relative;
       width: 100%;
@@ -189,6 +228,7 @@
   </style>
 </head>
 <body>
+  <a href="pelit.html" class="nav-link-portal portal-return">Palaa Web-pelit-sivulle</a>
   <a class="back-button" href="index.html">Takaisin sivustolle</a>
   <a class="back-button halloween-link" href="halloweengame.html">Halloween peli</a>
   <div class="game-area" id="game-area">

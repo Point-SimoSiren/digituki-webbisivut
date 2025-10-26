@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eränkävijän shakki by Tarmola Code Garage</title>
+  <style>
+    :root {
+      --cell-size: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #1f2613;
+      color: #ecf1d8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+    .nav-link-portal {
+      padding: 0.45rem 1.3rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #5c17ff, #13b0ff 55%, #8dff8b);
+      color: #0b0618 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      box-shadow: 0 0 18px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(19, 176, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-link-portal::after {
+      content: '';
+      position: absolute;
+      inset: -130% 45% auto 45%;
+      width: 20%;
+      height: 300%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(35deg);
+      transition: transform 0.35s ease;
+      pointer-events: none;
+    }
+    .nav-link-portal:hover::after,
+    .nav-link-portal:focus::after {
+      transform: rotate(35deg) translateY(-40%);
+    }
+    .portal-return {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 40;
+    }
+
+    .app {
+      width: min(1500px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .header {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    @media (min-width: 640px) {
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .info-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 16px;
+      background: rgba(19, 24, 13, 0.85);
+      border: 1px solid #3a4525;
+      border-radius: 8px;
+    }
+
+    .info-bar strong {
+      color: #bfe063;
+    }
+
+    .board-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(var(--cols), var(--cell-size));
+      grid-template-rows: repeat(var(--rows), var(--cell-size));
+      background-image:
+        url("Camokuva.png"),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+        linear-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03) 8px, transparent 8px, transparent 16px);
+      background-size:
+        cover,
+        var(--cell-size) var(--cell-size),
+        var(--cell-size) var(--cell-size),
+        180px 180px;
+      background-position: center;
+      background-color: #2b341b;
+    }
+
+    .cell {
+      width: var(--cell-size);
+      height: var(--cell-size);
+      border: 1px solid rgba(10, 10, 10, 0.25);
+      background: rgba(15, 15, 15, 0.08);
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      border-radius: 4px;
+    }
+
+    .cell:focus-visible {
+      outline: 2px solid #c4ff5a;
+      outline-offset: -3px;
+    }
+
+    .cell:hover {
+      background: rgba(191, 224, 99, 0.16);
+    }
+
+    .cell.cell-x {
+      color: rgba(232, 210, 138, 0.75);
+      -webkit-text-stroke: 0.8px #050505;
+      text-stroke: 0.8px #050505;
+      text-shadow: none;
+    }
+
+    .cell.cell-o {
+      color: rgba(183, 220, 240, 0.75);
+      -webkit-text-stroke: 0.8px #050505;
+      text-stroke: 0.8px #050505;
+      text-shadow: none;
+    }
+
+    button {
+      border: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #12130c;
+      background: #c4ff5a;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .message {
+      min-height: 24px;
+      font-size: 1rem;
+      color: #f4f7cf;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 9, 4, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 10;
+    }
+
+    .overlay.visible {
+      display: flex;
+    }
+
+    .overlay-card {
+      background: #101407;
+      border: 1px solid #3f4a2a;
+      border-radius: 16px;
+      padding: 28px 32px;
+      max-width: 420px;
+      width: min(90vw, 420px);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .overlay-card p {
+      margin: 0 0 20px 0;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .overlay-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      background: transparent;
+      color: #dff48d;
+      border: 1px solid rgba(223, 244, 141, 0.4);
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .link-btn:hover {
+      background: rgba(223, 244, 141, 0.12);
+      color: #f6ffca;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+
+      .board-wrapper {
+        padding: 12px;
+      }
+
+      .cell {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="pelit.html" class="nav-link-portal portal-return">Palaa Web-pelit-sivulle</a>
+  <div class="app">
+    <div class="header">
+      <h1>TCG - Eränkävijän shakki</h1>
+      <button id="reset-btn" type="button">Uusi peli</button>
+    </div>
+
+    <div class="info-bar">
+      <div><strong>Vuoro:</strong> <span id="current-player">X</span></div>
+      <div><strong>Tavoite:</strong> Aseta viisi merkkej&auml; per&auml;kk&auml;in joko vaaka-, pysty- tai vinoriville.</div>
+      <div><strong>Merkkiraja:</strong> <span id="tokens-x">X 0/30</span> | <span id="tokens-o">O 0/30</span></div>
+    </div>
+
+    <div class="board-wrapper">
+      <div id="board" class="board" role="grid" aria-label="Er&auml;miehenshakki pelilauta"></div>
+    </div>
+
+    <div class="message" id="message" aria-live="polite"></div>
+
+    <div class="overlay" id="overlay" aria-live="assertive" aria-modal="true" role="dialog" aria-hidden="true">
+      <div class="overlay-card">
+        <p id="overlay-text"></p>
+        <div class="overlay-actions">
+          <button id="overlay-reset" type="button">Uusi peli</button>
+          <a id="visit-btn" class="link-btn" href="https://tarmola-code.fi" target="_blank" rel="noopener noreferrer">
+            Tutustu: tarmola-code.fi
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const WIN_CONDITION = 5;
+      const MAX_MARKS_PER_PLAYER = 30;
+      const MOBILE_QUERY = window.matchMedia("(max-width: 720px)");
+      const MOBILE_CONFIG = { rows: 20, cols: 15 };
+      const DESKTOP_CONFIG = { rows: 25, cols: 40 };
+
+      const boardEl = document.getElementById("board");
+      const statusEl = document.getElementById("current-player");
+      const messageEl = document.getElementById("message");
+      const resetBtn = document.getElementById("reset-btn");
+      const overlay = document.getElementById("overlay");
+      const overlayText = document.getElementById("overlay-text");
+      const overlayResetBtn = document.getElementById("overlay-reset");
+      const tokensXEl = document.getElementById("tokens-x");
+      const tokensOEl = document.getElementById("tokens-o");
+
+      let rows = DESKTOP_CONFIG.rows;
+      let cols = DESKTOP_CONFIG.cols;
+      let board = [];
+      let currentPlayer = "X";
+      let moves = 0;
+      let gameActive = true;
+      const marks = { X: 0, O: 0 };
+
+      function getDimensionConfig() {
+        return MOBILE_QUERY.matches ? MOBILE_CONFIG : DESKTOP_CONFIG;
+      }
+
+      function createEmptyBoard(rowCount, colCount) {
+        return Array.from({ length: rowCount }, () => Array(colCount).fill(null));
+      }
+
+      function buildBoard() {
+        boardEl.style.setProperty("--rows", rows);
+        boardEl.style.setProperty("--cols", cols);
+        boardEl.innerHTML = "";
+        const fragment = document.createDocumentFragment();
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const cell = document.createElement("button");
+            cell.type = "button";
+            cell.className = "cell";
+            cell.dataset.row = row;
+            cell.dataset.col = col;
+            cell.setAttribute("role", "gridcell");
+            cell.setAttribute("aria-label", `Rivi ${row + 1}, Sarake ${col + 1}`);
+            cell.addEventListener("click", onCellClick);
+            fragment.appendChild(cell);
+          }
+        }
+        boardEl.appendChild(fragment);
+      }
+
+      function rebuildBoardForDimensions() {
+        const config = getDimensionConfig();
+        if (config.rows === rows && config.cols === cols) {
+          return;
+        }
+        rows = config.rows;
+        cols = config.cols;
+        board = createEmptyBoard(rows, cols);
+        buildBoard();
+        resetGame({ rebuildBoard: true });
+      }
+
+      function attachDimensionListener() {
+        const listener = () => rebuildBoardForDimensions();
+        if (typeof MOBILE_QUERY.addEventListener === "function") {
+          MOBILE_QUERY.addEventListener("change", listener);
+        } else if (typeof MOBILE_QUERY.addListener === "function") {
+          MOBILE_QUERY.addListener(listener);
+        }
+      }
+
+      function onCellClick(event) {
+        if (!gameActive) {
+          return;
+        }
+
+        if (marks[currentPlayer] >= MAX_MARKS_PER_PLAYER) {
+          endGame(`Pelaaja ${currentPlayer} on k&auml;ytt&auml;nyt kaikki 30 merkki&auml;.`);
+          return;
+        }
+
+        const cell = event.currentTarget;
+        const row = Number(cell.dataset.row);
+        const col = Number(cell.dataset.col);
+
+        if (board[row][col]) {
+          return;
+        }
+
+        board[row][col] = currentPlayer;
+        cell.textContent = currentPlayer;
+        cell.classList.add(currentPlayer === "X" ? "cell-x" : "cell-o");
+        marks[currentPlayer] += 1;
+        updateTokenInfo();
+        moves += 1;
+
+        if (hasPlayerWon(row, col)) {
+          endGame(`Pelaaja ${currentPlayer} voitti!`);
+          return;
+        }
+
+        if (moves === rows * cols) {
+          endGame("Tasapeli - lauta on t\u00e4ynn\u00e4.");
+          return;
+        }
+
+        swapPlayer();
+      }
+
+      function swapPlayer() {
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+        statusEl.textContent = currentPlayer;
+        messageEl.textContent = "";
+      }
+
+      function hasPlayerWon(row, col) {
+        const directions = [
+          [1, 0],
+          [0, 1],
+          [1, 1],
+          [1, -1],
+        ];
+        return directions.some(([dy, dx]) => {
+          let count = 1;
+          count += countDirection(row, col, dy, dx);
+          count += countDirection(row, col, -dy, -dx);
+          return count >= WIN_CONDITION;
+        });
+      }
+
+      function countDirection(row, col, dy, dx) {
+        let count = 0;
+        let r = row + dy;
+        let c = col + dx;
+        while (r >= 0 && r < rows && c >= 0 && c < cols && board[r][c] === currentPlayer) {
+          count += 1;
+          r += dy;
+          c += dx;
+        }
+        return count;
+      }
+
+      function endGame(message) {
+        gameActive = false;
+        messageEl.textContent = message;
+        showOverlay(message);
+      }
+
+      function showOverlay(text) {
+        overlayText.textContent = text;
+        overlay.classList.add("visible");
+        overlay.setAttribute("aria-hidden", "false");
+      }
+
+      function hideOverlay() {
+        overlay.classList.remove("visible");
+        overlay.setAttribute("aria-hidden", "true");
+      }
+
+      function updateTokenInfo() {
+        tokensXEl.textContent = `X ${marks.X}/${MAX_MARKS_PER_PLAYER}`;
+        tokensOEl.textContent = `O ${marks.O}/${MAX_MARKS_PER_PLAYER}`;
+      }
+
+      function resetGame({ rebuildBoard = false } = {}) {
+        board = createEmptyBoard(rows, cols);
+        if (!rebuildBoard) {
+          const cells = boardEl.querySelectorAll(".cell");
+          cells.forEach((cell) => {
+            cell.textContent = "";
+            cell.classList.remove("cell-x", "cell-o");
+          });
+        }
+
+        currentPlayer = "X";
+        moves = 0;
+        gameActive = true;
+        marks.X = 0;
+        marks.O = 0;
+        statusEl.textContent = currentPlayer;
+        messageEl.textContent = "";
+        updateTokenInfo();
+        hideOverlay();
+      }
+
+      resetBtn.addEventListener("click", resetGame);
+      overlayResetBtn.addEventListener("click", resetGame);
+      const startingConfig = getDimensionConfig();
+      rows = startingConfig.rows;
+      cols = startingConfig.cols;
+      board = createEmptyBoard(rows, cols);
+      buildBoard();
+      resetGame({ rebuildBoard: true });
+      attachDimensionListener();
+      updateTokenInfo();
+    })();
+  </script>
+</body>
+</html>

@@ -26,6 +26,35 @@
       opacity: 1;
       transform: translateY(0) scale(1);
     }
+    .nav-link-portal {
+      padding: 0.35rem 1.2rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #5c17ff, #13b0ff 55%, #8dff8b);
+      color: #0b0618 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      box-shadow: 0 0 18px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(19, 176, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none !important;
+    }
+    .nav-link-portal::after {
+      content: '';
+      position: absolute;
+      inset: -130% 45% auto 45%;
+      width: 20%;
+      height: 300%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(35deg);
+      transition: transform 0.35s ease;
+      pointer-events: none;
+    }
+    .nav-link-portal:hover::after,
+    .nav-link-portal:focus::after {
+      transform: rotate(35deg) translateY(-40%);
+    }
     .logo-anim {
       display: inline-block;
       transform: scale(3) translateY(120px);
@@ -129,8 +158,7 @@
         <a href="esittely.html" class="nav-link-anim" id="nav-link-2" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Esittely</a>
         <a href="crmsivu.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">UUTTA! Mini CRM sovellus</a>
         <a href="videot.html" class="nav-link-anim" id="nav-link-4" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
-        <a href="bugijahti.html" class="nav-link-anim" id="nav-link-5" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Bugijahti</a>
-        <a href="halloweengame.html" class="nav-link-anim" id="nav-link-6" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Halloween peli</a>
+        <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5" style="margin:0 1rem;">Web-pelit</a>
       </nav>
 
       <div class="card">
@@ -198,9 +226,9 @@
       }, 700);
     }, 180);
 
-    const links = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4', 'nav-link-5', 'nav-link-6'].map(id => document.getElementById(id));
+    const navLinks = Array.from(document.querySelectorAll('.nav-link-anim'));
     setTimeout(() => {
-      links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 400));
+      navLinks.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 400));
     }, 3000);
   });
 
