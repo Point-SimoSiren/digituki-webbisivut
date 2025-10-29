@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Hockey 3D | Yhdisys R.Y.</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.75rem 1.25rem 3.5rem;
+      background: radial-gradient(circle at 50% 10%, rgba(0, 102, 204, 0.22), rgba(3, 8, 18, 0.98) 72%);
+      color: #f2f5ff;
+    }
+    a.back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 40;
+      padding: 0.55rem 1.05rem;
+      border-radius: 999px;
+      background: rgba(7, 17, 38, 0.85);
+      border: 1px solid rgba(143, 185, 255, 0.35);
+      color: #e1ebff;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    a.back-link:hover,
+    a.back-link:focus-visible {
+      background: rgba(143, 185, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    header {
+      max-width: 720px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+      letter-spacing: 0.04em;
+    }
+    header p {
+      margin: 0;
+      line-height: 1.55;
+      color: rgba(232, 241, 255, 0.85);
+    }
+    #gameWrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+      align-items: center;
+      width: min(960px, 95vw);
+    }
+    #threeContainer {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      background: radial-gradient(circle at 50% 35%, rgba(14, 46, 89, 0.8), rgba(4, 9, 19, 0.92));
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55);
+      border: 2px solid rgba(126, 170, 255, 0.22);
+      overflow: hidden;
+      touch-action: none;
+    }
+    #threeContainer canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #hud {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0.65rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(10, 18, 36, 0.72);
+      border: 1px solid rgba(138, 190, 255, 0.32);
+      box-shadow: 0 10px 30px rgba(6, 12, 26, 0.65);
+    }
+    #hud span {
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(226, 238, 255, 0.92);
+    }
+    #lampIndicator {
+      position: relative;
+      display: inline-flex;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(220, 232, 255, 0.18) 0%, rgba(54, 69, 110, 0.85) 65%);
+      border: 1px solid rgba(138, 190, 255, 0.6);
+      transition: box-shadow 0.2s ease, filter 0.2s ease, background 0.2s ease;
+    }
+    #lampIndicator.lit {
+      background: radial-gradient(circle, rgba(255, 116, 73, 0.95) 15%, rgba(255, 64, 31, 0.8) 65%);
+      box-shadow: 0 0 16px rgba(255, 93, 43, 0.75), 0 0 30px rgba(255, 126, 82, 0.55);
+      filter: saturate(1.3);
+    }
+    #announcement {
+      min-height: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: rgba(250, 144, 112, 0.9);
+      text-align: center;
+    }
+    #tips {
+      max-width: 680px;
+      text-align: center;
+      line-height: 1.6;
+      color: rgba(211, 225, 255, 0.78);
+      font-size: 0.95rem;
+    }
+    #tips strong {
+      color: rgba(255, 240, 185, 0.9);
+    }
+    @media (max-width: 640px) {
+      body {
+        gap: 1.5rem;
+        padding: 1.5rem 1rem 3rem;
+      }
+      a.back-link {
+        top: 16px;
+        left: 16px;
+      }
+      #hud {
+        flex-direction: column;
+        border-radius: 16px;
+        padding: 0.8rem 1rem;
+      }
+      #threeContainer {
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="pelit.html">← Takaisin peleihin</a>
+  <header>
+    <h1>Tarmola Air Hockey 3D</h1>
+    <p>
+      Upota kiekko vastustajan maaliin yläviistosta katsottuna jääareenassa. Ohjaa mailaa hiirellä
+      tai kosketuksella, väistä satunnaisesti liikehtivää maalivahtia ja pidä oma maali puhtaana.
+    </p>
+  </header>
+  <main id="gameWrapper">
+    <div id="hud">
+      <span id="playerScore">Maalit: 0</span>
+      <span id="ownGoals">Omat: 0</span>
+      <span>Maalivalo</span>
+      <span id="lampIndicator" aria-hidden="true"></span>
+    </div>
+    <div id="announcement" role="status" aria-live="polite"></div>
+    <div id="threeContainer"></div>
+    <p id="tips">
+      Hiirellä tai sormella liikutat pyöreää mailaa missä tahansa kentällä.
+      Kiekko kimpoaa laidoista – tarkkaile sen vauhtia ja <strong>älä päästä sitä omaan maaliin</strong>.
+      Jokaisen maalin jälkeen uusi kiekko tipahtaa jäälle Tarmola Code Gagaren mainoksen yläpuolelta.
+    </p>
+  </main>
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+    const container = document.getElementById("threeContainer");
+    const playerScoreEl = document.getElementById("playerScore");
+    const ownGoalsEl = document.getElementById("ownGoals");
+    const announcementEl = document.getElementById("announcement");
+    const lampIndicatorEl = document.getElementById("lampIndicator");
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x01060c, 36, 80);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    const camera = new THREE.PerspectiveCamera(
+      42,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      120
+    );
+    camera.position.set(0, 16.5, 18.5);
+    camera.lookAt(new THREE.Vector3(0, 0, 2));
+
+    const ambient = new THREE.HemisphereLight(0xcde8ff, 0x0e172a, 0.85);
+    scene.add(ambient);
+    const mainLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    mainLight.position.set(7, 13, 9);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.set(1024, 1024);
+    mainLight.shadow.camera.near = 4;
+    mainLight.shadow.camera.far = 40;
+    mainLight.shadow.camera.left = -18;
+    mainLight.shadow.camera.right = 18;
+    mainLight.shadow.camera.top = 18;
+    mainLight.shadow.camera.bottom = -18;
+    scene.add(mainLight);
+
+    const rinkWidth = 12;
+    const rinkDepth = 22;
+    const rinkHalfWidth = rinkWidth / 2;
+    const rinkHalfDepth = rinkDepth / 2;
+    const wallThickness = 0.4;
+    const goalWidth = 4;
+    const goalDepth = 1.4;
+    const malletRadius = 0.6;
+    const malletHeight = 0.4;
+    const puckRadius = 0.35;
+    const puckHeight = 0.28;
+    const puckRestY = puckHeight / 2;
+    const malletRestY = malletHeight / 2 + 0.02;
+    const dropHeight = 4.2;
+    const playerMinZ = -rinkHalfDepth + malletRadius;
+    const playerMaxZ = rinkHalfDepth - malletRadius;
+    const goalieMinZ = -rinkHalfDepth + 1.4;
+    const goalieMaxZ = -rinkHalfDepth + 4.2;
+    const chaserMinZ = -rinkHalfDepth + 2.1;
+    const chaserMaxZ = rinkHalfDepth - 1.8;
+
+    const iceGeometry = new THREE.PlaneGeometry(rinkWidth + 0.4, rinkDepth + 0.4);
+    const iceMaterial = new THREE.MeshPhongMaterial({
+      color: 0x9dd9ff,
+      emissive: 0x052436,
+      emissiveIntensity: 0.35,
+      specular: 0x86e2ff,
+      shininess: 80,
+      transparent: true,
+      opacity: 0.86,
+    });
+    const ice = new THREE.Mesh(iceGeometry, iceMaterial);
+    ice.rotation.x = -Math.PI / 2;
+    ice.receiveShadow = true;
+    scene.add(ice);
+
+    const advertTexture = createAdvertTexture();
+    const advert = new THREE.Mesh(
+      new THREE.CircleGeometry(rinkWidth * 0.34, 64),
+      new THREE.MeshBasicMaterial({
+        map: advertTexture,
+        transparent: true,
+        opacity: 0.9,
+      })
+    );
+    advert.rotation.x = -Math.PI / 2;
+    advert.position.y = -0.01;
+    scene.add(advert);
+
+    const iceGlowGeometry = new THREE.CircleGeometry(rinkWidth * 0.46, 48);
+    const iceGlowMaterial = new THREE.MeshBasicMaterial({
+      color: 0x7ad7ff,
+      transparent: true,
+      opacity: 0.12,
+    });
+    const iceGlow = new THREE.Mesh(iceGlowGeometry, iceGlowMaterial);
+    iceGlow.rotation.x = -Math.PI / 2;
+    iceGlow.position.y = 0.001;
+    scene.add(iceGlow);
+
+    const rinkBorder = new THREE.Mesh(
+      new THREE.RingGeometry(rinkWidth * 0.5, rinkWidth * 0.53, 64),
+      new THREE.MeshBasicMaterial({ color: 0x1f3f63, transparent: true, opacity: 0.6 })
+    );
+    rinkBorder.rotation.x = -Math.PI / 2;
+    rinkBorder.position.y = 0.002;
+    scene.add(rinkBorder);
+
+    const wallMaterial = new THREE.MeshStandardMaterial({
+      color: 0x0e1f36,
+      metalness: 0.25,
+      roughness: 0.58,
+      emissive: 0x03142a,
+      emissiveIntensity: 0.35,
+    });
+
+    const wallHeight = 0.8;
+    const walls = new THREE.Group();
+    function addWall(width, height, depth, x, y, z) {
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), wallMaterial);
+      wall.position.set(x, y, z);
+      wall.castShadow = true;
+      wall.receiveShadow = true;
+      walls.add(wall);
+    }
+
+    addWall(wallThickness, wallHeight, rinkDepth + goalDepth * 2, -rinkHalfWidth - wallThickness / 2, wallHeight / 2, 0);
+    addWall(wallThickness, wallHeight, rinkDepth + goalDepth * 2, rinkHalfWidth + wallThickness / 2, wallHeight / 2, 0);
+
+    const gapWidth = (rinkWidth - goalWidth) / 2;
+    const frontZ = rinkHalfDepth + wallThickness / 2;
+    const backZ = -rinkHalfDepth - wallThickness / 2;
+
+    addWall(gapWidth, wallHeight, wallThickness, -goalWidth / 2 - gapWidth / 2, wallHeight / 2, frontZ);
+    addWall(gapWidth, wallHeight, wallThickness, goalWidth / 2 + gapWidth / 2, wallHeight / 2, frontZ);
+    addWall(gapWidth, wallHeight, wallThickness, -goalWidth / 2 - gapWidth / 2, wallHeight / 2, backZ);
+    addWall(gapWidth, wallHeight, wallThickness, goalWidth / 2 + gapWidth / 2, wallHeight / 2, backZ);
+
+    const goalMaterial = new THREE.MeshPhongMaterial({
+      color: 0xfff6d1,
+      emissive: 0x231f12,
+      emissiveIntensity: 0.55,
+      transparent: true,
+      opacity: 0.65,
+    });
+
+    function addGoalFrame(zSign) {
+      const postGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1.1, 16);
+      const crossbarGeometry = new THREE.CylinderGeometry(0.1, 0.1, goalWidth, 16);
+      const group = new THREE.Group();
+
+      const leftPost = new THREE.Mesh(postGeometry, goalMaterial);
+      leftPost.position.set(-goalWidth / 2, 0.55, zSign * (rinkHalfDepth + goalDepth / 2));
+      leftPost.castShadow = true;
+      group.add(leftPost);
+
+      const rightPost = leftPost.clone();
+      rightPost.position.x = goalWidth / 2;
+      group.add(rightPost);
+
+      const crossbar = new THREE.Mesh(crossbarGeometry, goalMaterial);
+      crossbar.rotation.z = Math.PI / 2;
+      crossbar.position.set(0, 1.05, zSign * (rinkHalfDepth + goalDepth / 2));
+      crossbar.castShadow = true;
+      group.add(crossbar);
+
+      const backRail = new THREE.Mesh(crossbarGeometry, goalMaterial);
+      backRail.rotation.z = Math.PI / 2;
+      backRail.position.set(0, 0.2, zSign * (rinkHalfDepth + goalDepth));
+      backRail.castShadow = true;
+      group.add(backRail);
+
+      scene.add(group);
+    }
+
+    addGoalFrame(1);
+    addGoalFrame(-1);
+
+    scene.add(walls);
+
+    const puckTopTexture = createPuckTopTexture();
+    puckTopTexture.anisotropy = renderer.capabilities.getMaxAnisotropy?.() ?? 8;
+
+    const puckSideMaterial = new THREE.MeshStandardMaterial({
+      color: 0x111111,
+      metalness: 0.4,
+      roughness: 0.3,
+      emissive: 0x060606,
+      emissiveIntensity: 0.35,
+    });
+    const puckTopMaterial = new THREE.MeshStandardMaterial({
+      map: puckTopTexture,
+      color: 0xffffff,
+      metalness: 0.25,
+      roughness: 0.42,
+    });
+    const puckGeometry = new THREE.CylinderGeometry(puckRadius, puckRadius, puckHeight, 48);
+    const puck = new THREE.Mesh(puckGeometry, [puckSideMaterial, puckTopMaterial, puckTopMaterial]);
+    puck.castShadow = true;
+    puck.receiveShadow = true;
+    scene.add(puck);
+
+    const playerMaterial = new THREE.MeshStandardMaterial({
+      color: 0x4dd0ff,
+      metalness: 0.15,
+      roughness: 0.42,
+      emissive: 0x10384a,
+      emissiveIntensity: 0.5,
+    });
+    const goalieMaterial = new THREE.MeshStandardMaterial({
+      color: 0xffdf6f,
+      metalness: 0.18,
+      roughness: 0.55,
+      emissive: 0x332408,
+      emissiveIntensity: 0.55,
+    });
+    const chaserMaterial = new THREE.MeshStandardMaterial({
+      color: 0xffc04d,
+      metalness: 0.2,
+      roughness: 0.48,
+      emissive: 0x402602,
+      emissiveIntensity: 0.55,
+    });
+
+    function createMallet(material) {
+      const group = new THREE.Group();
+      const base = new THREE.Mesh(
+        new THREE.CylinderGeometry(malletRadius, malletRadius, malletHeight, 32),
+        material
+      );
+      base.castShadow = true;
+      base.receiveShadow = true;
+      group.add(base);
+
+      const rim = new THREE.Mesh(
+        new THREE.TorusGeometry(malletRadius * 0.88, 0.08, 16, 32),
+        new THREE.MeshStandardMaterial({
+          color: 0xffffff,
+          metalness: 0.6,
+          roughness: 0.2,
+          emissive: material.emissive,
+          emissiveIntensity: 0.4,
+        })
+      );
+      rim.rotation.x = Math.PI / 2;
+      rim.position.y = malletHeight / 2;
+      rim.castShadow = true;
+      group.add(rim);
+
+      return group;
+    }
+
+    const playerMallet = createMallet(playerMaterial);
+    const goalieMallet = createMallet(goalieMaterial);
+    const chaserMallet = createMallet(chaserMaterial);
+    playerMallet.userData.bounds = { minZ: playerMinZ, maxZ: playerMaxZ };
+    goalieMallet.userData.bounds = { minZ: goalieMinZ, maxZ: goalieMaxZ };
+    chaserMallet.userData.bounds = { minZ: chaserMinZ, maxZ: chaserMaxZ };
+    scene.add(playerMallet);
+    scene.add(goalieMallet);
+    scene.add(chaserMallet);
+
+    const goalLampMaterial = new THREE.MeshPhongMaterial({
+      color: 0x14161b,
+      emissive: 0x111118,
+      emissiveIntensity: 0.4,
+    });
+    const goalLamp = new THREE.Mesh(new THREE.SphereGeometry(0.4, 24, 24), goalLampMaterial);
+    goalLamp.position.set(0, 2.4, -rinkHalfDepth - 0.3);
+    goalLamp.castShadow = true;
+    scene.add(goalLamp);
+
+    const lampStand = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.12, 0.12, 1.8, 16),
+      new THREE.MeshStandardMaterial({ color: 0x0a1222, metalness: 0.2, roughness: 0.6 })
+    );
+    lampStand.position.set(0, 0.9, -rinkHalfDepth - 0.3);
+    lampStand.castShadow = true;
+    scene.add(lampStand);
+
+    const lampLight = new THREE.PointLight(0xff623c, 0, 14, 2.2);
+    lampLight.position.copy(goalLamp.position).add(new THREE.Vector3(0, 0.1, 0));
+    scene.add(lampLight);
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    const playerTarget = new THREE.Vector3(0, malletRestY, rinkHalfDepth * 0.4);
+    const goalieTarget = new THREE.Vector3(0, malletRestY, -rinkHalfDepth + 3);
+    const chaserTarget = new THREE.Vector3(0, malletRestY, -rinkHalfDepth * 0.15);
+    const chaserDesired = new THREE.Vector3();
+
+    let pointerActive = false;
+    let activePointerId = null;
+
+    function updatePointerPosition(event) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const intersects = raycaster.intersectObject(ice, false);
+      if (!intersects.length) {
+        return;
+      }
+      const point = intersects[0].point;
+      const clampX = Math.max(-rinkHalfWidth + malletRadius, Math.min(rinkHalfWidth - malletRadius, point.x));
+      const clampZ = Math.max(playerMinZ, Math.min(playerMaxZ, point.z));
+      playerTarget.set(clampX, malletRestY, clampZ);
+    }
+
+    container.addEventListener("pointerdown", (event) => {
+      pointerActive = true;
+      activePointerId = event.pointerId;
+      container.setPointerCapture(event.pointerId);
+      updatePointerPosition(event);
+    });
+
+    container.addEventListener("pointermove", (event) => {
+      if (event.pointerType === "mouse" || (pointerActive && event.pointerId === activePointerId)) {
+        updatePointerPosition(event);
+      }
+    });
+
+    container.addEventListener("pointerup", (event) => {
+      if (event.pointerId === activePointerId) {
+        pointerActive = false;
+        activePointerId = null;
+      }
+    });
+
+    container.addEventListener("pointerleave", () => {
+      pointerActive = false;
+      activePointerId = null;
+    });
+
+    window.addEventListener("resize", () => {
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    });
+
+    const puckVelocity = new THREE.Vector3();
+    const clock = new THREE.Clock();
+    const prevPlayerPos = new THREE.Vector3();
+    const prevGoaliePos = new THREE.Vector3();
+    const prevChaserPos = new THREE.Vector3();
+
+    let playerScore = 0;
+    let ownGoals = 0;
+    let goalieChangeTimer = 0;
+    let lampTimeout;
+    let puckDropping = false;
+
+    function createAdvertTexture() {
+      const size = 512;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+
+      const gradient = ctx.createRadialGradient(size / 2, size / 2, size * 0.1, size / 2, size / 2, size * 0.48);
+      gradient.addColorStop(0, "#123c63");
+      gradient.addColorStop(0.55, "#0a1d30");
+      gradient.addColorStop(1, "#02060f");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.save();
+      ctx.translate(size / 2, size / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillStyle = "rgba(255, 170, 58, 0.15)";
+      for (let i = 0; i < 6; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, size * 0.46, (i * Math.PI) / 3, ((i + 1) * Math.PI) / 3);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+
+      ctx.fillStyle = "rgba(255, 213, 128, 0.8)";
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size * 0.34, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#061629";
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size * 0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffb24b";
+      ctx.font = "bold 62px 'Segoe UI'";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("Tarmola", size / 2, size / 2 - 40);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 42px 'Segoe UI'";
+      ctx.fillText("Code Gagaren", size / 2, size / 2 + 18);
+
+      ctx.strokeStyle = "rgba(255, 170, 58, 0.8)";
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size * 0.33, 0, Math.PI * 2);
+      ctx.stroke();
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function createPuckTopTexture() {
+      const size = 256;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+
+      const outerGradient = ctx.createRadialGradient(size / 2, size / 2, size * 0.1, size / 2, size / 2, size * 0.5);
+      outerGradient.addColorStop(0, "#0d0d11");
+      outerGradient.addColorStop(1, "#030304");
+      ctx.fillStyle = outerGradient;
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size * 0.42, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.06)";
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size * 0.33, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 92px 'Segoe UI'";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("TCG", size / 2, size / 2);
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function resetPuck(centerToPlayer = false) {
+      puckDropping = true;
+      puck.position.set(0, dropHeight, centerToPlayer ? rinkHalfDepth * 0.25 : 0);
+      puckVelocity.set(0, 0, 0);
+    }
+
+    function flashLamp(color) {
+      clearTimeout(lampTimeout);
+      goalLampMaterial.emissive.setHex(color);
+      goalLampMaterial.emissiveIntensity = 1.35;
+      lampLight.color.setHex(color);
+      lampLight.intensity = 2.1;
+      lampIndicatorEl.classList.add("lit");
+      lampTimeout = setTimeout(() => {
+        goalLampMaterial.emissive.setHex(0x111118);
+        goalLampMaterial.emissiveIntensity = 0.4;
+        lampLight.intensity = 0;
+        lampIndicatorEl.classList.remove("lit");
+      }, 1200);
+    }
+
+    function registerGoal(type) {
+      if (type === "player") {
+        playerScore += 1;
+        playerScoreEl.textContent = `Maalit: ${playerScore}`;
+        announcementEl.textContent = "Verkko heiluu! Hyökkäys onnistui.";
+        flashLamp(0xff6a3f);
+      } else {
+        ownGoals += 1;
+        ownGoalsEl.textContent = `Omat: ${ownGoals}`;
+        announcementEl.textContent = "Hups! Kiekko lirui omaan maaliin.";
+        flashLamp(0x5eaaff);
+      }
+      resetPuck(type === "own");
+    }
+
+    function pickGoalieTarget(force = false) {
+      const puckOnDefensiveSide = puck.position.z < -rinkHalfDepth * 0.1;
+      if (!force && puckOnDefensiveSide && Math.random() < 0.55) {
+        goalieTarget.set(
+          clamp(puck.position.x, -goalWidth / 2 + malletRadius, goalWidth / 2 - malletRadius),
+          malletRestY,
+          clamp(puck.position.z + 1.2, goalieMinZ + 0.1, goalieMaxZ)
+        );
+      } else {
+        const randomX =
+          (Math.random() - 0.5) * (goalWidth - malletRadius * 1.4);
+        const randomZ = goalieMinZ + 0.6 + Math.random() * (goalieMaxZ - goalieMinZ - 0.6);
+        goalieTarget.set(randomX, malletRestY, randomZ);
+      }
+      goalieChangeTimer = 0.8 + Math.random() * 1.2;
+    }
+
+    pickGoalieTarget(true);
+    resetPuck();
+    playerMallet.position.set(0, malletRestY, rinkHalfDepth * 0.3);
+    goalieMallet.position.copy(goalieTarget);
+    chaserMallet.position.copy(chaserTarget);
+    clampMalletToBounds(playerMallet);
+    clampMalletToBounds(goalieMallet);
+    clampMalletToBounds(chaserMallet);
+    prevPlayerPos.copy(playerMallet.position);
+    prevGoaliePos.copy(goalieMallet.position);
+    prevChaserPos.copy(chaserMallet.position);
+
+    function handleMalletCollision(malletGroup, malletVelocity) {
+      const malletPos = malletGroup.position;
+      const dx = puck.position.x - malletPos.x;
+      const dz = puck.position.z - malletPos.z;
+      const distSq = dx * dx + dz * dz;
+      const minDist = puckRadius + malletRadius * 0.92;
+      if (distSq >= minDist * minDist) {
+        return;
+      }
+      const dist = Math.sqrt(distSq) || 0.0001;
+      const nx = dx / dist;
+      const nz = dz / dist;
+      const overlap = minDist - dist;
+      puck.position.x += nx * overlap;
+      puck.position.z += nz * overlap;
+
+      const malletSpeed = malletVelocity.length();
+      const impactSpeed = clamp(malletSpeed * 0.8 + 3, 2, 12);
+      puckVelocity.x = nx * impactSpeed;
+      puckVelocity.z = nz * impactSpeed;
+    }
+
+    function clampMalletToBounds(mallet) {
+      const bounds = mallet.userData?.bounds;
+      const minZ = bounds?.minZ ?? playerMinZ;
+      const maxZ = bounds?.maxZ ?? playerMaxZ;
+      mallet.position.x = clamp(mallet.position.x, -rinkHalfWidth + malletRadius, rinkHalfWidth - malletRadius);
+      mallet.position.z = clamp(mallet.position.z, minZ, maxZ);
+      mallet.position.y = malletRestY;
+    }
+
+    function resolveMalletOverlap(malletA, malletB, weightA = 0.5, weightB = 0.5) {
+      const totalWeight = weightA + weightB;
+      const aShare = totalWeight === 0 ? 0.5 : weightA / totalWeight;
+      const bShare = totalWeight === 0 ? 0.5 : weightB / totalWeight;
+      const dx = malletB.position.x - malletA.position.x;
+      const dz = malletB.position.z - malletA.position.z;
+      const distSq = dx * dx + dz * dz;
+      const minDist = malletRadius * 2 * 0.95;
+
+      if (distSq === 0) {
+        const angle = Math.random() * Math.PI * 2;
+        const offset = malletRadius * 0.15;
+        malletB.position.x += Math.cos(angle) * offset;
+        malletB.position.z += Math.sin(angle) * offset;
+        clampMalletToBounds(malletA);
+        clampMalletToBounds(malletB);
+        return;
+      }
+
+      if (distSq >= minDist * minDist) {
+        return;
+      }
+
+      const dist = Math.sqrt(distSq);
+      const overlap = minDist - dist;
+      const nx = dx / dist;
+      const nz = dz / dist;
+
+      malletA.position.x -= nx * overlap * aShare;
+      malletA.position.z -= nz * overlap * aShare;
+      malletB.position.x += nx * overlap * bShare;
+      malletB.position.z += nz * overlap * bShare;
+
+      clampMalletToBounds(malletA);
+      clampMalletToBounds(malletB);
+    }
+
+    function updateGoalie(delta) {
+      goalieChangeTimer -= delta;
+      if (goalieChangeTimer <= 0) {
+        pickGoalieTarget();
+      }
+      const lerpFactor = 1 - Math.exp(-3.4 * delta);
+      goalieMallet.position.lerp(goalieTarget, lerpFactor);
+      clampMalletToBounds(goalieMallet);
+    }
+
+    function updateChaser(delta) {
+      chaserDesired.set(
+        clamp(puck.position.x, -rinkHalfWidth + malletRadius, rinkHalfWidth - malletRadius),
+        malletRestY,
+        clamp(puck.position.z - 0.7, chaserMinZ, chaserMaxZ)
+      );
+      const anticipation = 1 - Math.exp(-1.6 * delta);
+      chaserTarget.lerp(chaserDesired, anticipation * 0.65);
+      const moveLerp = 1 - Math.exp(-7.5 * delta);
+      chaserMallet.position.lerp(chaserTarget, moveLerp);
+      clampMalletToBounds(chaserMallet);
+
+      const dz = puck.position.z - chaserMallet.position.z;
+      const dx = puck.position.x - chaserMallet.position.x;
+      const distance = Math.sqrt(dx * dx + dz * dz);
+      if (distance < malletRadius * 2.2 && puck.position.z > chaserMallet.position.z) {
+        const pushStrength = clamp((malletRadius * 2.2 - distance) * 12, 0, 10);
+        puckVelocity.z -= pushStrength * 0.6 * delta;
+        puckVelocity.x += dx * 0.4 * delta;
+      }
+    }
+
+    function updatePuck(delta) {
+      if (puckDropping) {
+        const fallSpeed = 3.4;
+        puck.position.y -= fallSpeed * delta;
+        if (puck.position.y <= puckRestY) {
+          puck.position.y = puckRestY;
+          puckDropping = false;
+        }
+        return;
+      }
+
+      puck.position.x += puckVelocity.x * delta;
+      puck.position.z += puckVelocity.z * delta;
+      puck.position.y = puckRestY;
+
+      const damping = Math.pow(0.998, delta * 60);
+      puckVelocity.x *= damping;
+      puckVelocity.z *= damping;
+
+      const limitX = rinkHalfWidth - puckRadius - wallThickness * 0.25;
+      if (puck.position.x <= -limitX) {
+        puck.position.x = -limitX;
+        puckVelocity.x = Math.abs(puckVelocity.x) * 0.92;
+      } else if (puck.position.x >= limitX) {
+        puck.position.x = limitX;
+        puckVelocity.x = -Math.abs(puckVelocity.x) * 0.92;
+      }
+
+      const goalZoneX = goalWidth / 2 - puckRadius * 0.75;
+      const wallLimitZ = rinkHalfDepth - puckRadius - wallThickness * 0.3;
+
+      if (puck.position.z >= wallLimitZ) {
+        if (Math.abs(puck.position.x) > goalZoneX) {
+          puck.position.z = wallLimitZ;
+          puckVelocity.z = -Math.abs(puckVelocity.z) * 0.93;
+        } else if (puck.position.z > rinkHalfDepth + goalDepth) {
+          registerGoal("own");
+        }
+      } else if (puck.position.z <= -wallLimitZ) {
+        if (Math.abs(puck.position.x) > goalZoneX) {
+          puck.position.z = -wallLimitZ;
+          puckVelocity.z = Math.abs(puckVelocity.z) * 0.93;
+        } else if (puck.position.z < -rinkHalfDepth - goalDepth) {
+          registerGoal("player");
+        }
+      }
+
+      const planarSpeed = Math.hypot(puckVelocity.x, puckVelocity.z);
+      puck.rotation.x = 0;
+      puck.rotation.z = 0;
+      puck.rotation.y = (puck.rotation.y + planarSpeed * delta * 1.6) % (Math.PI * 2);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.035);
+
+      const oldPlayerPos = prevPlayerPos.clone();
+      const oldGoaliePos = prevGoaliePos.clone();
+      const oldChaserPos = prevChaserPos.clone();
+
+      const playerLerp = 1 - Math.exp(-7.2 * delta);
+      playerMallet.position.lerp(playerTarget, playerLerp);
+      clampMalletToBounds(playerMallet);
+
+      updateGoalie(delta);
+      updateChaser(delta);
+      updatePuck(delta);
+
+      resolveMalletOverlap(playerMallet, goalieMallet, 0.5, 0.5);
+      resolveMalletOverlap(playerMallet, chaserMallet, 0.3, 0.7);
+      resolveMalletOverlap(goalieMallet, chaserMallet, 0.5, 0.5);
+
+      const playerVelocity2D = new THREE.Vector2(
+        (playerMallet.position.x - oldPlayerPos.x) / Math.max(delta, 0.016),
+        (playerMallet.position.z - oldPlayerPos.z) / Math.max(delta, 0.016)
+      );
+      const goalieVelocity2D = new THREE.Vector2(
+        (goalieMallet.position.x - oldGoaliePos.x) / Math.max(delta, 0.016),
+        (goalieMallet.position.z - oldGoaliePos.z) / Math.max(delta, 0.016)
+      );
+      const chaserVelocity2D = new THREE.Vector2(
+        (chaserMallet.position.x - oldChaserPos.x) / Math.max(delta, 0.016),
+        (chaserMallet.position.z - oldChaserPos.z) / Math.max(delta, 0.016)
+      );
+
+      handleMalletCollision(playerMallet, playerVelocity2D);
+      handleMalletCollision(goalieMallet, goalieVelocity2D);
+      handleMalletCollision(chaserMallet, chaserVelocity2D);
+
+      prevPlayerPos.copy(playerMallet.position);
+      prevGoaliePos.copy(goalieMallet.position);
+      prevChaserPos.copy(chaserMallet.position);
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

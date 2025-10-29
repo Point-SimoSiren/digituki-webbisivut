@@ -18,25 +18,90 @@
 		<meta name="twitter:title" content="Mini CRM Porvoon pienyrityksille | Tarmola Code Garage">
 		<meta name="twitter:description" content="Kokeile Porvoossa kehitettyä TCG-miniCRM:ää – asiakaskontaktit, kalenteri ja laskutus samassa paketissa.">
 	<style>
+		:root {
+			color-scheme: dark;
+			font-family: 'Segoe UI', Arial, sans-serif;
+		}
+		body {
+			margin: 0;
+			font-family: inherit;
+			background:
+				radial-gradient(circle at 18% -12%, rgba(88, 101, 242, 0.35), transparent 55%),
+				radial-gradient(circle at 78% 0%, rgba(32, 201, 151, 0.28), transparent 50%),
+				linear-gradient(135deg, #050b19 0%, #091632 55%, #041024 100%),
+				url('Laptop.png') no-repeat center center fixed;
+			background-size: cover;
+			min-height: 100vh;
+			color: #dbe6ff;
+		}
+		.overlay {
+			background: rgba(4, 9, 22, 0.86);
+			backdrop-filter: blur(6px);
+			min-height: 100vh;
+			padding: 0;
+		}
+		.container {
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 2.6rem 1.6rem 3.6rem;
+		}
+		nav {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 1rem;
+			margin: 1.6rem 0 2.1rem;
+		}
 		.nav-link-anim {
 			opacity: 0;
-			transform: translateY(40px) scale(1.2);
-			display: inline-block;
-			transition: opacity 0.7s, transform 0.7s;
+			transform: translateY(16px);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			transition:
+				opacity 0.28s ease-out,
+				transform 0.28s ease-out,
+				background 0.2s ease,
+				border-color 0.2s ease,
+				box-shadow 0.2s ease,
+				color 0.2s ease;
 		}
 		.nav-link-anim.visible {
 			opacity: 1;
-			transform: translateY(0) scale(1);
+			transform: translateY(0);
+		}
+		.nav-link-anim:not(.nav-link-portal) {
+			padding: 0.45rem 1.15rem;
+			border-radius: 999px;
+			text-decoration: none;
+			color: #d9e6ff;
+			background: rgba(18, 29, 62, 0.55);
+			border: 1px solid rgba(116, 148, 255, 0.3);
+			font-weight: 600;
+			letter-spacing: 0.04em;
+		}
+		.nav-link-anim:not(.nav-link-portal):hover,
+		.nav-link-anim:not(.nav-link-portal):focus-visible {
+			color: #ffffff;
+			background: rgba(78, 131, 255, 0.55);
+			border-color: rgba(160, 210, 255, 0.65);
+			box-shadow: 0 14px 32px rgba(52, 120, 255, 0.28);
+		}
+		.nav-link-active {
+			background: linear-gradient(140deg, rgba(94, 158, 255, 0.55), rgba(65, 198, 255, 0.46));
+			border-color: rgba(135, 210, 255, 0.75);
+			color: #ffffff;
+			box-shadow: 0 16px 36px rgba(58, 132, 255, 0.38);
 		}
 		.nav-link-portal {
-			padding: 0.35rem 1.2rem;
+			padding: 0.55rem 1.6rem;
 			border-radius: 999px;
 			background: linear-gradient(120deg, #5c17ff, #13b0ff 55%, #8dff8b);
-			color: #0b0618 !important;
+			color: #051022 !important;
 			text-transform: uppercase;
 			letter-spacing: 0.08em;
 			font-weight: 700;
-			box-shadow: 0 0 18px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.3);
+			box-shadow: 0 0 25px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.3);
 			border: 2px solid rgba(19, 176, 255, 0.3);
 			position: relative;
 			overflow: hidden;
@@ -54,58 +119,47 @@
 			pointer-events: none;
 		}
 		.nav-link-portal:hover::after,
-		.nav-link-portal:focus::after {
+		.nav-link-portal:focus-visible::after {
 			transform: rotate(35deg) translateY(-40%);
-		}
-		.logo-anim {
-			display: inline-block;
-			transform: scale(3.5) translateY(160px);
-			opacity: 0;
-			transition: transform 1.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s;
-		}
-		.logo-anim.visible {
-			transform: scale(1) translateY(0);
-			opacity: 1;
-		}
-		.word-anim {
-			display: inline-block;
-			opacity: 0;
-			transform: scale(2.7) translateY(80px);
-			transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s;
-		}
-		.word-anim.visible {
-			opacity: 1;
-			transform: scale(1) translateY(0);
-		}
-		body {
-			margin: 0;
-			font-family: 'Segoe UI', Arial, sans-serif;
-			background: url('Laptop.png') no-repeat center center fixed;
-			background-size: cover;
-			min-height: 100vh;
-			color: #222;
-		}
-		.overlay {
-			background: rgba(255,255,255,0.65);
-			min-height: 100vh;
-			padding: 0;
-		}
-		.container {
-			max-width: 800px;
-			margin: 0 auto;
-			padding: 2rem 1rem 3rem 1rem;
 		}
 		h1 {
 			text-align: center;
-			margin-top: 2rem;
-			color: #2a4d69;
+			margin-top: 2.2rem;
+			color: #f4f8ff;
+			letter-spacing: 0.05em;
+			text-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
 		}
-			.video-embed {
+		.page-logo {
+			height: 2.5em;
+			vertical-align: middle;
+			margin-right: 0.5em;
+			filter: drop-shadow(0 10px 30px rgba(52, 142, 255, 0.45));
+		}
+		h2, h3 {
+			color: #9ec4ff;
+			letter-spacing: 0.03em;
+		}
+		p, li {
+			color: rgba(218, 231, 255, 0.88);
+			line-height: 1.68;
+		}
+		.card {
+			background: rgba(12, 19, 38, 0.84);
+			border-radius: 18px;
+			border: 1px solid rgba(117, 155, 255, 0.28);
+			box-shadow: 0 22px 55px rgba(3, 10, 26, 0.6);
+			padding: 1.75rem;
+			margin-bottom: 2rem;
+		}
+		.video-embed {
 			position: relative;
 			padding-bottom: 56.25%;
 			height: 0;
 			overflow: hidden;
 			margin-bottom: 2rem;
+			border-radius: 16px;
+			box-shadow: 0 18px 45px rgba(3, 10, 26, 0.55);
+			border: 1px solid rgba(117, 155, 255, 0.28);
 		}
 		.video-embed iframe {
 			position: absolute;
@@ -114,16 +168,24 @@
 			width: 100%;
 			height: 100%;
 			border: 0;
+			border-radius: 16px;
 		}
-		.card {
-			background: rgba(255,255,255,0.85);
-			border-radius: 12px;
-			box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-			padding: 1.5rem;
-			margin-bottom: 2rem;
+		a {
+			color: #8dd6ff;
+			text-decoration: none;
+			transition: color 0.2s ease;
+		}
+		a:hover,
+		a:focus-visible {
+			color: #c7f1ff;
 		}
 		@media (max-width: 700px) {
-			.container { max-width: 98vw; }
+			.container {
+				padding: 2.1rem 1.2rem 3.1rem;
+			}
+			nav {
+				gap: 0.75rem;
+			}
 		}
 	</style>
 	<script type="application/ld+json">
@@ -150,18 +212,16 @@
 <body>
 	<div class="overlay">
 		   <div class="container">
-			   <nav style="text-align:center; margin-top:1.5rem; margin-bottom:1.5rem;">
-        <a href="index.html" class="nav-link-anim" id="nav-link-1" style="margin:0 1rem; color:#2a4d69; text-decoration:underline; font-weight:bold;">Etusivu</a>
-        <a href="esittely.html" class="nav-link-anim" id="nav-link-2" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Esittely</a>
-        <a href="crmsivu.html" class="nav-link-anim" id="nav-link-3" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">UUTTA! Mini CRM sovellus</a>
-        <a href="videot.html" class="nav-link-anim" id="nav-link-4" style="margin:0 1rem; color:#2a4d69; text-decoration:underline;">Linux esittely</a>
-        <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5" style="margin:0 1rem;">Web-pelit</a>
+			   <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="crmsivu.html" class="nav-link-anim nav-link-active" id="nav-link-3" aria-current="page">UUTTA! Mini CRM sovellus</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5">Web-pelit</a>
       </nav>
 			   <h1>
-				   <img src="TuxiC.png" alt="Logo" class="logo-anim" id="tux-logo" style="height:2.5em; vertical-align:middle; margin-right:0.5em;">
-				  <span class="word-anim" id="word-linux">Tarmola</span>
-					   <span class="word-anim" id="word-service">Code</span>
-					   <span class="word-anim" id="word-porvoo">Garage</span>
+				   <img src="TuxiC.png" alt="Tarmola Code Garage -logo" class="page-logo">
+				   Tarmola Code Garage
 			   </h1>
 			   <h2>TCG-miniCRM -sovellus</h2>
 			<div class="card">
@@ -191,29 +251,11 @@
 		</div>
 	</div>
 <script>
-// Navigointilinkit animaatio
-const links = Array.from(document.querySelectorAll('.nav-link-anim'));
-setTimeout(() => {
-  links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 150));
-}, 2000);
-
-window.addEventListener('DOMContentLoaded', function() {
-	var logo = document.getElementById('tux-logo');
-	var word1 = document.getElementById('word-linux');
-	var word2 = document.getElementById('word-service');
-	var word3 = document.getElementById('word-porvoo');
-	setTimeout(function() {
-		logo.classList.add('visible');
-		setTimeout(function() {
-			word1.classList.add('visible');
-			setTimeout(function() {
-				word3.classList.add('visible');
-				setTimeout(function() {
-					word2.classList.add('visible');
-				}, 400);
-			}, 400);
-		}, 500);
-	}, 90);
+document.addEventListener('DOMContentLoaded', () => {
+	const links = Array.from(document.querySelectorAll('.nav-link-anim'));
+	setTimeout(() => {
+		links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
+	}, 480);
 });
 </script>
 </body>
