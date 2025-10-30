@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Air Hockey 3D | Yhdisys R.Y.</title>
+  <title>Air Hockey 3D | Tarmola Code Garage</title>
   <style>
     :root {
       color-scheme: dark;
@@ -73,6 +73,7 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
+      max-height: 620px;
       border-radius: 16px;
       background: radial-gradient(circle at 50% 35%, rgba(14, 46, 89, 0.8), rgba(4, 9, 19, 0.92));
       box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55);
@@ -97,6 +98,7 @@
       background: rgba(10, 18, 36, 0.72);
       border: 1px solid rgba(138, 190, 255, 0.32);
       box-shadow: 0 10px 30px rgba(6, 12, 26, 0.65);
+      backdrop-filter: blur(14px);
     }
     #hud span {
       text-transform: uppercase;
@@ -139,20 +141,49 @@
     }
     @media (max-width: 640px) {
       body {
-        gap: 1.5rem;
-        padding: 1.5rem 1rem 3rem;
+        gap: 1.25rem;
+        padding: 1.3rem 0.9rem 2.6rem;
       }
       a.back-link {
         top: 16px;
         left: 16px;
+        padding: 0.5rem 0.95rem;
+        font-size: 0.78rem;
+      }
+      header {
+        max-width: 520px;
+        gap: 0.6rem;
+      }
+      header h1 {
+        font-size: clamp(1.7rem, 6vw, 2.3rem);
+      }
+      header p {
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      #gameWrapper {
+        width: 100%;
+        gap: 0.95rem;
       }
       #hud {
-        flex-direction: column;
-        border-radius: 16px;
-        padding: 0.8rem 1rem;
+        flex-direction: row;
+        border-radius: 18px;
+        padding: 0.75rem 1.1rem;
+        gap: 0.65rem;
+        width: min(94vw, 400px);
+        justify-content: space-between;
+      }
+      #hud span {
+        font-size: 1.02rem;
+        letter-spacing: 0.035em;
       }
       #threeContainer {
-        border-radius: 12px;
+        border-radius: 14px;
+        aspect-ratio: 3 / 4;
+        max-height: 78vh;
+      }
+      #announcement {
+        font-size: 0.95rem;
       }
     }
   </style>
@@ -162,24 +193,18 @@
   <header>
     <h1>Tarmola Air Hockey 3D</h1>
     <p>
-      Upota kiekko vastustajan maaliin yläviistosta katsottuna jääareenassa. Ohjaa mailaa hiirellä
-      tai kosketuksella, väistä satunnaisesti liikehtivää maalivahtia ja pidä oma maali puhtaana.
+      Ohjaa sinistä pelaajaa hiirellä tai kosketuksella.
     </p>
   </header>
   <main id="gameWrapper">
     <div id="hud">
-      <span id="playerScore">Maalit: 0</span>
-      <span id="ownGoals">Omat: 0</span>
-      <span>Maalivalo</span>
+      <span id="playerScore">Tarmola: 0</span>
+      <span id="ownGoals">Vieras: 0</span>
       <span id="lampIndicator" aria-hidden="true"></span>
     </div>
     <div id="announcement" role="status" aria-live="polite"></div>
     <div id="threeContainer"></div>
-    <p id="tips">
-      Hiirellä tai sormella liikutat pyöreää mailaa missä tahansa kentällä.
-      Kiekko kimpoaa laidoista – tarkkaile sen vauhtia ja <strong>älä päästä sitä omaan maaliin</strong>.
-      Jokaisen maalin jälkeen uusi kiekko tipahtaa jäälle Tarmola Code Gagaren mainoksen yläpuolelta.
-    </p>
+   
   </main>
   <script type="module">
     import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
@@ -200,14 +225,37 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
+    const desktopCameraTarget = new THREE.Vector3(0, 0, 2);
+    const mobileCameraTarget = new THREE.Vector3(0, 0, 0.6);
     const camera = new THREE.PerspectiveCamera(
       42,
       container.clientWidth / container.clientHeight,
       0.1,
       120
     );
-    camera.position.set(0, 16.5, 18.5);
-    camera.lookAt(new THREE.Vector3(0, 0, 2));
+
+    function isMobileViewport() {
+      return (
+        window.innerWidth <= 768 ||
+        window.innerHeight <= 600 ||
+        container.clientWidth <= 700
+      );
+    }
+
+    function configureCameraForViewport() {
+      const mobileViewport = isMobileViewport();
+      if (mobileViewport) {
+        camera.fov = 34;
+        camera.position.set(0, 21.2, 16.2);
+        camera.lookAt(mobileCameraTarget);
+      } else {
+        camera.fov = 42;
+        camera.position.set(0, 16.5, 18.5);
+        camera.lookAt(desktopCameraTarget);
+      }
+      camera.updateProjectionMatrix();
+    }
+    configureCameraForViewport();
 
     const ambient = new THREE.HemisphereLight(0xcde8ff, 0x0e172a, 0.85);
     scene.add(ambient);
@@ -232,8 +280,8 @@
     const goalDepth = 1.4;
     const malletRadius = 0.6;
     const malletHeight = 0.4;
-    const puckRadius = 0.35;
-    const puckHeight = 0.28;
+    const puckRadius = 0.45;
+    const puckHeight = 0.30;
     const puckRestY = puckHeight / 2;
     const malletRestY = malletHeight / 2 + 0.02;
     const dropHeight = 4.2;
@@ -246,13 +294,13 @@
 
     const iceGeometry = new THREE.PlaneGeometry(rinkWidth + 0.4, rinkDepth + 0.4);
     const iceMaterial = new THREE.MeshPhongMaterial({
-      color: 0x9dd9ff,
-      emissive: 0x052436,
-      emissiveIntensity: 0.35,
-      specular: 0x86e2ff,
-      shininess: 80,
+      color: 0x4f7ec4,
+      emissive: 0x061a30,
+      emissiveIntensity: 0.48,
+      specular: 0x9fd5ff,
+      shininess: 90,
       transparent: true,
-      opacity: 0.86,
+      opacity: 0.92,
     });
     const ice = new THREE.Mesh(iceGeometry, iceMaterial);
     ice.rotation.x = -Math.PI / 2;
@@ -367,17 +415,17 @@
     puckTopTexture.anisotropy = renderer.capabilities.getMaxAnisotropy?.() ?? 8;
 
     const puckSideMaterial = new THREE.MeshStandardMaterial({
-      color: 0x111111,
-      metalness: 0.4,
-      roughness: 0.3,
-      emissive: 0x060606,
-      emissiveIntensity: 0.35,
+      color: 0x050505,
+      metalness: 0.28,
+      roughness: 0.42,
+      emissive: 0x000000,
+      emissiveIntensity: 0.0,
     });
     const puckTopMaterial = new THREE.MeshStandardMaterial({
       map: puckTopTexture,
       color: 0xffffff,
-      metalness: 0.25,
-      roughness: 0.42,
+      metalness: 0.18,
+      roughness: 0.38,
     });
     const puckGeometry = new THREE.CylinderGeometry(puckRadius, puckRadius, puckHeight, 48);
     const puck = new THREE.Mesh(puckGeometry, [puckSideMaterial, puckTopMaterial, puckTopMaterial]);
@@ -386,25 +434,25 @@
     scene.add(puck);
 
     const playerMaterial = new THREE.MeshStandardMaterial({
-      color: 0x4dd0ff,
-      metalness: 0.15,
-      roughness: 0.42,
-      emissive: 0x10384a,
-      emissiveIntensity: 0.5,
+      color: 0x58f1ff,
+      metalness: 0.2,
+      roughness: 0.38,
+      emissive: 0x0f4860,
+      emissiveIntensity: 0.72,
     });
     const goalieMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffdf6f,
-      metalness: 0.18,
-      roughness: 0.55,
-      emissive: 0x332408,
-      emissiveIntensity: 0.55,
+      color: 0xffd86a,
+      metalness: 0.22,
+      roughness: 0.5,
+      emissive: 0x4b2904,
+      emissiveIntensity: 0.65,
     });
     const chaserMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffc04d,
-      metalness: 0.2,
-      roughness: 0.48,
-      emissive: 0x402602,
-      emissiveIntensity: 0.55,
+      color: 0xff8456,
+      metalness: 0.24,
+      roughness: 0.44,
+      emissive: 0x481502,
+      emissiveIntensity: 0.6,
     });
 
     function createMallet(material) {
@@ -448,9 +496,9 @@
     const goalLampMaterial = new THREE.MeshPhongMaterial({
       color: 0x14161b,
       emissive: 0x111118,
-      emissiveIntensity: 0.4,
+      emissiveIntensity: 1,
     });
-    const goalLamp = new THREE.Mesh(new THREE.SphereGeometry(0.4, 24, 24), goalLampMaterial);
+    const goalLamp = new THREE.Mesh(new THREE.SphereGeometry(0.5, 24, 24), goalLampMaterial);
     goalLamp.position.set(0, 2.4, -rinkHalfDepth - 0.3);
     goalLamp.castShadow = true;
     scene.add(goalLamp);
@@ -463,9 +511,42 @@
     lampStand.castShadow = true;
     scene.add(lampStand);
 
-    const lampLight = new THREE.PointLight(0xff623c, 0, 14, 2.2);
-    lampLight.position.copy(goalLamp.position).add(new THREE.Vector3(0, 0.1, 0));
+    const lampLight = new THREE.PointLight(0xff623c, 0, 20, 2.9);
+    const lampLightTopPosition = goalLamp.position.clone().add(new THREE.Vector3(0, 0.1, 0));
+    lampLight.position.copy(lampLightTopPosition);
     scene.add(lampLight);
+    const goalLampFill = new THREE.PointLight(0xff3c26, 0, 14, 2.2);
+    goalLampFill.position.set(0, lampLightTopPosition.y, rinkHalfDepth + 0.35);
+    scene.add(goalLampFill);
+
+    const goalGlowTextureTop = createGoalGlowTexture(false);
+    const goalGlowTextureBottom = createGoalGlowTexture(true);
+    const goalGlowMaterialTop = new THREE.MeshBasicMaterial({
+      map: goalGlowTextureTop,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const goalGlowMaterialBottom = new THREE.MeshBasicMaterial({
+      map: goalGlowTextureBottom,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const glowWidth = rinkWidth + 2;
+    const glowDepth = rinkHalfDepth + goalDepth + 0.2;
+    const goalGlowTop = new THREE.Mesh(new THREE.PlaneGeometry(glowWidth, glowDepth), goalGlowMaterialTop);
+    goalGlowTop.rotation.x = -Math.PI / 2;
+    goalGlowTop.position.set(0, 0.018, -(rinkHalfDepth + goalDepth) / 2);
+    goalGlowTop.renderOrder = 2;
+    scene.add(goalGlowTop);
+    const goalGlowBottom = new THREE.Mesh(new THREE.PlaneGeometry(glowWidth, glowDepth), goalGlowMaterialBottom);
+    goalGlowBottom.rotation.x = -Math.PI / 2;
+    goalGlowBottom.position.set(0, 0.018, (rinkHalfDepth + goalDepth) / 2);
+    goalGlowBottom.renderOrder = 2;
+    scene.add(goalGlowBottom);
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
@@ -522,7 +603,7 @@
       const height = container.clientHeight;
       renderer.setSize(width, height);
       camera.aspect = width / height;
-      camera.updateProjectionMatrix();
+      configureCameraForViewport();
     });
 
     const puckVelocity = new THREE.Vector3();
@@ -538,7 +619,7 @@
     let puckDropping = false;
 
     function createAdvertTexture() {
-      const size = 512;
+      const size = 490;
       const canvas = document.createElement("canvas");
       canvas.width = size;
       canvas.height = size;
@@ -574,7 +655,7 @@
       ctx.arc(size / 2, size / 2, size * 0.3, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = "#ffb24b";
+      ctx.fillStyle = "#ffffff";
       ctx.font = "bold 62px 'Segoe UI'";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -582,7 +663,7 @@
 
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 42px 'Segoe UI'";
-      ctx.fillText("Code Gagaren", size / 2, size / 2 + 18);
+      ctx.fillText("Code Garage", size / 2, size / 2 + 18);
 
       ctx.strokeStyle = "rgba(255, 170, 58, 0.8)";
       ctx.lineWidth = 6;
@@ -593,6 +674,53 @@
       return new THREE.CanvasTexture(canvas);
     }
 
+    function createGoalGlowTexture(flip = false) {
+      const size = 512;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+
+      const gradient = ctx.createLinearGradient(0, flip ? size : 0, 0, flip ? 0 : size);
+      gradient.addColorStop(0, "rgba(255, 60, 38, 0.95)");
+      gradient.addColorStop(0.3, "rgba(255, 60, 38, 0.72)");
+      gradient.addColorStop(0.65, "rgba(255, 60, 38, 0.28)");
+      gradient.addColorStop(1, "rgba(255, 60, 38, 0)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.globalCompositeOperation = "destination-in";
+      const edgeGradient = ctx.createLinearGradient(0, 0, size, 0);
+      edgeGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
+      edgeGradient.addColorStop(0.14, "rgba(255, 255, 255, 1)");
+      edgeGradient.addColorStop(0.86, "rgba(255, 255, 255, 1)");
+      edgeGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = edgeGradient;
+      ctx.fillRect(0, 0, size, size);
+
+      const softSpot = ctx.createRadialGradient(
+        size / 2,
+        flip ? size * 0.18 : size * 0.82,
+        size * 0.18,
+        size / 2,
+        flip ? size * 0.18 : size * 0.82,
+        size * 0.55
+      );
+      softSpot.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+      softSpot.addColorStop(0.55, "rgba(255, 255, 255, 0.28)");
+      softSpot.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = softSpot;
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.globalCompositeOperation = "source-over";
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy?.() ?? 8;
+      return texture;
+    }
+
     function createPuckTopTexture() {
       const size = 256;
       const canvas = document.createElement("canvas");
@@ -600,27 +728,40 @@
       canvas.height = size;
       const ctx = canvas.getContext("2d");
 
-      const outerGradient = ctx.createRadialGradient(size / 2, size / 2, size * 0.1, size / 2, size / 2, size * 0.5);
-      outerGradient.addColorStop(0, "#0d0d11");
-      outerGradient.addColorStop(1, "#030304");
+      const outerGradient = ctx.createRadialGradient(size / 2, size / 2, size * 0.12, size / 2, size / 2, size * 0.5);
+      outerGradient.addColorStop(0, "#2a2a30");
+      outerGradient.addColorStop(0.55, "#111116");
+      outerGradient.addColorStop(1, "#020203");
       ctx.fillStyle = outerGradient;
       ctx.fillRect(0, 0, size, size);
 
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
-      ctx.lineWidth = 6;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.38)";
+      ctx.lineWidth = 7;
       ctx.beginPath();
       ctx.arc(size / 2, size / 2, size * 0.42, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = "rgba(255, 255, 255, 0.06)";
+      const sheenGradient = ctx.createRadialGradient(
+        size * 0.36,
+        size * 0.34,
+        size * 0.02,
+        size * 0.36,
+        size * 0.34,
+        size * 0.26
+      );
+      sheenGradient.addColorStop(0, "rgba(255, 255, 255, 0.42)");
+      sheenGradient.addColorStop(1, "rgba(255, 255, 255, 0.02)");
+      ctx.fillStyle = sheenGradient;
       ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size * 0.33, 0, Math.PI * 2);
+      ctx.arc(size / 2, size / 2, size * 0.3, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 92px 'Segoe UI'";
+      ctx.font = "bold 90px 'Segoe UI'";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
+      ctx.shadowColor = "rgba(0, 0, 0, 0.55)";
+      ctx.shadowBlur = 6;
       ctx.fillText("TCG", size / 2, size / 2);
 
       return new THREE.CanvasTexture(canvas);
@@ -636,32 +777,39 @@
       puckVelocity.set(0, 0, 0);
     }
 
-    function flashLamp(color) {
+    function flashLamp(color, zone = "top") {
       clearTimeout(lampTimeout);
       goalLampMaterial.emissive.setHex(color);
       goalLampMaterial.emissiveIntensity = 1.35;
       lampLight.color.setHex(color);
-      lampLight.intensity = 2.1;
+      lampLight.intensity = 3.4;
+      goalLampFill.color.setHex(color);
+      goalLampFill.intensity = zone === "bottom" ? 2.4 : 0;
+      goalGlowMaterialTop.opacity = zone === "top" ? 1 : 0.25;
+      goalGlowMaterialBottom.opacity = zone === "bottom" ? 1 : 0.2;
       lampIndicatorEl.classList.add("lit");
       lampTimeout = setTimeout(() => {
         goalLampMaterial.emissive.setHex(0x111118);
         goalLampMaterial.emissiveIntensity = 0.4;
         lampLight.intensity = 0;
+        goalLampFill.intensity = 0;
+        goalGlowMaterialTop.opacity = 0;
+        goalGlowMaterialBottom.opacity = 0;
         lampIndicatorEl.classList.remove("lit");
-      }, 1200);
+      }, 3000);
     }
 
     function registerGoal(type) {
       if (type === "player") {
         playerScore += 1;
         playerScoreEl.textContent = `Maalit: ${playerScore}`;
-        announcementEl.textContent = "Verkko heiluu! Hyökkäys onnistui.";
-        flashLamp(0xff6a3f);
+        announcementEl.textContent = "Verkko heiluu! Garage tiimi tekee maalin.";
+        flashLamp(0xff6a3f, "top");
       } else {
         ownGoals += 1;
         ownGoalsEl.textContent = `Omat: ${ownGoals}`;
         announcementEl.textContent = "Hups! Kiekko lirui omaan maaliin.";
-        flashLamp(0x5eaaff);
+        flashLamp(0xff6a3f, "bottom");
       }
       resetPuck(type === "own");
     }
@@ -797,7 +945,7 @@
 
     function updatePuck(delta) {
       if (puckDropping) {
-        const fallSpeed = 3.4;
+        const fallSpeed = 2.0;
         puck.position.y -= fallSpeed * delta;
         if (puck.position.y <= puckRestY) {
           puck.position.y = puckRestY;
