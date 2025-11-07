@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raamattuvisa | Tarmola Code Garage</title>
+  <meta name="description" content="Raamattuvisa on kauniisti kuvitettu 20 kysymyksen tietovisa, jossa testaat tuntemuksesi Raamatun tapahtumista, henkilöistä ja kirjoista.">
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --deep-dusk: #040c1a;
+      --sunlit-gold: #f3c87c;
+      --linen: #fff7e8;
+      --teal-mist: #8ed0c1;
+      --sea-blue: #082437;
+      --rose: #f0a7a0;
+      --card-bg: rgba(6, 16, 28, 0.78);
+      --border: rgba(255, 238, 208, 0.32);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(1.8rem, 4vw, 3rem) clamp(0.8rem, 3vw, 2rem) clamp(3rem, 6vw, 4.5rem);
+      display: flex;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(243, 200, 124, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 0%, rgba(240, 167, 160, 0.25), transparent 45%),
+        linear-gradient(160deg, #020712, #041427 55%, #030910);
+      color: var(--linen);
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 60% 5%, rgba(255, 231, 176, 0.4), transparent 50%),
+                  radial-gradient(circle at 20% -5%, rgba(255, 153, 108, 0.25), transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(180deg, rgba(2, 9, 16, 0.2), rgba(2, 9, 16, 0.65)),
+        url('JeesusVene.png');
+      background-repeat: no-repeat;
+      background-size: clamp(320px, 45vw, 760px) auto;
+      background-position: center -5%;
+      opacity: 0.65;
+      pointer-events: none;
+      z-index: 0;
+      filter: drop-shadow(0 25px 70px rgba(12, 12, 18, 0.8));
+    }
+    a.back-link {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 2;
+      padding: 0.55rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 209, 160, 0.7);
+      background: rgba(5, 8, 18, 0.85);
+      color: var(--linen);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+    a.back-link:hover,
+    a.back-link:focus-visible {
+      background: rgba(255, 209, 160, 0.2);
+      border-color: rgba(255, 255, 255, 0.65);
+      transform: translateY(-2px);
+    }
+    main {
+      width: min(920px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      position: relative;
+      z-index: 1;
+    }
+    header.hero {
+      text-align: center;
+      padding: 1.5rem 1rem 0.3rem;
+    }
+    .hero .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      font-size: 0.78rem;
+      color: var(--teal-mist);
+      margin-bottom: 0.75rem;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.3rem, 6vw, 3.5rem);
+      color: var(--linen);
+      text-shadow: 0 12px 50px rgba(0, 0, 0, 0.45);
+    }
+    .hero p {
+      max-width: 660px;
+      margin: 1rem auto 0;
+      line-height: 1.65;
+      color: rgba(255, 249, 240, 0.92);
+    }
+    .score-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1.1rem;
+      padding: clamp(1rem, 3vw, 1.4rem);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(5, 14, 26, 0.65);
+      box-shadow: 0 20px 55px rgba(1, 3, 8, 0.65);
+      backdrop-filter: blur(10px);
+    }
+    .score-strip div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.03em;
+      color: rgba(255, 249, 236, 0.85);
+      text-transform: uppercase;
+    }
+    .score-strip strong {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--sunlit-gold);
+      letter-spacing: 0.03em;
+    }
+    .quiz-card,
+    .result-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: clamp(1.4rem, 4.5vw, 2.4rem);
+      box-shadow: 0 25px 70px rgba(2, 4, 12, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-card::before {
+      content: "";
+      position: absolute;
+      inset: -40% auto auto -20%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(255, 209, 160, 0.25), transparent 65%);
+      pointer-events: none;
+    }
+    .quiz-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .card-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      color: rgba(255, 249, 240, 0.85);
+    }
+    .chip {
+      padding: 0.3rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(240, 167, 160, 0.65);
+      color: var(--rose);
+      background: rgba(240, 167, 160, 0.15);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+    }
+    #questionText {
+      margin: 1.4rem 0 1.2rem;
+      font-size: clamp(1.4rem, 3.6vw, 2.1rem);
+      font-weight: 600;
+      color: var(--linen);
+    }
+    .options {
+      display: grid;
+      gap: 0.9rem;
+    }
+    .option-btn {
+      width: 100%;
+      padding: 0.9rem 1.1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 238, 208, 0.3);
+      background: rgba(7, 19, 32, 0.72);
+      color: var(--linen);
+      text-align: left;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: transform 0.2s ease, border 0.2s ease, background 0.2s ease;
+    }
+    .option-btn:hover,
+    .option-btn:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.65);
+      background: rgba(11, 26, 42, 0.95);
+    }
+    .option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+    .option-btn.is-correct {
+      border-color: rgba(142, 208, 193, 0.95);
+      background: rgba(24, 94, 85, 0.85);
+    }
+    .option-btn.is-wrong {
+      border-color: rgba(255, 134, 134, 0.9);
+      background: rgba(97, 25, 25, 0.75);
+    }
+    .feedback {
+      min-height: 2.8rem;
+      margin: 1rem 0 1.2rem;
+      font-size: 1rem;
+      color: rgba(255, 249, 243, 0.9);
+    }
+    button.primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: linear-gradient(120deg, #ffdfb2, #f5b49d 55%, #8ed0c1);
+      color: #1e0d0a;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    button.primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    button.primary:not(:disabled):hover,
+    button.primary:not(:disabled):focus-visible {
+      transform: translateY(-1px);
+    }
+    .ghost-button {
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(7, 19, 32, 0.55);
+      color: var(--linen);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .ghost-button:hover,
+    .ghost-button:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.65);
+      background: rgba(12, 26, 44, 0.85);
+    }
+    .ghost-button.bottom {
+      align-self: center;
+      margin-top: 0.9rem;
+    }
+    .result-panel.hidden {
+      display: none;
+    }
+    .result-panel h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 2.6rem);
+    }
+    .result-panel p {
+      line-height: 1.7;
+      color: rgba(255, 249, 243, 0.9);
+    }
+    .record-note {
+      margin: 0.8rem 0 1.2rem;
+      font-size: 0.95rem;
+      color: rgba(255, 224, 184, 0.9);
+    }
+    .page-footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 240, 224, 0.6);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 1.2rem;
+    }
+    @media (max-width: 640px) {
+      body {
+        padding-top: 4.5rem;
+      }
+      a.back-link {
+        position: absolute;
+      }
+      .quiz-card,
+      .result-panel {
+        padding: 1.2rem;
+        border-radius: 22px;
+      }
+      .card-top-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .score-strip strong {
+        font-size: 1.6rem;
+      }
+      button.primary {
+        width: 100%;
+      }
+      .options {
+        gap: 0.7rem;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="pelit.html">Takaisin peleihin</a>
+  <main>
+    <header class="hero">
+      <p class="eyebrow">TCG Raamattuvisa</p>
+      <h1>Raamattu tietovisa</h1>
+      <p>
+        Testaa kirjaimellista Raamattu-tietouttasi.
+        Kysymykset poimitaan vanhan ja uuden testamentin tapahtumista, henkilöistä ja kirjoista, ja jokainen
+        vastaus tuo esiin faktan suoraan tekstistä.
+      </p>
+    </header>
+
+    <section class="score-strip" aria-live="polite">
+      <div>
+        <span>Pisteet</span>
+        <strong id="currentScore">0</strong>
+      </div>
+      <div>
+        <span>Ennätys tällä laitteella</span>
+        <strong id="bestScore">0</strong>
+      </div>
+      <div>
+        <span>Kysymyksiä per kierros</span>
+        <strong id="questionTotal">20</strong>
+      </div>
+    </section>
+
+    <section class="quiz-card" aria-live="polite">
+      <div class="card-top-row">
+        <p id="progressLabel">Kysymys 1 / 20</p>
+        <span class="chip">Kirjaimellista sisältöä</span>
+      </div>
+      <h2 id="questionText">Ladataan kysymyksiä...</h2>
+      <div class="options" id="optionsContainer">
+        <p>Valmistelemme Raamatun tapahtumia...</p>
+      </div>
+      <p class="feedback" id="feedback">Valitse mielestäsi oikea vastaus.</p>
+      <button class="primary" id="nextButton" type="button" disabled>Seuraava kysymys</button>
+      <button class="ghost-button bottom" type="button" data-clear-best>Tyhjennä ennätys</button>
+    </section>
+
+    <section class="result-panel hidden" aria-live="polite" aria-hidden="true">
+      <h2>Valmis kierros!</h2>
+      <p id="resultSummary">Sait 0 / 0 pistettä.</p>
+      <p class="record-note" id="recordNote"></p>
+      <div class="result-actions">
+        <button class="primary" id="restartButton" type="button">Pelaa uudestaan</button>
+        <button class="ghost-button" type="button" data-clear-best>Tyhjennä ennätys</button>
+      </div>
+    </section>
+
+    <p class="page-footer">
+      Inspiroitu Luuk. 5:stä, jossa Jeesus opetti väkijoukkoja veneestä Galilean järvellä.
+    </p>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const progressLabel = document.getElementById('progressLabel');
+      const questionText = document.getElementById('questionText');
+      const optionsContainer = document.getElementById('optionsContainer');
+      const feedback = document.getElementById('feedback');
+      const nextButton = document.getElementById('nextButton');
+      const restartButton = document.getElementById('restartButton');
+      const resultPanel = document.querySelector('.result-panel');
+      const quizCard = document.querySelector('.quiz-card');
+      const resultSummary = document.getElementById('resultSummary');
+      const recordNote = document.getElementById('recordNote');
+      const currentScoreEl = document.getElementById('currentScore');
+      const bestScoreEl = document.getElementById('bestScore');
+      const questionTotalEl = document.getElementById('questionTotal');
+      const clearButtons = document.querySelectorAll('[data-clear-best]');
+
+      const questionBank = [
+        {
+          question: 'Missä Raamatun kirjassa kerrotaan maailman luomisesta kuudessa päivässä?',
+          options: ['Ensimmäisessä Mooseksen kirjassa', 'Toisessa Mooseksen kirjassa', 'Psalmeissa', 'Johanneksen evankeliumissa'],
+          answer: 0,
+          fact: 'Ensimmäinen Mooseksen kirja (luvut 1–2) kuvaa luomistapahtuman kuuteen päivään ja seitsemännen päivän lepoon.'
+        },
+        {
+          question: 'Mille vuorelle Nooan arkki pysähtyi vedenpaisumuksen jälkeen?',
+          options: ['Araratvuorelle', 'Siinainvuorelle', 'Karmelille', 'Hermonille'],
+          answer: 0,
+          fact: '1. Mooseksen kirja 8:4 kertoo arkin pysähtyneen Araratin vuorten seudulle veden laskiessa.'
+        },
+        {
+          question: 'Mikä oli Abrahamin alkuperäinen nimi ennen nimenmuutosta?',
+          options: ['Abram', 'Absalom', 'Amram', 'Jair'],
+          answer: 0,
+          fact: '1. Mooseksen kirja 17:5: Jumala muutti Abramin nimen Abrahamiksi liiton merkiksi.'
+        },
+        {
+          question: 'Kuinka monta vitsausta kohtasi Egyptiä ennen kuin farao päästi israelilaiset lähtemään?',
+          options: ['7', '9', '10', '12'],
+          answer: 2,
+          fact: '2. Mooseksen kirja 7–12 kuvaa kymmenen vitsausta, jotka taivuttivat faraon.'
+        },
+        {
+          question: 'Mikä meri halkaistiin israelilaisten paetessa faraon armeijaa?',
+          options: ['Kaislameri (Punainen meri)', 'Välimeri', 'Kuollutmeri', 'Gennesaretinjärvi'],
+          answer: 0,
+          fact: '2. Mooseksen kirja 14 kertoo, kuinka Jumala avasi Kaislameren ja kansa kulki kuivaa maata.'
+        },
+        {
+          question: 'Mikä oli Mooseksen sisaren nimi, joka johti naisten laulua meren rannalla?',
+          options: ['Mirjam', 'Debora', 'Hanna', 'Ester'],
+          answer: 0,
+          fact: '2. Mooseksen kirja 15:20–21 mainitsee profeetta Mirjamin johtaneen laulua ja soittoa.'
+        },
+        {
+          question: 'Kuka oli Israelin ensimmäinen kuningas?',
+          options: ['Saul', 'Daavid', 'Salomo', 'Rehabeam'],
+          answer: 0,
+          fact: '1. Samuelin kirja 10 kertoo, kuinka Saul voideltiin Israelin ensimmäiseksi kuninkaaksi.'
+        },
+        {
+          question: 'Kuka nuori paimen voitti Goljatin lingollaan?',
+          options: ['Daavid', 'Gideon', 'Joosua', 'Joosef'],
+          answer: 0,
+          fact: '1. Samuelin kirja 17 kuvaa Daavidin voiton filistealaisesta Goljatista.'
+        },
+        {
+          question: 'Kuinka monta sileää kiveä Daavid poimi puron pohjalta ennen taistelua?',
+          options: ['3', '4', '5', '7'],
+          answer: 2,
+          fact: '1. Samuelin kirja 17:40 kertoo Daavidin ottaneen mukaansa viisi sileää kiveä.'
+        },
+        {
+          question: 'Mihin kaupunkiin profeetta Joona lähetettiin julistamaan parannusta?',
+          options: ['Niiniveen', 'Tyyrokseen', 'Jerikoon', 'Kapernaukseen'],
+          answer: 0,
+          fact: 'Joonan kirja 1:2: Jumala käski Joonan mennä Niiniveen ja huutaa sitä vastaan.'
+        },
+        {
+          question: 'Kuka profeetta nousi tulivaunuissa taivaaseen?',
+          options: ['Elia', 'Elisa', 'Jesaja', 'Jeremia'],
+          answer: 0,
+          fact: '2. Kuninkaiden kirja 2:11 kertoo, kuinka Elia otettiin tulisissa vaunuissa taivaaseen.'
+        },
+        {
+          question: 'Kuinka monta psalmia Psalttarissa on?',
+          options: ['120', '130', '150', '180'],
+          answer: 2,
+          fact: 'Psalttarissa on 150 psalmia, kuten perinteisissä heprealaisissa käsikirjoituksissakin.'
+        },
+        {
+          question: 'Mihin kaupunkiin Daniel vietiin pakkosiirtolaisuuteen?',
+          options: ['Babyloniin', 'Assuriin', 'Memphisiin', 'Niniveen'],
+          answer: 0,
+          fact: 'Danielin kirja 1:1–6 kertoo nuorukaisen joutuneen Nebukadnessarin Babyloniin.'
+        },
+        {
+          question: 'Mihin kuoppaan Daniel heitettiin, kun hän jatkoi rukoilemista Jumalalle?',
+          options: ['Leijonien luolaan', 'Syvään kaivoon', 'Tuliseen pätsiin', 'Vankityrmään'],
+          answer: 0,
+          fact: 'Danielin kirja 6 kuvaa leijonien luolan ihmeen, jossa Jumala sulki petojen suut.'
+        },
+        {
+          question: 'Kuka kirjoitti suurimman osan Uuden testamentin kirjeistä?',
+          options: ['Paavali', 'Pietari', 'Johannes', 'Jaakob'],
+          answer: 0,
+          fact: 'Paavalin nimi on kirjoittajana 13 kirjeessä (Room.–Filem.), mikä on eniten UT:ssa.'
+        },
+        {
+          question: 'Mihin kaupunkiin Saulus oli matkalla kohdatessaan ylösnousseen Jeesuksen?',
+          options: ['Damaskokseen', 'Jerusalemiin', 'Antiokiaan', 'Kesareaan'],
+          answer: 0,
+          fact: 'Apostolien teot 9:3–6 kertoo Sauluksen saaneen näyn Damaskoksen tiellä.'
+        },
+        {
+          question: 'Kuka opetuslapsista käveli veden päällä Jeesuksen kutsusta?',
+          options: ['Pietari', 'Andreaan', 'Filippus', 'Matteus'],
+          answer: 0,
+          fact: 'Matteuksen evankeliumi 14:28–29 kertoo Pietarin astuneen veneestä Jeesuksen luo veteen.'
+        },
+        {
+          question: 'Kuinka monta päivää Jeesus paastosi erämaassa ennen kiusausta?',
+          options: ['10', '30', '40', '50'],
+          answer: 2,
+          fact: 'Matteus 4:2 ja Luukas 4:2 kertovat Jeesuksen paastonneen 40 päivää ja yötä.'
+        },
+        {
+          question: 'Millä ruoka-annoksella Jeesus ruokki noin 5000 miestä?',
+          options: ['Viidellä leivällä ja kahdella kalalla', 'Seitsemällä leivällä ja seitsemällä kalalla', 'Kolmella leivällä ja kahdella kalalla', 'Kymmenellä leivällä ja yhdellä kalalla'],
+          answer: 0,
+          fact: 'Matteus 14:17–21 kertoo viidestä ohraleivästä ja kahdesta kalasta, jotka riittivät tuhansille.'
+        },
+        {
+          question: 'Minkä järven rannalla Jeesus puhui kansalle veneestä Luukkaan 5. luvussa?',
+          options: ['Genesaretinjärven', 'Kuolleenmeren', 'Tiberiaanjärven', 'Jordanjoen lähteiden'],
+          answer: 0,
+          fact: 'Luukas 5:1–3 kertoo Jeesuksen astuneen veneeseen Genesaretinjärven rannalla opettaakseen kansaa.'
+        },
+        {
+          question: 'Kuka apostoli vaati saada nähdä naulanjäljet ennen kuin uskoi ylösnousemukseen?',
+          options: ['Tuomas', 'Jaakob', 'Johannes', 'Bartolomeus'],
+          answer: 0,
+          fact: 'Johanneksen evankeliumi 20:24–29 kertoo Tuomaksen epäilleen, kunnes hän sai koskea haavoja.'
+        },
+        {
+          question: 'Mikä on Uuden testamentin viimeinen kirja?',
+          options: ['Ilmestyskirja', 'Juudaksen kirje', 'Hebrealaiskirje', 'Jaakobin kirje'],
+          answer: 0,
+          fact: 'Raamatun kaanon päättyy Ilmestyskirjaan, joka sisältää Johanneksen näyt.'
+        },
+        {
+          question: 'Kuka sai Patmoksen saarella näyn seitsemästä seurakunnasta?',
+          options: ['Johannes', 'Paavali', 'Pietari', 'Stefanos'],
+          answer: 0,
+          fact: 'Ilmestyskirja 1:9–11 kertoo Johanneksen olleen Patmoksen saarella ja saaneen näyn.'
+        },
+        {
+          question: 'Kuka oli Johannes Kastajan äiti?',
+          options: ['Elisabet', 'Maria', 'Martta', 'Salome'],
+          answer: 0,
+          fact: 'Luukas 1:5–13 kertoo Elisabetin odottaneen Johannes Kastajaa miehensä Sakariaan kanssa.'
+        },
+        {
+          question: 'Mikä oli Luukkaan ammatti, jonka hän mainitsee Kolossalaiskirjeessä?',
+          options: ['Lääkäri', 'Veronkantaja', 'Kalastaja', 'Telttatekijä'],
+          answer: 0,
+          fact: 'Kolossalaiskirje 4:14 kutsuu Luukasta rakkaaksi lääkäriksi.'
+        },
+        {
+          question: 'Mikä evankeliumi alkaa sanoilla “Alussa oli Sana”?',
+          options: ['Johanneksen', 'Markuksen', 'Matteuksen', 'Luukkaan'],
+          answer: 0,
+          fact: 'Johanneksen evankeliumi 1:1–3 alkaa lauseella “Alussa oli Sana”.'
+        },
+        {
+          question: 'Kuinka monelle seurakunnalle Ilmestyskirjan luvut 2–3 välittävät kirjeet?',
+          options: ['5', '7', '10', '12'],
+          answer: 1,
+          fact: 'Ilmestyskirjan luvut 2–3 sisältävät seitsemän kirjettä Aasian seurakunnille.'
+        },
+        {
+          question: 'Kuka UT:n kirjoittajista sanoo “usko ilman tekoja on kuollut”?',
+          options: ['Jaakob', 'Pietari', 'Juudas', 'Johannes'],
+          answer: 0,
+          fact: 'Jaakobin kirje 2:17 painottaa, että usko ilman tekoja on kuollut.'
+        },
+        {
+          question: 'Kuinka monta päivää kului Jeesuksen ylösnousemuksen ja taivaaseenastumisen välillä Apostolien tekojen mukaan?',
+          options: ['3', '10', '40', '50'],
+          answer: 2,
+          fact: 'Apostolien teot 1:3 kertoo Jeesuksen ilmestyneen opetuslapsille 40 päivän ajan ennen taivaaseenastumista.'
+        }
+      ];
+
+      const questionCount = 20;
+      const scoreKey = 'raamattuVisaHighscore';
+      let selectedQuestions = [];
+      let currentIndex = 0;
+      let totalQuestions = 0;
+      let score = 0;
+      let hasAnswered = false;
+
+      const storedBest = Number(localStorage.getItem(scoreKey));
+      let bestScore = Number.isFinite(storedBest) ? storedBest : 0;
+      bestScoreEl.textContent = bestScore;
+
+      function selectQuestions() {
+        const shuffled = questionBank.slice();
+        for (let i = shuffled.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, Math.min(questionCount, shuffled.length));
+      }
+
+      function renderQuestion() {
+        const question = selectedQuestions[currentIndex];
+        if (!question) {
+          showResults();
+          return;
+        }
+        hasAnswered = false;
+        nextButton.disabled = true;
+        nextButton.textContent = currentIndex === totalQuestions - 1 ? 'Näytä tulos' : 'Seuraava kysymys';
+        progressLabel.textContent = `Kysymys ${currentIndex + 1} / ${totalQuestions}`;
+        questionText.textContent = question.question;
+        feedback.textContent = 'Valitse mielestäsi oikea vastaus.';
+        optionsContainer.innerHTML = '';
+
+        question.options.forEach((optionText, idx) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'option-btn';
+          button.textContent = optionText;
+          button.addEventListener('click', () => handleAnswer(idx));
+          optionsContainer.appendChild(button);
+        });
+      }
+
+      function handleAnswer(selectedIndex) {
+        if (hasAnswered) {
+          return;
+        }
+        hasAnswered = true;
+        const question = selectedQuestions[currentIndex];
+        const optionButtons = optionsContainer.querySelectorAll('button');
+        optionButtons.forEach((btn, idx) => {
+          btn.disabled = true;
+          if (idx === question.answer) {
+            btn.classList.add('is-correct');
+          }
+        });
+
+        if (selectedIndex === question.answer) {
+          score += 1;
+          feedback.textContent = `Oikein! ${question.fact}`;
+        } else {
+          const wrongButton = optionButtons[selectedIndex];
+          if (wrongButton) {
+            wrongButton.classList.add('is-wrong');
+          }
+          feedback.textContent = `Väärin. ${question.fact}`;
+        }
+
+        currentScoreEl.textContent = score;
+        nextButton.disabled = false;
+        nextButton.textContent = currentIndex === totalQuestions - 1 ? 'Näytä tulos' : 'Seuraava kysymys';
+        nextButton.focus({ preventScroll: true });
+      }
+
+      function showResults() {
+        quizCard.style.display = 'none';
+        quizCard.setAttribute('aria-hidden', 'true');
+        resultPanel.classList.remove('hidden');
+        resultPanel.setAttribute('aria-hidden', 'false');
+        resultSummary.textContent = `Sait ${score} / ${totalQuestions} pistettä.`;
+
+        if (score > bestScore) {
+          bestScore = score;
+          localStorage.setItem(scoreKey, bestScore);
+          bestScoreEl.textContent = bestScore;
+          recordNote.textContent = 'Uusi ennätys! Tallensimme pisteet tälle laitteelle.';
+        } else if (score === bestScore && score !== 0) {
+          recordNote.textContent = 'Tasoissa oman ennätyksen kanssa – jatka Raamatun tutkimista.';
+        } else {
+          recordNote.textContent = `Paras tuloksesi on edelleen ${bestScore} pistettä. Kokeile uudestaan!`;
+        }
+      }
+
+      function resetGame() {
+        score = 0;
+        currentIndex = 0;
+        currentScoreEl.textContent = '0';
+        selectedQuestions = selectQuestions();
+        totalQuestions = selectedQuestions.length;
+        questionTotalEl.textContent = totalQuestions;
+        quizCard.style.display = '';
+        quizCard.removeAttribute('aria-hidden');
+        resultPanel.classList.add('hidden');
+        resultPanel.setAttribute('aria-hidden', 'true');
+        renderQuestion();
+      }
+
+      function clearBestScore() {
+        const shouldClear = window.confirm('Tyhjennetäänkö aiemmat Raamattuvisa-tulokset tältä laitteelta?');
+        if (!shouldClear) {
+          return;
+        }
+        localStorage.removeItem(scoreKey);
+        bestScore = 0;
+        bestScoreEl.textContent = '0';
+        recordNote.textContent = 'Ennätys on nyt nollattu. Tee uusi kierros ja rakenna uusi huippupiste.';
+        feedback.textContent = 'Ennätys tyhjennettiin – aloita vastaaminen ja tee uusi tulos!';
+      }
+
+      nextButton.addEventListener('click', () => {
+        if (!hasAnswered) {
+          return;
+        }
+        if (currentIndex === totalQuestions - 1) {
+          showResults();
+        } else {
+          currentIndex += 1;
+          renderQuestion();
+        }
+      });
+
+      restartButton?.addEventListener('click', () => {
+        resetGame();
+        restartButton.blur();
+      });
+
+      clearButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          clearBestScore();
+          btn.blur();
+        });
+      });
+
+      selectedQuestions = selectQuestions();
+      totalQuestions = selectedQuestions.length;
+      questionTotalEl.textContent = totalQuestions;
+      renderQuestion();
+    });
+  </script>
+</body>
+</html>
