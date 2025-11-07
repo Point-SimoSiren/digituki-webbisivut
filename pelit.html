@@ -164,7 +164,36 @@
       background: rgba(5, 31, 52, 0.65);
       color: #97e7ff;
     }
-    .game-card:not(.game-card--hockey)::before {
+    .game-card--porvoo {
+      background: linear-gradient(165deg, rgba(11, 25, 44, 0.95), rgba(32, 71, 101, 0.9));
+      border: 1px solid rgba(255, 197, 143, 0.45);
+      box-shadow: 0 24px 48px rgba(4, 12, 23, 0.72);
+    }
+    .game-card--porvoo::before {
+      content: '';
+      position: absolute;
+      inset: -35% auto auto -25%;
+      width: 260px;
+      height: 260px;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(255, 188, 107, 0.4), transparent 60%),
+        radial-gradient(circle at 70% 30%, rgba(125, 216, 255, 0.35), transparent 65%);
+    }
+    .game-card--porvoo .game-pill {
+      background: rgba(255, 188, 107, 0.15);
+      border: 1px solid rgba(255, 188, 107, 0.5);
+      color: #ffe5c7;
+    }
+    .game-card--porvoo .cta {
+      background: linear-gradient(120deg, #f8b84d, #ffdf99);
+      color: #1d1205;
+      box-shadow: 0 18px 36px rgba(248, 184, 77, 0.35);
+    }
+    .game-card--porvoo .cta span {
+      background: rgba(12, 24, 40, 0.7);
+      color: #ffd38a;
+    }
+    .game-card:not(.game-card--hockey):not(.game-card--porvoo)::before {
       content: '';
       position: absolute;
       inset: -30% auto auto -20%;
@@ -317,6 +346,21 @@
             Avaa kaukalon ovet <span>>></span>
           </a>
         </article>
+
+        <article class="game-card game-card--porvoo">
+          <span class="game-pill">Tietovisa | Historia</span>
+          <h3>Porvoo Visa 20</h3>
+          <p>Porvoon historiaa, saaristoa ja nykypäivää yhdistelevä 20 kysymyksen monivalintakisa, joka tallentaa parhaat pisteesi paikallisesti.</p>
+          <ul class="feature-list">
+            <li>20 Porvoo-aiheista kysymystä ja muistettavat faktat</li>
+            <li>Neljä vastausvaihtoehtoa ja heti palaava palaute</li>
+            <li>LocalStorage-ennätys motivoi yrittämään uudestaan</li>
+          </ul>
+          <a class="cta" href="porvoovisa.html">
+            Aloita visailu <span>>></span>
+          </a>
+        </article>
+
 
         <article class="game-card">
           <span class="game-pill">Arcade • Refleksit</span>

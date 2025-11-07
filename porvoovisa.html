@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Porvoo Visa | Tarmola Code Garage</title>
+  <meta name="description" content="Porvoo Visa on 20 kysymyksen tietovisa, jossa testataan taitosi Porvoon historiasta ja nykypäivästä. Kerää pisteitä, nosta ennätystä ja haasta ystäväsi.">
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --porvoo-blue: #14263b;
+      --porvoo-gold: #f8b84d;
+      --porvoo-sky: #7cc3ff;
+      --porvoo-mint: #8fe3cf;
+      --card-bg: rgba(7, 18, 32, 0.85);
+      --border: rgba(124, 195, 255, 0.35);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 2.2rem 1rem 3.5rem;
+      display: flex;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(140, 198, 255, 0.4), transparent 45%),
+        radial-gradient(circle at 80% 0%, rgba(248, 184, 77, 0.35), transparent 48%),
+        linear-gradient(160deg, #080f1b, #0f1e33 55%, #08101b);
+      color: #f3f6ff;
+    }
+    a.back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 40;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(5, 12, 24, 0.85);
+      border: 1px solid rgba(140, 198, 255, 0.6);
+      color: #e6f4ff;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      transition: transform 0.2s ease, background 0.2s ease, border 0.2s ease;
+    }
+    a.back-link:hover,
+    a.back-link:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(140, 198, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.65);
+    }
+    main {
+      width: min(900px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    header.hero {
+      text-align: center;
+      padding: 1.5rem 1rem 0.5rem;
+    }
+    .hero .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.35em;
+      font-size: 0.78rem;
+      color: var(--porvoo-mint);
+      margin-bottom: 0.6rem;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      letter-spacing: 0.04em;
+    }
+    .hero p {
+      max-width: 620px;
+      margin: 0.9rem auto 0;
+      line-height: 1.65;
+      color: rgba(243, 246, 255, 0.85);
+    }
+    .score-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      padding: 1rem 1.3rem;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(6, 16, 30, 0.8);
+      box-shadow: 0 18px 45px rgba(4, 10, 22, 0.55);
+    }
+    .score-strip div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      color: #cfe4ff;
+    }
+    .score-strip strong {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .quiz-card,
+    .result-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.8rem clamp(1.2rem, 5vw, 2.2rem) 2.2rem;
+      box-shadow: 0 20px 60px rgba(2, 6, 16, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.08), transparent 45%),
+                  radial-gradient(circle at 80% 25%, rgba(248, 184, 77, 0.12), transparent 40%);
+      pointer-events: none;
+    }
+    .quiz-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .status-line {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      color: #9eb8dd;
+    }
+    .chip {
+      padding: 0.25rem 0.95rem;
+      border-radius: 999px;
+      background: rgba(248, 184, 77, 0.15);
+      border: 1px solid rgba(248, 184, 77, 0.4);
+      color: var(--porvoo-gold);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    #questionText {
+      margin: 1.4rem 0 1rem;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 600;
+      color: #fdfcff;
+    }
+    .options {
+      display: grid;
+      gap: 0.85rem;
+    }
+    .option-btn {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-size: 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(126, 177, 255, 0.35);
+      background: rgba(7, 18, 32, 0.75);
+      color: #f4f6ff;
+      cursor: pointer;
+      transition: border 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+    .option-btn:hover,
+    .option-btn:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+    .option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.85;
+    }
+    .option-btn.is-correct {
+      border-color: rgba(143, 255, 198, 0.9);
+      background: rgba(19, 115, 91, 0.8);
+    }
+    .option-btn.is-wrong {
+      border-color: rgba(255, 113, 113, 0.8);
+      background: rgba(110, 26, 26, 0.65);
+    }
+    .feedback {
+      min-height: 2.4rem;
+      margin: 1rem 0 0.5rem;
+      font-size: 0.95rem;
+      color: #dfe9ff;
+    }
+    button.primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: linear-gradient(120deg, #8fe3cf, #7cc3ff);
+      color: #06101f;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    button.primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    button.primary:not(:disabled):hover,
+    button.primary:not(:disabled):focus-visible {
+      transform: translateY(-1px);
+    }
+    .ghost-button {
+      align-self: center;
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(7, 18, 32, 0.6);
+      color: #f7fbff;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .ghost-button:hover,
+    .ghost-button:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.65);
+      background: rgba(10, 26, 46, 0.85);
+    }
+    .ghost-button.bottom {
+      margin-top: 0.8rem;
+    }
+    .result-panel.hidden {
+      display: none;
+    }
+    .result-panel h2 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
+    .result-panel p {
+      margin: 0.6rem 0 1rem;
+      line-height: 1.65;
+      color: rgba(243, 246, 255, 0.9);
+    }
+    .page-footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.65);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 1.2rem;
+    }
+    @media (max-width: 640px) {
+      body {
+        padding: 1.3rem 0.8rem 2.6rem;
+      }
+      a.back-link {
+        position: static;
+        align-self: flex-start;
+        margin-bottom: 1rem;
+      }
+      .score-strip {
+      grid-template-columns: 1fr;
+    }
+    @media (max-width: 640px) {
+      .hero-description {
+        position: relative;
+        overflow: hidden;
+        max-height: 320px;
+        animation: heroFadeAway 0.6s ease forwards;
+        animation-delay: 6s;
+      }
+    }
+    @keyframes heroFadeAway {
+      to {
+        opacity: 0;
+        max-height: 0;
+        margin-top: 0;
+      }
+    }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="pelit.html">← Takaisin web-peleihin</a>
+  <main>
+    <header class="hero">
+      <p class="eyebrow">Tarmola Code Garage | Porvoo Visa</p>
+      <h1>Porvoo Visa</h1>
+      <p class="hero-description">
+        Kaupungin historia, nykyiset ilmiöt ja saariston kulttuuri samassa tietovisassa.
+        Vastaa 20 kysymykseen, nappaa pisteet talteen ja yritä rikkoa aiempi ennätyksesi.
+        Jokaisen kysymyksen jälkeen kerromme lyhyen faktan Porvoosta.
+      </p>
+    </header>
+
+    <button class="ghost-button" id="clearTopButton" type="button">Tyhjennä aiemmat tulokset</button>
+
+    <section class="score-strip" aria-live="polite">
+      <div>
+        <span>Tämän kierroksen pisteet</span>
+        <strong id="currentScore">0</strong>
+      </div>
+      <div>
+        <span>Paras tuloksesi tällä laitteella</span>
+        <strong id="bestScore">0</strong>
+      </div>
+    </section>
+
+    <section class="quiz-card" id="quizCard" aria-live="polite">
+      <div class="status-line">
+        <span id="progressLabel">Kysymys 1 / 20</span>
+        <span class="chip">Historia & nykypäivä</span>
+      </div>
+      <h2 id="questionText">Ladataan kysymystä…</h2>
+      <div class="options" id="options" role="group" aria-label="Vastausvaihtoehdot"></div>
+      <p class="feedback" id="feedback">Valitse mielestäsi oikea vastaus.</p>
+      <button class="primary" id="nextButton" disabled>Seuraava kysymys</button>
+    </section>
+
+    <section class="result-panel hidden" id="resultPanel" aria-live="polite" aria-hidden="true">
+      <h2>Yhteenveto</h2>
+      <p id="resultSummary"></p>
+      <p id="recordNote"></p>
+      <button class="primary" id="restartButton">Pelaa uudestaan</button>
+    </section>
+
+    <button class="ghost-button bottom" id="clearBottomButton" type="button">Tyhjennä aiemmat tulokset</button>
+
+    <p class="page-footer">Powered by Tarmola Code Garage</p>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const questionBank = [
+        {
+          question: 'Minä vuonna Porvoo sai kaupunkioikeudet?',
+          options: ['1150', '1346', '1523', '1640'],
+          answer: 1,
+          fact: 'Maunu Eerikinpoika myönsi Porvoolle kaupunkioikeudet vuonna 1346, mikä tekee siitä Suomen vanhimpiin kaupunkeihin kuuluvan.'
+        },
+        {
+          question: 'Mikä joki virtaa Porvoon empire-keskustan halki?',
+          options: ['Aurajoki', 'Porvoonjoki', 'Kymijoki', 'Kemijoki'],
+          answer: 1,
+          fact: 'Porvoonjoki mutkittelee Vanhan Porvoon ja empire-keskustan välistä ennen kuin laskee Suomenlahteen.'
+        },
+        {
+          question: 'Mikä valtava historiallinen tapahtuma pidettiin Porvoon tuomiokirkossa vuonna 1809?',
+          options: ['Turun rauhan allekirjoitus', 'Porvoon valtiopäivät', 'Ensimmäinen Runebergin päivä', 'Suomen sodan päätös'],
+          answer: 1,
+          fact: 'Porvoon valtiopäivillä Aleksanteri I vahvisti autonomisen Suomen suuriruhtinaskunnan perustuslailliset oikeudet.'
+        },
+        {
+          question: 'Mikä on kansallisrunoilija Johan Ludvig Runebergin kotimuseon nimi Porvoossa?',
+          options: ['Runebergin koti', 'Holmin talo', 'Horatio-talo', 'Empire-sali'],
+          answer: 0,
+          fact: 'Runebergin koti on Suomen vanhin kotimuseo ja se on säilynyt lähes alkuperäisessä asussaan vuodelta 1852.'
+        },
+        {
+          question: 'Minkä herkun porvoolainen Brunberg tunnetaan lanseeranneen jo 1960-luvulla?',
+          options: ['Mansikkakeksit', 'Sokeriherneet', 'Suukot', 'Lakritsitoffeet'],
+          answer: 2,
+          fact: 'Brunbergin suukot pakataan edelleen käsin, ja tehdas on tärkeä käyntikohde jokirannassa.'
+        },
+        {
+          question: 'Mikä lukema on lähimpänä Porvoon asukaslukua vuonna 2024?',
+          options: ['32 000', '40 000', '51 000', '68 000'],
+          answer: 2,
+          fact: 'Porvoossa asuu runsaat 51 000 ihmistä, ja väkimäärä on kasvanut tasaisesti koko 2000-luvun.'
+        },
+        {
+          question: 'Millä nimellä tunnetaan 1800-luvulla rakennettu Porvoon hallintokeskus, jossa on leveät kadut ja empire-arkkitehtuuri?',
+          options: ['Kirákkala', 'Empire-Porvoo', 'Art Factory', 'Malmgård'],
+          answer: 1,
+          fact: 'Empire-Porvoo suunniteltiin Turun palon jälkeen tehdyn ruutukaava-ajattelun hengessä Carl Ludvig Engelin johdolla.'
+        },
+        {
+          question: 'Mikä korkeakoulu toimii Porvoo Campuksella?',
+          options: ['Aalto-yliopisto', 'Haaga-Helia ammattikorkeakoulu', 'Hanken', 'Metropolia Ammattikorkeakoulu'],
+          answer: 1,
+          fact: 'Haaga-Helia Porvoo Campus huokuu avointa oppimisympäristöä, ja sen opiskelijoista suuri osa on matkailu- ja liiketoiminnan aloilta.'
+        },
+        {
+          question: 'Mistä materiaalista Porvoon tuomiokirkon massiiviset seinät on pääosin rakennettu?',
+          options: ['Lasista', 'Luonnonkivestä', 'Tiilestä', 'Betonista'],
+          answer: 1,
+          fact: 'Kirkko on rakennettu harmaakivestä ja tiilestä, ja se on kokenut useita tulipaloja mutta aina restauroitu entiseen loistoonsa.'
+        },
+        {
+          question: 'Mitä Porvoon Linnamäen laella sijaitsi keskiajalla?',
+          options: ['Merisignaalitorni', 'Puinen linnake', 'Tuulimylly', 'Luostari'],
+          answer: 1,
+          fact: 'Linnamäki on muinaislinnan paikka, josta on löydetty keskiaikaisen puulinnan jäännöksiä ja vallituksia.'
+        },
+        {
+          question: 'Mikä on Porvoon ruotsinkielinen nimi?',
+          options: ['Ekenäs', 'Borgå', 'Hangö', 'Lovisa'],
+          answer: 1,
+          fact: 'Borgå viittaa sanatarkasti “linnajokeen” ja korostaa kaupungin kaksikielisyyttä.'
+        },
+        {
+          question: 'Mikä moottoritie yhdistää Porvoon Helsinkiin ja Kotkaan?',
+          options: ['E12', 'E18 / Valtatie 7', 'VT 4', 'VT 3'],
+          answer: 1,
+          fact: 'E18 on Suomen vilkkaimpia kansainvälisiä kuljetusreittejä ja vie Porvoosta sekä pääkaupunkiseudulle että itään.'
+        },
+        {
+          question: 'Mikä saaristokohde kuuluu Porvoon pitäjään ja on suosittu kesäsaariretki?',
+          options: ['Pellinki (Pellinge)', 'Seurasaari', 'Suomenlinna', 'Hailuoto'],
+          answer: 0,
+          fact: 'Pellinki koostuu useista saarista, ja sinne pääsee kesäisin autolautalla sekä veneillä suoraan Porvoon keskustasta.'
+        },
+        {
+          question: 'Mikä kulttuurikeskus avattiin entiseen sukkatehtaaseen Porvoossa vuonna 2012?',
+          options: ['Aitta Areena', 'Taidetehdas', 'Taidehalli', 'Vanha Casino'],
+          answer: 1,
+          fact: 'Taidetehdas (Art Factory) kokoaa elokuvateatterin, näyttelytilat, coworking-alueet ja tapahtumat saman katon alle.'
+        },
+        {
+          question: 'Mikä porvoolainen urheiluseura on voittanut useita jääpallon Suomen mestaruuksia?',
+          options: ['HIFK', 'Porvoon Akilles', 'SaiPa', 'K-Vantaa'],
+          answer: 1,
+          fact: 'Porvoon Akilles perustettiin jo vuonna 1902 ja on Suomen menestynein jääpalloseura 2000-luvulla.'
+        },
+        {
+          question: 'Mihin maakuntaan Porvoo kuuluu?',
+          options: ['Varsinais-Suomi', 'Pohjanmaa', 'Uusimaa', 'Kymenlaakso'],
+          answer: 2,
+          fact: 'Porvoo on osa Eteläistä Uuttamaata ja tekee tiivistä yhteistyötä pääkaupunkiseudun kasvukeskusten kanssa.'
+        },
+        {
+          question: 'Kuinka suuri osuus porvoolaisista on ruotsinkielisiä?',
+          options: ['Noin 5 %', 'Noin 15 %', 'Noin 30 %', 'Yli 60 %'],
+          answer: 2,
+          fact: 'Noin kolmasosa porvoolaisista on ruotsinkielisiä, joten kaupunki on virallisesti kaksikielinen (suomi enemmistökielenä).'
+        },
+        {
+          question: 'Mikä Vanhan Porvoon rakennus toimii Porvoon museona ja esittelee porvariskodin elämää?',
+          options: ['Holmin talo', 'Pärnäsin huvila', 'Raatihuone', 'Näsin kartano'],
+          answer: 0,
+          fact: 'Holmin talo Raatihuoneentorilla on 1700-luvun kauppiastalo, jossa Porvoon museo esittelee porvariston elämäntapaa.'
+        },
+        {
+          question: 'Millä nimellä tunnetaan Helsingin ja Porvoon välillä seilaava perinteinen matkustajahöyrylaiva?',
+          options: ['m/s Suometar', 'm/s Tarmo', 'm/s J.L. Runeberg', 's/s Ukko'],
+          answer: 2,
+          fact: 'Vuonna 1912 rakennettu m/s J.L. Runeberg kuljettaa kesäisin matkustajia Helsingin Kauppatorilta Porvoon jokirantaan.'
+        },
+        {
+          question: 'Mitä tavaraa Vanhan Porvoon punaisissa ranta-aitoissa aikoinaan varastoitiin?',
+          options: ['Puuvillaa ja mausteita', 'Sotatarvikkeita', 'Maakunnan kirkonkelloja', 'Kaivostunnuksia'],
+          answer: 0,
+          fact: 'Punaisissa ranta-aitoissa säilytettiin ulkomailta tuotua puuvillaa, suolaa ja mausteita ennen niiden kuljetusta sisämaahan.'
+        },
+        {
+          question: 'Mikä tapahtuma kerää joulun alla tuhansia kävijöitä Vanhan Porvoon kujille?',
+          options: ['Saunafestivaali', 'Vanhan Porvoon joulumarkkinat', 'Linnamäen valot', 'Runeberg-juoksu'],
+          answer: 1,
+          fact: 'Vanhan Porvoon joulumarkkinat levittäytyvät Raatihuoneentorille ja jokirantaan tarjoten käsitöitä ja saariston makuja.'
+        },
+        {
+          question: 'Mikä makea perinneleivonnainen kuuluu Porvoon Runebergin päivän juhlintaan?',
+          options: ['Berliininmunkki', 'Runebergintorttu', 'Laskiaispulla', 'Karjalanpiirakka'],
+          answer: 1,
+          fact: 'Fredrika Runeberg kehitti Runebergintortun reseptin Porvoossa, ja sitä nautitaan joka vuosi 5. helmikuuta.'
+        },
+        {
+          question: 'Mikä Porvoon kaupunginosa Taidetehtaan ympärillä on uudistunut moderneilla asuin- ja ravintolakortteleilla?',
+          options: ['Kevätkumpu', 'Huhtisenmäki', 'Länsiranta', 'Eestinmäki'],
+          answer: 2,
+          fact: 'Länsiranta yhdistää uuden kampuksen, Taidetehtaan kulttuuritilat ja jokirantaan avautuvat ravintolat.'
+        },
+        {
+          question: 'Mikä merenrantakartano tarjoaa Porvoossa hotellin, kylpylän ja kongressitiloja?',
+          options: ['Mustion linna', 'Haikon Kartano', 'Louhisaaren kartano', 'Malmgård'],
+          answer: 1,
+          fact: 'Haikon Kartano sijaitsee vain muutaman kilometrin päässä keskustasta ja on tunnettu kansainvälisistä kokouksistaan.'
+        },
+        {
+          question: 'Mikä Porvoon liikuntakeskus tunnetaan nimellä Ski Kokon?',
+          options: ['Tahko', 'Himos', 'Kokonniemi', 'Sappee'],
+          answer: 2,
+          fact: 'Kokonniemen rinteet ovat Porvoon omat laskettelurinteet ja kesällä sama alue toimii ulkoilu- ja pyöräilykeskuksena.'
+        },
+        {
+          question: 'Mikä entiseen makasiiniin rakennettu kahvila ja paahtimo sijaitsee Porvoon jokirannassa?',
+          options: ['Porvoon Paahtimo', 'Café Esplanad', 'Robert’s Coffee', 'Andante'],
+          answer: 0,
+          fact: 'Porvoon Paahtimo toimii punaisessa ranta-aitassa ja paistaa kahvinsa itse jokinäkymän äärellä.'
+        },
+        {
+          question: 'Mikä Porvoon museokohde Näsinmäellä esittelee 1900-luvun porvariskodin sisustusta?',
+          options: ['Näsin kartano', 'Ainola', 'Villa Kivi', 'Halosenniemi'],
+          answer: 0,
+          fact: 'Näsin kartano on Porvoon museon toinen kohde Holmin talon lisäksi ja näyttää aikakauden arjen huonekaluineen.'
+        },
+        {
+          question: 'Mikä käsityöläistapahtuma täyttää Vanhan Porvoon kahdesti vuodessa sadoilla kojuilla?',
+          options: ['Turun keskiaikamarkkinat', 'Porvoon Suurmarkkinat', 'Helsingin Juhlaviikot', 'Savonlinnan toripäivät'],
+          answer: 1,
+          fact: 'Porvoon Suurmarkkinat järjestetään keväällä ja syksyllä ja kokoavat käsityöläisiä sekä ruokatuottajia ympäri maan.'
+        },
+        {
+          question: 'Mikä kustantamo sai alkunsa Werner Söderströmin kirjapainosta Porvoossa vuonna 1878?',
+          options: ['Tammi', 'WSOY', 'Otava', 'Like'],
+          answer: 1,
+          fact: 'WSOY:n juuret ovat Porvoossa, jossa Werner Söderström aloitti kirjapainon ja kustansi ensimmäiset teoksensa.'
+        },
+        {
+          question: 'Mikä Porvoon kylä toimi pitkään sahateollisuuden ja satamatoiminnan keskuksena?',
+          options: ['Tolkkinen', 'Suutarinkylä', 'Ilola', 'Halkia'],
+          answer: 0,
+          fact: 'Tolkkisessa toimi Suomen suurimpia sahoja ja nykyäänkin kylässä on teollisuusterminaali sekä satama.'
+        },
+        {
+          question: 'Mikä Porvoon saaristossa sijaitseva majakka vuodelta 1862 on suosittu retkikohde?',
+          options: ['Bengtskärin majakka', 'Söderskärin majakka', 'Isokarin majakka', 'Kylmäpihlaja'],
+          answer: 1,
+          fact: 'Söderskärin majakka kohoaa ulkosaaristossa ja sinne järjestetään kesäisin veneretkiä Porvoosta ja Helsingistä.'
+        },
+        {
+          question: 'Mikä Porvoon lähiö rakennettiin 1970-luvulla ja on edelleen yksi kaupungin suurimmista asuinalueista?',
+          options: ['Gammelbacka', 'Tuorila', 'Metsäkulma', 'Peippola'],
+          answer: 0,
+          fact: 'Gammelbacka tunnetaan korkeista kerrostaloistaan ja monikulttuurisesta asukaspohjastaan.'
+        },
+        {
+          question: 'Mikä Vanhan Porvoon kävelyreitti kulkee punaisia ranta-aittoja pitkin Porvoonjoen varrella?',
+          options: ['Aurorankatu', 'Jokiranta-promenadi', 'Aleksanterinkatu', 'Kauppakatu'],
+          answer: 1,
+          fact: 'Jokiranta-promenadi houkuttelee valokuvaajia ja kulkee historiallisen Laivasilta-alueen ohi.'
+        },
+        {
+          question: 'Kenen Haikkoossa sijainneessa ateljeessa maalattiin tunnettuja saaristomaisemia 1800-luvun lopulla?',
+          options: ['Akseli Gallen-Kallela', 'Albert Edelfelt', 'Helene Schjerfbeck', 'Eero Järnefelt'],
+          answer: 1,
+          fact: 'Albert Edelfeltin ateljee Haikkoossa on avoinna kesäisin ja esittelee taiteilijan työtilan alkuperäisen kalustuksen.'
+        },
+        {
+          question: 'Mikä porvoolaisseura on tunnettu koripallon pääsarjahistoriastaan ja junioritoiminnastaan?',
+          options: ['Porvoon Tarmo', 'Lapuan Korikobrat', 'Salon Vilpas', 'Lahti Basketball'],
+          answer: 0,
+          fact: 'Porvoon Tarmo pelasi pitkään Korisliigassa ja seura kasvattaa edelleen junioreita Itä-Uudellamaalla.'
+        },
+        {
+          question: 'Mikä paikallislehti ilmestyy Porvoossa sekä suomeksi että ruotsiksi?',
+          options: ['Turun Sanomat', 'Uusimaa', 'Hufvudstadsbladet', 'Aamuposti'],
+          answer: 1,
+          fact: 'Uusimaa-lehti perustettiin 1890-luvulla ja julkaisee jutut kahdella kielellä palvellen koko seutukuntaa.'
+        },
+        {
+          question: 'Mikä lauttayhteys kuljettaa autoja ja pyöräilijöitä Tirmosta Pellingin saarille?',
+          options: ['Hailuodon lossi', 'Pellingin lossi', 'Suomenlinnan lautat', 'Korppoon lossi'],
+          answer: 1,
+          fact: 'Pellingin lossi on maksuton yhteys, joka vie Tirmosta saaristokylään ympäri vuoden sään salliessa.'
+        },
+        {
+          question: 'Mikä Porvoon 18-reikäinen golfkenttä sijaitsee metsäisessä saaristomaisemassa ja tarjoaa merinäköaloja?',
+          options: ['Virvik Golf', 'Pickala Golf', 'Kullo Golf', 'Hirsala Golf'],
+          answer: 0,
+          fact: 'Virvik Golf sijaitsee noin 15 minuutin ajomatkan päässä keskustasta ja on rakennettu kumpuilevaan merenrantamaastoon.'
+        },
+        {
+          question: 'Mikä historiallinen postitie kulkee Porvoon kautta ja tunnetaan nimellä Kuninkaantie?',
+          options: ['Savontie', 'Kuninkaantie', 'Päijänteen reitti', 'Pirkkalaistie'],
+          answer: 1,
+          fact: 'Kuninkaantie yhdisti aikoinaan Turun ja Viipurin ja kulkee yhä nykyisin Porvoon Vanhan kaupungin läpi.'
+        },
+        {
+          question: 'Kenen reseptiin perinteiset Runebergintortut perustuvat?',
+          options: ['Lotta Svärd', 'Fredrika Runeberg', 'Sara Hildén', 'Jenny Elfving'],
+          answer: 1,
+          fact: 'Fredrika Runeberg kehitti kakusta version, johon lisättiin rommia, mantelia ja vadelmahilloja juhlapäivää varten.'
+        },
+        {
+          question: 'Mikä Porvoon jokisuiston kosteikko tunnetaan lintutorneistaan ja kevään muuttolinnuista?',
+          options: ['Ruskis', 'Laajalahti', 'Liminganlahti', 'Kaisaniemenlahti'],
+          answer: 0,
+          fact: 'Ruskis on Natura-suojeltu kosteikko, jossa on kaksi lintutornia ja keväisin jopa tuhansia hanhia ja joutsenia.'
+        }
+      ];
+
+      const QUESTIONS_PER_ROUND = 20;
+      let selectedQuestions = [];
+      let totalQuestions = QUESTIONS_PER_ROUND;
+      const scoreKey = 'porvooVisaHighscore';
+
+      const progressLabel = document.getElementById('progressLabel');
+      const questionText = document.getElementById('questionText');
+      const optionsContainer = document.getElementById('options');
+      const feedback = document.getElementById('feedback');
+      const nextButton = document.getElementById('nextButton');
+      const currentScoreEl = document.getElementById('currentScore');
+      const bestScoreEl = document.getElementById('bestScore');
+      const quizCard = document.getElementById('quizCard');
+      const resultPanel = document.getElementById('resultPanel');
+      const resultSummary = document.getElementById('resultSummary');
+      const recordNote = document.getElementById('recordNote');
+      const restartButton = document.getElementById('restartButton');
+      const clearButtons = [
+        document.getElementById('clearTopButton'),
+        document.getElementById('clearBottomButton')
+      ];
+
+      let currentIndex = 0;
+      let score = 0;
+      let hasAnswered = false;
+      let bestScore = Number(localStorage.getItem(scoreKey)) || 0;
+      bestScoreEl.textContent = bestScore;
+
+      function selectQuestions() {
+        const pool = [...questionBank];
+        for (let i = pool.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        return pool.slice(0, QUESTIONS_PER_ROUND);
+      }
+
+      function renderQuestion() {
+        const question = selectedQuestions[currentIndex];
+        if (!question) {
+          return;
+        }
+        hasAnswered = false;
+        nextButton.disabled = true;
+        nextButton.textContent = currentIndex === totalQuestions - 1 ? 'Näytä tulos' : 'Seuraava kysymys';
+        progressLabel.textContent = `Kysymys ${currentIndex + 1} / ${totalQuestions}`;
+        questionText.textContent = question.question;
+        feedback.textContent = 'Valitse mielestäsi oikea vastaus.';
+        optionsContainer.innerHTML = '';
+
+        question.options.forEach((optionText, idx) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'option-btn';
+          button.textContent = optionText;
+          button.addEventListener('click', () => handleAnswer(idx));
+          optionsContainer.appendChild(button);
+        });
+      }
+
+      function handleAnswer(selectedIndex) {
+        if (hasAnswered) {
+          return;
+        }
+        hasAnswered = true;
+        const question = selectedQuestions[currentIndex];
+        const optionButtons = optionsContainer.querySelectorAll('button');
+        optionButtons.forEach((btn, idx) => {
+          btn.disabled = true;
+          if (idx === question.answer) {
+            btn.classList.add('is-correct');
+          }
+        });
+
+        if (selectedIndex === question.answer) {
+          score += 1;
+          feedback.textContent = `Oikein! ${question.fact}`;
+        } else {
+          const wrongButton = optionButtons[selectedIndex];
+          if (wrongButton) {
+            wrongButton.classList.add('is-wrong');
+          }
+          feedback.textContent = `Väärin. ${question.fact}`;
+        }
+
+        currentScoreEl.textContent = score;
+        nextButton.disabled = false;
+        nextButton.textContent = currentIndex === totalQuestions - 1 ? 'Näytä tulos' : 'Seuraava kysymys';
+        nextButton.focus({ preventScroll: true });
+      }
+
+      function showResults() {
+        quizCard.style.display = 'none';
+        quizCard.setAttribute('aria-hidden', 'true');
+        resultPanel.classList.remove('hidden');
+        resultPanel.setAttribute('aria-hidden', 'false');
+
+        resultSummary.textContent = `Sait ${score} / ${totalQuestions} pistettä.`;
+
+        if (score > bestScore) {
+          bestScore = score;
+          localStorage.setItem(scoreKey, bestScore);
+          bestScoreEl.textContent = bestScore;
+          recordNote.textContent = 'Uusi ennätys! Tallensimme pisteesi tälle laitteelle.';
+        } else if (score === bestScore && score !== 0) {
+          recordNote.textContent = 'Tasasitte oman ennätyksesi – Porvoo kiittää yleissivistyksestä.';
+        } else {
+          recordNote.textContent = `Parhaasi on edelleen ${bestScore} pistettä. Kokeile uudestaan ja riko raja!`;
+        }
+      }
+
+      function resetGame() {
+        score = 0;
+        currentIndex = 0;
+        currentScoreEl.textContent = '0';
+        selectedQuestions = selectQuestions();
+        totalQuestions = selectedQuestions.length;
+        quizCard.style.display = '';
+        quizCard.removeAttribute('aria-hidden');
+        resultPanel.classList.add('hidden');
+        resultPanel.setAttribute('aria-hidden', 'true');
+        renderQuestion();
+      }
+
+      function clearBestScore() {
+        const shouldClear = window.confirm('Tyhjennetäänkö aiemmat Porvoo Visa -tulokset tältä laitteelta?');
+        if (!shouldClear) {
+          return;
+        }
+        localStorage.removeItem(scoreKey);
+        bestScore = 0;
+        bestScoreEl.textContent = '0';
+        recordNote.textContent = 'Tyhjensit ennätyksen. Tee uusi kierros ja rakenna uusi huippupisteet.';
+        feedback.textContent = 'Ennätys on nyt nollattu – aloita vastaaminen ja luo uusi tuloslistasi.';
+      }
+
+      nextButton.addEventListener('click', () => {
+        if (!hasAnswered) {
+          return;
+        }
+        if (currentIndex === totalQuestions - 1) {
+          showResults();
+        } else {
+          currentIndex += 1;
+          renderQuestion();
+        }
+      });
+
+      restartButton.addEventListener('click', () => {
+        resetGame();
+        restartButton.blur();
+      });
+
+      clearButtons.forEach((btn) => {
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          clearBestScore();
+          btn.blur();
+        });
+      });
+
+      selectedQuestions = selectQuestions();
+      totalQuestions = selectedQuestions.length;
+      renderQuestion();
+    });
+  </script>
+</body>
+</html>

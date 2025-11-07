@@ -287,10 +287,13 @@
     const dropHeight = 4.2;
     const playerMinZ = -rinkHalfDepth + malletRadius;
     const playerMaxZ = rinkHalfDepth - malletRadius;
+    const playerGoalieMinZ = rinkHalfDepth - 4.2;
+    const playerGoalieMaxZ = rinkHalfDepth - 1.4;
+    const playerGoalieHomeZ = (playerGoalieMinZ + playerGoalieMaxZ) / 2;
     const goalieMinZ = -rinkHalfDepth + 1.4;
     const goalieMaxZ = -rinkHalfDepth + 4.2;
-    const chaserMinZ = -rinkHalfDepth + 2.1;
-    const chaserMaxZ = rinkHalfDepth - 1.8;
+    const chaserMinZ = -rinkHalfDepth + 1.2;
+    const chaserMaxZ = rinkHalfDepth - malletRadius * 0.6;
 
     const iceGeometry = new THREE.PlaneGeometry(rinkWidth + 0.4, rinkDepth + 0.4);
     const iceMaterial = new THREE.MeshPhongMaterial({
@@ -454,6 +457,13 @@
       emissive: 0x481502,
       emissiveIntensity: 0.6,
     });
+    const playerGoalieMaterial = new THREE.MeshStandardMaterial({
+      color: 0x3fa7ff,
+      metalness: 0.24,
+      roughness: 0.42,
+      emissive: 0x0b2d59,
+      emissiveIntensity: 0.68,
+    });
 
     function createMallet(material) {
       const group = new THREE.Group();
@@ -486,12 +496,15 @@
     const playerMallet = createMallet(playerMaterial);
     const goalieMallet = createMallet(goalieMaterial);
     const chaserMallet = createMallet(chaserMaterial);
+    const playerGoalieMallet = createMallet(playerGoalieMaterial);
     playerMallet.userData.bounds = { minZ: playerMinZ, maxZ: playerMaxZ };
     goalieMallet.userData.bounds = { minZ: goalieMinZ, maxZ: goalieMaxZ };
     chaserMallet.userData.bounds = { minZ: chaserMinZ, maxZ: chaserMaxZ };
+    playerGoalieMallet.userData.bounds = { minZ: playerGoalieMinZ, maxZ: playerGoalieMaxZ };
     scene.add(playerMallet);
     scene.add(goalieMallet);
     scene.add(chaserMallet);
+    scene.add(playerGoalieMallet);
 
     const goalLampMaterial = new THREE.MeshPhongMaterial({
       color: 0x14161b,
@@ -551,6 +564,7 @@
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     const playerTarget = new THREE.Vector3(0, malletRestY, rinkHalfDepth * 0.4);
+    const playerGoalieTarget = new THREE.Vector3(0, malletRestY, playerGoalieHomeZ);
     const goalieTarget = new THREE.Vector3(0, malletRestY, -rinkHalfDepth + 3);
     const chaserTarget = new THREE.Vector3(0, malletRestY, -rinkHalfDepth * 0.15);
     const chaserDesired = new THREE.Vector3();
@@ -609,6 +623,7 @@
     const puckVelocity = new THREE.Vector3();
     const clock = new THREE.Clock();
     const prevPlayerPos = new THREE.Vector3();
+    const prevPlayerGoaliePos = new THREE.Vector3();
     const prevGoaliePos = new THREE.Vector3();
     const prevChaserPos = new THREE.Vector3();
 
@@ -834,12 +849,16 @@
     pickGoalieTarget(true);
     resetPuck();
     playerMallet.position.set(0, malletRestY, rinkHalfDepth * 0.3);
+    playerGoalieMallet.position.set(0, malletRestY, playerGoalieHomeZ);
+    playerGoalieTarget.copy(playerGoalieMallet.position);
     goalieMallet.position.copy(goalieTarget);
     chaserMallet.position.copy(chaserTarget);
     clampMalletToBounds(playerMallet);
+    clampMalletToBounds(playerGoalieMallet);
     clampMalletToBounds(goalieMallet);
     clampMalletToBounds(chaserMallet);
     prevPlayerPos.copy(playerMallet.position);
+    prevPlayerGoaliePos.copy(playerGoalieMallet.position);
     prevGoaliePos.copy(goalieMallet.position);
     prevChaserPos.copy(chaserMallet.position);
 
@@ -921,25 +940,52 @@
       clampMalletToBounds(goalieMallet);
     }
 
+    function updatePlayerGoalie(delta) {
+      const puckInDefensiveZone = puck.position.z > 0.6;
+      if (puckInDefensiveZone) {
+        const targetX = clamp(puck.position.x, -goalWidth / 2 + malletRadius, goalWidth / 2 - malletRadius);
+        const targetZ = clamp(puck.position.z + 1.0, playerGoalieMinZ, playerGoalieMaxZ);
+        playerGoalieTarget.set(targetX, malletRestY, targetZ);
+      } else {
+        playerGoalieTarget.set(0, malletRestY, playerGoalieHomeZ);
+      }
+
+      const lerpFactor = 1 - Math.exp(-4.1 * delta);
+      playerGoalieMallet.position.lerp(playerGoalieTarget, lerpFactor);
+      clampMalletToBounds(playerGoalieMallet);
+    }
+
     function updateChaser(delta) {
+      const puckSpeed = Math.hypot(puckVelocity.x, puckVelocity.z);
+      const anticipatoryX = puck.position.x + puckVelocity.x * 0.25;
+      const aggressiveness = puck.position.z > 0 ? 1.4 : 1.0;
+      const baseOffset = puck.position.z > 0 ? 0.15 : 0.45;
+      let desiredZ =
+        puck.position.z - baseOffset - clamp(puckSpeed * 0.18, 0, 0.9);
+      desiredZ = clamp(desiredZ, chaserMinZ, chaserMaxZ);
       chaserDesired.set(
-        clamp(puck.position.x, -rinkHalfWidth + malletRadius, rinkHalfWidth - malletRadius),
+        clamp(anticipatoryX, -rinkHalfWidth + malletRadius, rinkHalfWidth - malletRadius),
         malletRestY,
-        clamp(puck.position.z - 0.7, chaserMinZ, chaserMaxZ)
+        desiredZ
       );
-      const anticipation = 1 - Math.exp(-1.6 * delta);
-      chaserTarget.lerp(chaserDesired, anticipation * 0.65);
-      const moveLerp = 1 - Math.exp(-7.5 * delta);
-      chaserMallet.position.lerp(chaserTarget, moveLerp);
+
+      const anticipation = 1 - Math.exp(-3.4 * delta);
+      chaserTarget.lerp(chaserDesired, anticipation);
+      const boostedLerp = 1 - Math.exp(-(9.5 + puckSpeed * 1.8) * delta);
+      chaserMallet.position.lerp(chaserTarget, boostedLerp);
       clampMalletToBounds(chaserMallet);
 
       const dz = puck.position.z - chaserMallet.position.z;
       const dx = puck.position.x - chaserMallet.position.x;
       const distance = Math.sqrt(dx * dx + dz * dz);
-      if (distance < malletRadius * 2.2 && puck.position.z > chaserMallet.position.z) {
-        const pushStrength = clamp((malletRadius * 2.2 - distance) * 12, 0, 10);
-        puckVelocity.z -= pushStrength * 0.6 * delta;
-        puckVelocity.x += dx * 0.4 * delta;
+      const influenceRadius = malletRadius * 2.4;
+      if (distance < influenceRadius && puck.position.z > chaserMallet.position.z - 0.2) {
+        const norm = distance || 0.0001;
+        const nx = dx / norm;
+        const nz = dz / norm;
+        const pushStrength = clamp((influenceRadius - distance) * (12 + puckSpeed * 4) * aggressiveness, 0, 18);
+        puckVelocity.x += nx * pushStrength * 0.55 * delta;
+        puckVelocity.z -= nz * pushStrength * 0.85 * delta;
       }
     }
 
@@ -1001,6 +1047,7 @@
       const delta = Math.min(clock.getDelta(), 0.035);
 
       const oldPlayerPos = prevPlayerPos.clone();
+      const oldPlayerGoaliePos = prevPlayerGoaliePos.clone();
       const oldGoaliePos = prevGoaliePos.clone();
       const oldChaserPos = prevChaserPos.clone();
 
@@ -1009,16 +1056,23 @@
       clampMalletToBounds(playerMallet);
 
       updateGoalie(delta);
+      updatePlayerGoalie(delta);
       updateChaser(delta);
       updatePuck(delta);
 
       resolveMalletOverlap(playerMallet, goalieMallet, 0.5, 0.5);
-      resolveMalletOverlap(playerMallet, chaserMallet, 0.3, 0.7);
-      resolveMalletOverlap(goalieMallet, chaserMallet, 0.5, 0.5);
+      resolveMalletOverlap(playerMallet, chaserMallet, 0.25, 0.75);
+      resolveMalletOverlap(playerMallet, playerGoalieMallet, 0.4, 0.6);
+      resolveMalletOverlap(goalieMallet, chaserMallet, 0.4, 0.6);
+      resolveMalletOverlap(chaserMallet, playerGoalieMallet, 0.45, 0.55);
 
       const playerVelocity2D = new THREE.Vector2(
         (playerMallet.position.x - oldPlayerPos.x) / Math.max(delta, 0.016),
         (playerMallet.position.z - oldPlayerPos.z) / Math.max(delta, 0.016)
+      );
+      const playerGoalieVelocity2D = new THREE.Vector2(
+        (playerGoalieMallet.position.x - oldPlayerGoaliePos.x) / Math.max(delta, 0.016),
+        (playerGoalieMallet.position.z - oldPlayerGoaliePos.z) / Math.max(delta, 0.016)
       );
       const goalieVelocity2D = new THREE.Vector2(
         (goalieMallet.position.x - oldGoaliePos.x) / Math.max(delta, 0.016),
@@ -1030,10 +1084,12 @@
       );
 
       handleMalletCollision(playerMallet, playerVelocity2D);
+      handleMalletCollision(playerGoalieMallet, playerGoalieVelocity2D);
       handleMalletCollision(goalieMallet, goalieVelocity2D);
       handleMalletCollision(chaserMallet, chaserVelocity2D);
 
       prevPlayerPos.copy(playerMallet.position);
+      prevPlayerGoaliePos.copy(playerGoalieMallet.position);
       prevGoaliePos.copy(goalieMallet.position);
       prevChaserPos.copy(chaserMallet.position);
 
