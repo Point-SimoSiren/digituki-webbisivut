@@ -273,6 +273,7 @@
 
     const rinkWidth = 12;
     const rinkDepth = 22;
+    const rinkCornerRadius = 1.8;
     const rinkHalfWidth = rinkWidth / 2;
     const rinkHalfDepth = rinkDepth / 2;
     const wallThickness = 0.4;
@@ -292,10 +293,66 @@
     const playerGoalieHomeZ = (playerGoalieMinZ + playerGoalieMaxZ) / 2;
     const goalieMinZ = -rinkHalfDepth + 1.4;
     const goalieMaxZ = -rinkHalfDepth + 4.2;
-    const chaserMinZ = -rinkHalfDepth + 1.2;
-    const chaserMaxZ = rinkHalfDepth - malletRadius * 0.6;
+    const chaserBackBuffer = 2.2;
+    const chaserFrontBuffer = 1.6;
+    const chaserSideBuffer = malletRadius * 2.2;
+    const chaserMinZ = -rinkHalfDepth + chaserBackBuffer;
+    const chaserMaxZ = rinkHalfDepth - chaserFrontBuffer;
 
-    const iceGeometry = new THREE.PlaneGeometry(rinkWidth + 0.4, rinkDepth + 0.4);
+    function createRoundedRectShape(width, height, radius, centerX = 0, centerY = 0) {
+      const shape = new THREE.Shape();
+      const hw = width / 2;
+      const hh = height / 2;
+      const r = Math.min(radius, hw, hh);
+      shape.moveTo(centerX - hw + r, centerY - hh);
+      shape.lineTo(centerX + hw - r, centerY - hh);
+      shape.quadraticCurveTo(centerX + hw, centerY - hh, centerX + hw, centerY - hh + r);
+      shape.lineTo(centerX + hw, centerY + hh - r);
+      shape.quadraticCurveTo(centerX + hw, centerY + hh, centerX + hw - r, centerY + hh);
+      shape.lineTo(centerX - hw + r, centerY + hh);
+      shape.quadraticCurveTo(centerX - hw, centerY + hh, centerX - hw, centerY + hh - r);
+      shape.lineTo(centerX - hw, centerY - hh + r);
+      shape.quadraticCurveTo(centerX - hw, centerY - hh, centerX - hw + r, centerY - hh);
+      shape.closePath();
+      return shape;
+    }
+
+    function createWallShapeWithGoalGaps(width, depth, thickness, cornerRadius, goalWidth) {
+      const outerWidth = width + thickness * 2;
+      const outerDepth = depth + thickness * 2;
+      const hw = outerWidth / 2;
+      const hh = outerDepth / 2;
+      const r = Math.min(cornerRadius + thickness, hw, hh);
+      const maxGapHalf = Math.max(0.5, hw - r - 0.05);
+      const gapHalfWidth = Math.min(goalWidth / 2 + 0.35, maxGapHalf);
+      const maxCutDepth = hh - depth / 2;
+      const cutDepth = Math.min(maxCutDepth + 0.05, maxCutDepth + thickness * 0.25);
+
+      const shape = new THREE.Shape();
+      shape.moveTo(gapHalfWidth, -hh);
+      shape.lineTo(hw - r, -hh);
+      shape.quadraticCurveTo(hw, -hh, hw, -hh + r);
+      shape.lineTo(hw, hh - r);
+      shape.quadraticCurveTo(hw, hh, hw - r, hh);
+
+      shape.lineTo(gapHalfWidth, hh);
+      shape.lineTo(gapHalfWidth, hh - cutDepth);
+      shape.lineTo(-gapHalfWidth, hh - cutDepth);
+      shape.lineTo(-gapHalfWidth, hh);
+      shape.lineTo(-hw + r, hh);
+      shape.quadraticCurveTo(-hw, hh, -hw, hh - r);
+      shape.lineTo(-hw, -hh + r);
+      shape.quadraticCurveTo(-hw, -hh, -hw + r, -hh);
+      shape.lineTo(-gapHalfWidth, -hh);
+      shape.lineTo(-gapHalfWidth, -hh + cutDepth);
+      shape.lineTo(gapHalfWidth, -hh + cutDepth);
+      shape.closePath();
+
+      return shape;
+    }
+
+    const iceShape = createRoundedRectShape(rinkWidth, rinkDepth, rinkCornerRadius);
+    const iceGeometry = new THREE.ShapeGeometry(iceShape, 48);
     const iceMaterial = new THREE.MeshPhongMaterial({
       color: 0x4f7ec4,
       emissive: 0x061a30,
@@ -323,7 +380,8 @@
     advert.position.y = -0.01;
     scene.add(advert);
 
-    const iceGlowGeometry = new THREE.CircleGeometry(rinkWidth * 0.46, 48);
+    const iceGlowShape = createRoundedRectShape(rinkWidth + 1.4, rinkDepth + 1.4, rinkCornerRadius + 0.7);
+    const iceGlowGeometry = new THREE.ShapeGeometry(iceGlowShape, 48);
     const iceGlowMaterial = new THREE.MeshBasicMaterial({
       color: 0x7ad7ff,
       transparent: true,
@@ -334,8 +392,16 @@
     iceGlow.position.y = 0.001;
     scene.add(iceGlow);
 
+    const borderShape = createRoundedRectShape(
+      rinkWidth + 0.8,
+      rinkDepth + 0.8,
+      rinkCornerRadius + 0.4
+    );
+    borderShape.holes.push(
+      createRoundedRectShape(rinkWidth + 0.2, rinkDepth + 0.2, rinkCornerRadius + 0.15)
+    );
     const rinkBorder = new THREE.Mesh(
-      new THREE.RingGeometry(rinkWidth * 0.5, rinkWidth * 0.53, 64),
+      new THREE.ShapeGeometry(borderShape, 48),
       new THREE.MeshBasicMaterial({ color: 0x1f3f63, transparent: true, opacity: 0.6 })
     );
     rinkBorder.rotation.x = -Math.PI / 2;
@@ -351,26 +417,27 @@
     });
 
     const wallHeight = 0.8;
-    const walls = new THREE.Group();
-    function addWall(width, height, depth, x, y, z) {
-      const wall = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), wallMaterial);
-      wall.position.set(x, y, z);
-      wall.castShadow = true;
-      wall.receiveShadow = true;
-      walls.add(wall);
-    }
+    const wallShape = createWallShapeWithGoalGaps(
+      rinkWidth,
+      rinkDepth,
+      wallThickness,
+      rinkCornerRadius,
+      goalWidth
+    );
+    wallShape.holes.push(createRoundedRectShape(rinkWidth, rinkDepth, rinkCornerRadius));
 
-    addWall(wallThickness, wallHeight, rinkDepth + goalDepth * 2, -rinkHalfWidth - wallThickness / 2, wallHeight / 2, 0);
-    addWall(wallThickness, wallHeight, rinkDepth + goalDepth * 2, rinkHalfWidth + wallThickness / 2, wallHeight / 2, 0);
+    const wallGeometry = new THREE.ExtrudeGeometry(wallShape, {
+      depth: wallHeight,
+      bevelEnabled: false,
+      curveSegments: 48,
+      steps: 1,
+    });
+    wallGeometry.rotateX(-Math.PI / 2);
 
-    const gapWidth = (rinkWidth - goalWidth) / 2;
-    const frontZ = rinkHalfDepth + wallThickness / 2;
-    const backZ = -rinkHalfDepth - wallThickness / 2;
-
-    addWall(gapWidth, wallHeight, wallThickness, -goalWidth / 2 - gapWidth / 2, wallHeight / 2, frontZ);
-    addWall(gapWidth, wallHeight, wallThickness, goalWidth / 2 + gapWidth / 2, wallHeight / 2, frontZ);
-    addWall(gapWidth, wallHeight, wallThickness, -goalWidth / 2 - gapWidth / 2, wallHeight / 2, backZ);
-    addWall(gapWidth, wallHeight, wallThickness, goalWidth / 2 + gapWidth / 2, wallHeight / 2, backZ);
+    const walls = new THREE.Mesh(wallGeometry, wallMaterial);
+    walls.castShadow = true;
+    walls.receiveShadow = true;
+    scene.add(walls);
 
     const goalMaterial = new THREE.MeshPhongMaterial({
       color: 0xfff6d1,
@@ -443,18 +510,20 @@
       emissive: 0x0f4860,
       emissiveIntensity: 0.72,
     });
+    const opponentColor = 0xff8456;
+    const opponentEmissive = 0x481502;
     const goalieMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffd86a,
-      metalness: 0.22,
-      roughness: 0.5,
-      emissive: 0x4b2904,
-      emissiveIntensity: 0.65,
-    });
-    const chaserMaterial = new THREE.MeshStandardMaterial({
-      color: 0xff8456,
+      color: opponentColor,
       metalness: 0.24,
       roughness: 0.44,
-      emissive: 0x481502,
+      emissive: opponentEmissive,
+      emissiveIntensity: 0.6,
+    });
+    const chaserMaterial = new THREE.MeshStandardMaterial({
+      color: opponentColor,
+      metalness: 0.24,
+      roughness: 0.44,
+      emissive: opponentEmissive,
       emissiveIntensity: 0.6,
     });
     const playerGoalieMaterial = new THREE.MeshStandardMaterial({
@@ -465,7 +534,7 @@
       emissiveIntensity: 0.68,
     });
 
-    function createMallet(material) {
+    function createMallet(material, labelTexture) {
       const group = new THREE.Group();
       const base = new THREE.Mesh(
         new THREE.CylinderGeometry(malletRadius, malletRadius, malletHeight, 32),
@@ -490,13 +559,24 @@
       rim.castShadow = true;
       group.add(rim);
 
+      if (labelTexture) {
+        const label = new THREE.Mesh(
+          new THREE.CircleGeometry(malletRadius * 0.82, 48),
+          new THREE.MeshBasicMaterial({ map: labelTexture, transparent: true })
+        );
+        label.rotation.x = -Math.PI / 2;
+        label.position.y = malletHeight / 2 + 0.02;
+        group.add(label);
+      }
+
       return group;
     }
 
-    const playerMallet = createMallet(playerMaterial);
+    const playerLabelTexture = createMalletLabelTexture("TCG");
+    const playerMallet = createMallet(playerMaterial, playerLabelTexture);
     const goalieMallet = createMallet(goalieMaterial);
     const chaserMallet = createMallet(chaserMaterial);
-    const playerGoalieMallet = createMallet(playerGoalieMaterial);
+    const playerGoalieMallet = createMallet(playerGoalieMaterial, playerLabelTexture);
     playerMallet.userData.bounds = { minZ: playerMinZ, maxZ: playerMaxZ };
     goalieMallet.userData.bounds = { minZ: goalieMinZ, maxZ: goalieMaxZ };
     chaserMallet.userData.bounds = { minZ: chaserMinZ, maxZ: chaserMaxZ };
@@ -782,6 +862,42 @@
       return new THREE.CanvasTexture(canvas);
     }
 
+    function createMalletLabelTexture(text) {
+      const size = 256;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+
+      ctx.clearRect(0, 0, size, size);
+      const center = size / 2;
+      const radius = size * 0.42;
+
+      const backgroundGradient = ctx.createRadialGradient(center, center, radius * 0.2, center, center, radius);
+      backgroundGradient.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+      backgroundGradient.addColorStop(1, "rgba(240, 247, 255, 0.8)");
+      ctx.fillStyle = backgroundGradient;
+      ctx.beginPath();
+      ctx.arc(center, center, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.25)";
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.arc(center, center, radius * 0.92, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = "#050505";
+      ctx.font = "bold 96px 'Segoe UI'";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, center, center);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy?.() ?? 8;
+      return texture;
+    }
+
     function clamp(value, min, max) {
       return Math.max(min, Math.min(max, value));
     }
@@ -958,34 +1074,34 @@
     function updateChaser(delta) {
       const puckSpeed = Math.hypot(puckVelocity.x, puckVelocity.z);
       const anticipatoryX = puck.position.x + puckVelocity.x * 0.25;
-      const aggressiveness = puck.position.z > 0 ? 1.4 : 1.0;
-      const baseOffset = puck.position.z > 0 ? 0.15 : 0.45;
+      const aggressiveness = puck.position.z > 0 ? 1.1 : 0.85;
+      const baseOffset = puck.position.z > 0 ? 0.35 : 0.6;
       let desiredZ =
-        puck.position.z - baseOffset - clamp(puckSpeed * 0.18, 0, 0.9);
+        puck.position.z - baseOffset - clamp(puckSpeed * 0.16, 0, 0.8);
       desiredZ = clamp(desiredZ, chaserMinZ, chaserMaxZ);
       chaserDesired.set(
-        clamp(anticipatoryX, -rinkHalfWidth + malletRadius, rinkHalfWidth - malletRadius),
+        clamp(anticipatoryX, -rinkHalfWidth + chaserSideBuffer, rinkHalfWidth - chaserSideBuffer),
         malletRestY,
         desiredZ
       );
 
-      const anticipation = 1 - Math.exp(-3.4 * delta);
+      const anticipation = 1 - Math.exp(-2.0 * delta);
       chaserTarget.lerp(chaserDesired, anticipation);
-      const boostedLerp = 1 - Math.exp(-(9.5 + puckSpeed * 1.8) * delta);
+      const boostedLerp = 1 - Math.exp(-(6.2 + puckSpeed * 0.9) * delta);
       chaserMallet.position.lerp(chaserTarget, boostedLerp);
       clampMalletToBounds(chaserMallet);
 
       const dz = puck.position.z - chaserMallet.position.z;
       const dx = puck.position.x - chaserMallet.position.x;
       const distance = Math.sqrt(dx * dx + dz * dz);
-      const influenceRadius = malletRadius * 2.4;
+      const influenceRadius = malletRadius * 2.1;
       if (distance < influenceRadius && puck.position.z > chaserMallet.position.z - 0.2) {
         const norm = distance || 0.0001;
         const nx = dx / norm;
         const nz = dz / norm;
-        const pushStrength = clamp((influenceRadius - distance) * (12 + puckSpeed * 4) * aggressiveness, 0, 18);
-        puckVelocity.x += nx * pushStrength * 0.55 * delta;
-        puckVelocity.z -= nz * pushStrength * 0.85 * delta;
+        const pushStrength = clamp((influenceRadius - distance) * (8 + puckSpeed * 3) * aggressiveness, 0, 14);
+        puckVelocity.x += nx * pushStrength * 0.45 * delta;
+        puckVelocity.z -= nz * pushStrength * 0.65 * delta;
       }
     }
 
