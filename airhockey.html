@@ -293,7 +293,7 @@
     const playerGoalieHomeZ = (playerGoalieMinZ + playerGoalieMaxZ) / 2;
     const goalieMinZ = -rinkHalfDepth + 1.4;
     const goalieMaxZ = -rinkHalfDepth + 4.2;
-    const chaserBackBuffer = 2.2;
+    const chaserBackBuffer = 3.8; // keep red chaser away from its own goal line
     const chaserFrontBuffer = 1.6;
     const chaserSideBuffer = malletRadius * 2.2;
     const chaserMinZ = -rinkHalfDepth + chaserBackBuffer;
@@ -709,62 +709,220 @@
 
     let playerScore = 0;
     let ownGoals = 0;
+    const winningScore = 10;
+    let matchActive = true;
+    let matchResetTimeout = null;
     let goalieChangeTimer = 0;
     let lampTimeout;
     let puckDropping = false;
 
     function createAdvertTexture() {
-      const size = 490;
+      const size = 640;
       const canvas = document.createElement("canvas");
       canvas.width = size;
       canvas.height = size;
       const ctx = canvas.getContext("2d");
+      const center = size / 2;
 
-      const gradient = ctx.createRadialGradient(size / 2, size / 2, size * 0.1, size / 2, size / 2, size * 0.48);
-      gradient.addColorStop(0, "#123c63");
-      gradient.addColorStop(0.55, "#0a1d30");
-      gradient.addColorStop(1, "#02060f");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, size, size);
+      ctx.clearRect(0, 0, size, size);
+
+      function drawRoundedRect(cx, cy, width, height, radius) {
+        const hw = width / 2;
+        const hh = height / 2;
+        const r = Math.min(radius, hw, hh);
+        ctx.beginPath();
+        ctx.moveTo(cx - hw + r, cy - hh);
+        ctx.lineTo(cx + hw - r, cy - hh);
+        ctx.quadraticCurveTo(cx + hw, cy - hh, cx + hw, cy - hh + r);
+        ctx.lineTo(cx + hw, cy + hh - r);
+        ctx.quadraticCurveTo(cx + hw, cy + hh, cx + hw - r, cy + hh);
+        ctx.lineTo(cx - hw + r, cy + hh);
+        ctx.quadraticCurveTo(cx - hw, cy + hh, cx - hw, cy + hh - r);
+        ctx.lineTo(cx - hw, cy - hh + r);
+        ctx.quadraticCurveTo(cx - hw, cy - hh, cx - hw + r, cy - hh);
+        ctx.closePath();
+      }
+
+      const baseGradient = ctx.createRadialGradient(center, center, size * 0.12, center, center, size * 0.48);
+      baseGradient.addColorStop(0, "#061129");
+      baseGradient.addColorStop(0.45, "#030919");
+      baseGradient.addColorStop(1, "#01040a");
+      ctx.fillStyle = baseGradient;
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.48, 0, Math.PI * 2);
+      ctx.fill();
 
       ctx.save();
-      ctx.translate(size / 2, size / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.fillStyle = "rgba(255, 170, 58, 0.15)";
-      for (let i = 0; i < 6; i++) {
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.arc(0, 0, size * 0.46, (i * Math.PI) / 3, ((i + 1) * Math.PI) / 3);
-        ctx.closePath();
-        ctx.fill();
-      }
+      ctx.globalCompositeOperation = "lighter";
+      const auraGradient = ctx.createRadialGradient(center, center, size * 0.15, center, center, size * 0.52);
+      auraGradient.addColorStop(0, "rgba(118, 255, 246, 0.45)");
+      auraGradient.addColorStop(0.45, "rgba(74, 125, 255, 0.2)");
+      auraGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = auraGradient;
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.5, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
 
-      ctx.fillStyle = "rgba(255, 213, 128, 0.8)";
+      const neonGradient = ctx.createLinearGradient(0, 0, size, size);
+      neonGradient.addColorStop(0, "#7b5bff");
+      neonGradient.addColorStop(0.5, "#00f6ff");
+      neonGradient.addColorStop(1, "#ff3fdc");
+      ctx.strokeStyle = neonGradient;
+      ctx.lineWidth = size * 0.038;
+      ctx.shadowColor = "rgba(0, 255, 255, 0.5)";
+      ctx.shadowBlur = 18;
       ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size * 0.34, 0, Math.PI * 2);
+      ctx.arc(center, center, size * 0.43, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+      ctx.lineWidth = size * 0.008;
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.37, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate(-Math.PI / 6);
+      const stripeGradient = ctx.createLinearGradient(-size * 0.5, 0, size * 0.5, 0);
+      stripeGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
+      stripeGradient.addColorStop(0.45, "rgba(255, 255, 255, 0.2)");
+      stripeGradient.addColorStop(0.55, "rgba(255, 255, 255, 0.35)");
+      stripeGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = stripeGradient;
+      ctx.fillRect(-size * 0.55, -size * 0.05, size * 1.1, size * 0.1);
+      ctx.restore();
+
+      const patternCanvas = document.createElement("canvas");
+      patternCanvas.width = patternCanvas.height = 140;
+      const pctx = patternCanvas.getContext("2d");
+      pctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+      pctx.lineWidth = 2;
+      for (let x = -140; x < 140; x += 28) {
+        pctx.beginPath();
+        pctx.moveTo(x + 14, 0);
+        pctx.lineTo(x + 140, 140);
+        pctx.stroke();
+      }
+      for (let x = -140; x < 140; x += 28) {
+        pctx.beginPath();
+        pctx.moveTo(x + 140, 0);
+        pctx.lineTo(x + 14, 140);
+        pctx.stroke();
+      }
+      const pattern = ctx.createPattern(patternCanvas, "repeat");
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.34, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = pattern;
+      ctx.fillRect(center - size * 0.34, center - size * 0.34, size * 0.68, size * 0.68);
+      ctx.restore();
+
+      const shieldGradient = ctx.createLinearGradient(center, center - size * 0.3, center, center + size * 0.3);
+      shieldGradient.addColorStop(0, "#1f99ff");
+      shieldGradient.addColorStop(0.5, "#3f2b8f");
+      shieldGradient.addColorStop(1, "#0a0513");
+      ctx.fillStyle = shieldGradient;
+      ctx.beginPath();
+      ctx.moveTo(center, center - size * 0.27);
+      ctx.quadraticCurveTo(center + size * 0.24, center - size * 0.22, center + size * 0.22, center);
+      ctx.quadraticCurveTo(center + size * 0.1, center + size * 0.34, center, center + size * 0.38);
+      ctx.quadraticCurveTo(center - size * 0.1, center + size * 0.34, center - size * 0.22, center);
+      ctx.quadraticCurveTo(center - size * 0.24, center - size * 0.22, center, center - size * 0.27);
+      ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = "#061629";
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
+      ctx.lineWidth = size * 0.01;
+      ctx.stroke();
+
+      const badgeRimGradient = ctx.createLinearGradient(center - size * 0.2, center, center + size * 0.2, center);
+      badgeRimGradient.addColorStop(0, "rgba(255, 255, 255, 0.05)");
+      badgeRimGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.35)");
+      badgeRimGradient.addColorStop(1, "rgba(255, 255, 255, 0.05)");
+      ctx.strokeStyle = badgeRimGradient;
+      ctx.lineWidth = size * 0.02;
       ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size * 0.3, 0, Math.PI * 2);
+      ctx.arc(center, center, size * 0.26, 0, Math.PI * 2);
+      ctx.stroke();
+
+      drawRoundedRect(center, center - size * 0.01, size * 0.62, size * 0.18, size * 0.09);
+      const plateGradient = ctx.createLinearGradient(center, center - size * 0.12, center, center + size * 0.12);
+      plateGradient.addColorStop(0, "rgba(6, 8, 28, 0.9)");
+      plateGradient.addColorStop(0.5, "rgba(12, 18, 52, 0.95)");
+      plateGradient.addColorStop(1, "rgba(6, 8, 28, 0.9)");
+      ctx.fillStyle = plateGradient;
       ctx.fill();
 
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 62px 'Segoe UI'";
+      ctx.strokeStyle = "rgba(123, 223, 255, 0.5)";
+      ctx.lineWidth = size * 0.008;
+      ctx.stroke();
+
+      ctx.save();
+      ctx.clip();
+      const plateHighlight = ctx.createLinearGradient(center - size * 0.2, center - size * 0.06, center + size * 0.2, center + size * 0.06);
+      plateHighlight.addColorStop(0, "rgba(255, 255, 255, 0)");
+      plateHighlight.addColorStop(0.5, "rgba(255, 255, 255, 0.35)");
+      plateHighlight.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = plateHighlight;
+      ctx.fillRect(center - size * 0.31, center - size * 0.09, size * 0.62, size * 0.18);
+      ctx.restore();
+
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("Tarmola", size / 2, size / 2 - 40);
 
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 42px 'Segoe UI'";
-      ctx.fillText("Code Garage", size / 2, size / 2 + 18);
+      ctx.shadowColor = "rgba(23, 2, 32, 0.85)";
+      ctx.shadowBlur = 32;
+      ctx.fillStyle = "#f8ddff";
+      ctx.strokeStyle = "rgba(51, 2, 68, 0.9)";
+      ctx.lineWidth = size * 0.009;
+      ctx.font = "900 86px 'Segoe UI'";
+      ctx.strokeText("TARMOLA", center, center - size * 0.08);
+      ctx.fillText("TARMOLA", center, center - size * 0.08);
 
-      ctx.strokeStyle = "rgba(255, 170, 58, 0.8)";
-      ctx.lineWidth = 6;
+      ctx.shadowBlur = 18;
+      ctx.fillStyle = "#f4deff";
+      ctx.strokeStyle = "rgba(30, 0, 46, 0.85)";
+      ctx.lineWidth = size * 0.007;
+      ctx.font = "700 48px 'Segoe UI'";
+      ctx.strokeText("CODE GARAGE", center, center + size * 0.02);
+      ctx.fillText("CODE GARAGE", center, center + size * 0.02);
+
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = "#ffd9ff";
+      ctx.strokeStyle = "rgba(28, 0, 24, 0.75)";
+      ctx.lineWidth = size * 0.005;
+      ctx.font = "600 34px 'Segoe UI'";
+      ctx.strokeText("PREMIUM AIR HOCKEY", center, center + size * 0.11);
+      ctx.fillText("PREMIUM AIR HOCKEY", center, center + size * 0.11);
+
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.65)";
+      ctx.lineWidth = size * 0.012;
       ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size * 0.33, 0, Math.PI * 2);
+      ctx.moveTo(center - size * 0.22, center + size * 0.04);
+      ctx.lineTo(center + size * 0.22, center + size * 0.04);
       ctx.stroke();
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.86)";
+      ctx.beginPath();
+      ctx.moveTo(center, center - size * 0.3);
+      ctx.lineTo(center + size * 0.018, center - size * 0.26);
+      ctx.lineTo(center - size * 0.018, center - size * 0.26);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+      ctx.beginPath();
+      ctx.arc(center + size * 0.16, center - size * 0.2, size * 0.03, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(center - size * 0.2, center + size * 0.24, size * 0.022, 0, Math.PI * 2);
+      ctx.fill();
 
       return new THREE.CanvasTexture(canvas);
     }
@@ -930,18 +1088,60 @@
       }, 3000);
     }
 
+    function updateScoreDisplay() {
+      playerScoreEl.textContent = `Tarmola: ${playerScore}`;
+      ownGoalsEl.textContent = `Vieras: ${ownGoals}`;
+    }
+
+    function restartMatch() {
+      clearTimeout(matchResetTimeout);
+      matchResetTimeout = null;
+      playerScore = 0;
+      ownGoals = 0;
+      matchActive = true;
+      updateScoreDisplay();
+      announcementEl.textContent = "Uusi erä alkaa – ensimmäisenä 10 maalia voittaa.";
+      resetPuck();
+    }
+
+    function endMatch(winner) {
+      matchActive = false;
+      const message =
+        winner === "player"
+          ? "Kymppi täynnä! Tarmola vie erän."
+          : "Vieraat latoivat taulun täyteen ja vievät erän.";
+      announcementEl.textContent = `${message} Uusi erä alkaa pian.`;
+      resetPuck();
+      clearTimeout(matchResetTimeout);
+      matchResetTimeout = setTimeout(() => {
+        restartMatch();
+      }, 4200);
+    }
+
     function registerGoal(type) {
+      if (!matchActive) {
+        return;
+      }
+      clearTimeout(matchResetTimeout);
+      matchResetTimeout = null;
+
       if (type === "player") {
         playerScore += 1;
-        playerScoreEl.textContent = `Maalit: ${playerScore}`;
         announcementEl.textContent = "Verkko heiluu! Garage tiimi tekee maalin.";
         flashLamp(0xff6a3f, "top");
       } else {
         ownGoals += 1;
-        ownGoalsEl.textContent = `Omat: ${ownGoals}`;
         announcementEl.textContent = "Hups! Kiekko lirui omaan maaliin.";
         flashLamp(0xff6a3f, "bottom");
       }
+      updateScoreDisplay();
+
+      const winner = playerScore >= winningScore ? "player" : ownGoals >= winningScore ? "opponent" : null;
+      if (winner) {
+        endMatch(winner);
+        return;
+      }
+
       resetPuck(type === "own");
     }
 
@@ -977,6 +1177,8 @@
     prevPlayerGoaliePos.copy(playerGoalieMallet.position);
     prevGoaliePos.copy(goalieMallet.position);
     prevChaserPos.copy(chaserMallet.position);
+    updateScoreDisplay();
+    announcementEl.textContent = "Ensimmäisenä 10 maalia vie erän.";
 
     function handleMalletCollision(malletGroup, malletVelocity) {
       const malletPos = malletGroup.position;
