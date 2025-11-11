@@ -24,7 +24,10 @@
       min-height: 100vh;
       padding: 2.2rem 1rem 3.5rem;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1rem;
       background:
         radial-gradient(circle at 20% 10%, rgba(140, 198, 255, 0.4), transparent 45%),
         radial-gradient(circle at 80% 0%, rgba(248, 184, 77, 0.35), transparent 48%),
@@ -56,6 +59,7 @@
     }
     main {
       width: min(900px, 100%);
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
@@ -263,7 +267,11 @@
     }
     @media (max-width: 640px) {
       body {
-        padding: 1.3rem 0.8rem 2.6rem;
+        padding: 1.3rem 0.9rem 2.6rem;
+        align-items: stretch;
+      }
+      main {
+        width: 100%;
       }
       a.back-link {
         position: static;
@@ -271,9 +279,8 @@
         margin-bottom: 1rem;
       }
       .score-strip {
-      grid-template-columns: 1fr;
-    }
-    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+      }
       .hero-description {
         position: relative;
         overflow: hidden;
@@ -288,7 +295,6 @@
         max-height: 0;
         margin-top: 0;
       }
-    }
     }
     @media (prefers-reduced-motion: reduce) {
       * {
