@@ -397,6 +397,234 @@
       return texture;
     }
 
+    function createTcgSpotlightTexture() {
+      const size = 900;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      const center = size / 2;
+
+      ctx.clearRect(0, 0, size, size);
+
+      const halo = ctx.createRadialGradient(center, center, size * 0.12, center, center, size * 0.46);
+      halo.addColorStop(0, "rgba(255, 255, 255, 0.3)");
+      halo.addColorStop(0.6, "rgba(255, 255, 255, 0.08)");
+      halo.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.46, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      const emberGlow = ctx.createRadialGradient(center - size * 0.1, center - size * 0.08, size * 0.06, center, center, size * 0.52);
+      emberGlow.addColorStop(0, "rgba(255, 255, 255, 0.45)");
+      emberGlow.addColorStop(0.4, "rgba(255, 230, 200, 0.2)");
+      emberGlow.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = emberGlow;
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.55, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      const ribbonGradient = ctx.createLinearGradient(center - size * 0.36, center + size * 0.3, center + size * 0.36, center - size * 0.3);
+      ribbonGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
+      ribbonGradient.addColorStop(0.2, "rgba(255, 136, 0, 0.35)");
+      ribbonGradient.addColorStop(0.55, "rgba(255, 40, 40, 0.35)");
+      ribbonGradient.addColorStop(0.85, "rgba(255, 214, 0, 0.4)");
+      ribbonGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate(-Math.PI / 9);
+      ctx.fillStyle = ribbonGradient;
+      ctx.fillRect(-size * 0.42, -size * 0.16, size * 0.84, size * 0.32);
+      ctx.restore();
+
+      ctx.lineWidth = size * 0.032;
+      const rimGradient = ctx.createLinearGradient(center - size * 0.4, center - size * 0.4, center + size * 0.4, center + size * 0.4);
+      rimGradient.addColorStop(0, "#ff4800");
+      rimGradient.addColorStop(0.4, "#ff002f");
+      rimGradient.addColorStop(0.7, "#ff7b00");
+      rimGradient.addColorStop(1, "#ffd54b");
+      ctx.strokeStyle = rimGradient;
+      ctx.shadowColor = "rgba(255, 70, 25, 0.65)";
+      ctx.shadowBlur = 38;
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.39, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate(Math.PI / 7);
+      const stripeGradient = ctx.createLinearGradient(-size * 0.55, 0, size * 0.55, 0);
+      stripeGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+      stripeGradient.addColorStop(0.25, "rgba(255, 116, 0, 0.55)");
+      stripeGradient.addColorStop(0.5, "rgba(255, 16, 16, 0.4)");
+      stripeGradient.addColorStop(0.75, "rgba(255, 214, 0, 0.35)");
+      stripeGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = stripeGradient;
+      ctx.globalAlpha = 0.72;
+      ctx.fillRect(-size * 0.6, -size * 0.08, size * 1.2, size * 0.16);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+
+      const sliceGradient = ctx.createLinearGradient(center - size * 0.38, center - size * 0.38, center + size * 0.38, center + size * 0.38);
+      sliceGradient.addColorStop(0, "rgba(255, 140, 0, 0.14)");
+      sliceGradient.addColorStop(0.4, "rgba(255, 82, 42, 0.12)");
+      sliceGradient.addColorStop(1, "rgba(255, 222, 103, 0.25)");
+      ctx.lineWidth = size * 0.013;
+      ctx.strokeStyle = "rgba(255, 245, 230, 0.75)";
+      ctx.fillStyle = sliceGradient;
+      ctx.beginPath();
+      ctx.moveTo(center - size * 0.05, center - size * 0.36);
+      ctx.lineTo(center + size * 0.32, center);
+      ctx.lineTo(center + size * 0.05, center + size * 0.36);
+      ctx.lineTo(center - size * 0.32, center);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate(-Math.PI / 4.5);
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.45)";
+      ctx.lineWidth = size * 0.026;
+      ctx.beginPath();
+      ctx.moveTo(-size * 0.11, -size * 0.2);
+      ctx.lineTo(size * 0.11, size * 0.2);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.scale(1.1, 0.62);
+      ctx.rotate(Math.PI / 2);
+      ctx.strokeStyle = "rgba(255, 176, 122, 0.25)";
+      ctx.lineWidth = size * 0.022;
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.46, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      const crestGradient = ctx.createLinearGradient(center, center - size * 0.18, center, center + size * 0.18);
+      crestGradient.addColorStop(0, "#061a3a");
+      crestGradient.addColorStop(0.5, "#03102c");
+      crestGradient.addColorStop(1, "#01060f");
+      ctx.fillStyle = crestGradient;
+      ctx.strokeStyle = "rgba(170, 210, 255, 0.45)";
+      ctx.lineWidth = size * 0.012;
+      ctx.beginPath();
+      ctx.moveTo(center, center - size * 0.24);
+      ctx.quadraticCurveTo(center + size * 0.26, center - size * 0.05, center + size * 0.18, center + size * 0.2);
+      ctx.quadraticCurveTo(center, center + size * 0.28, center - size * 0.18, center + size * 0.2);
+      ctx.quadraticCurveTo(center - size * 0.26, center - size * 0.05, center, center - size * 0.24);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.save();
+      ctx.clip();
+      const crestLight = ctx.createLinearGradient(center - size * 0.25, center - size * 0.12, center + size * 0.25, center + size * 0.15);
+      crestLight.addColorStop(0, "rgba(69, 184, 255, 0.4)");
+      crestLight.addColorStop(0.5, "rgba(178, 214, 255, 0.25)");
+      crestLight.addColorStop(1, "rgba(255, 255, 255, 0.25)");
+      ctx.fillStyle = crestLight;
+      ctx.fillRect(center - size * 0.35, center - size * 0.35, size * 0.7, size * 0.7);
+      ctx.restore();
+
+      const crestLines = ctx.createLinearGradient(center - size * 0.18, center, center + size * 0.18, center);
+      crestLines.addColorStop(0, "rgba(255, 255, 255, 0)");
+      crestLines.addColorStop(0.5, "rgba(255, 230, 210, 0.6)");
+      crestLines.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.strokeStyle = crestLines;
+      ctx.lineWidth = size * 0.007;
+      ctx.beginPath();
+      ctx.moveTo(center - size * 0.2, center - size * 0.01);
+      ctx.lineTo(center + size * 0.2, center - size * 0.01);
+      ctx.stroke();
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.shadowColor = "rgba(0, 0, 0, 0.65)";
+      ctx.shadowBlur = 24;
+      const titleGradient = ctx.createLinearGradient(center - size * 0.28, center - size * 0.12, center + size * 0.28, center + size * 0.12);
+      titleGradient.addColorStop(0, "#00e5ff");
+      titleGradient.addColorStop(0.3, "#5c7cff");
+      titleGradient.addColorStop(0.6, "#ff3b8d");
+      titleGradient.addColorStop(1, "#ffd84f");
+      ctx.fillStyle = titleGradient;
+      ctx.strokeStyle = "rgba(3, 6, 38, 0.85)";
+      ctx.lineWidth = size * 0.01;
+      ctx.font = "900 150px 'Segoe UI'";
+      ctx.strokeText("TARMOLA", center, center - size * 0.04);
+      ctx.fillText("TARMOLA", center, center - size * 0.04);
+
+      ctx.shadowBlur = 14;
+      const subtitleGradient = ctx.createLinearGradient(center - size * 0.25, center + size * 0.02, center + size * 0.25, center + size * 0.14);
+      subtitleGradient.addColorStop(0, "#ffe976");
+      subtitleGradient.addColorStop(0.4, "#ff6f91");
+      subtitleGradient.addColorStop(0.8, "#7af0ff");
+      subtitleGradient.addColorStop(1, "#8fffd1");
+      ctx.fillStyle = subtitleGradient;
+      ctx.font = "800 72px 'Segoe UI'";
+      ctx.fillText("CODE GARAGE", center, center + size * 0.09);
+
+      ctx.shadowBlur = 0;
+      const taglineGradient = ctx.createLinearGradient(center - size * 0.2, center + size * 0.12, center + size * 0.2, center + size * 0.21);
+      taglineGradient.addColorStop(0, "#91f3ff");
+      taglineGradient.addColorStop(0.5, "#f7c5ff");
+      taglineGradient.addColorStop(1, "#ffe1a8");
+      ctx.fillStyle = taglineGradient;
+      ctx.font = "600 46px 'Segoe UI'";
+      ctx.fillText("INFERNO AIR HOCKEY LAB", center, center + size * 0.18);
+
+      ctx.strokeStyle = "rgba(255, 212, 192, 0.75)";
+      ctx.lineWidth = size * 0.011;
+      ctx.beginPath();
+      ctx.moveTo(center - size * 0.28, center + size * 0.13);
+      ctx.lineTo(center + size * 0.28, center + size * 0.13);
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(255, 120, 0, 0.8)";
+      ctx.beginPath();
+      ctx.arc(center - size * 0.3, center - size * 0.18, size * 0.024, 0, Math.PI * 2);
+      ctx.arc(center + size * 0.26, center + size * 0.2, size * 0.02, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(255, 40, 40, 0.85)";
+      ctx.beginPath();
+      ctx.arc(center + size * 0.28, center - size * 0.17, size * 0.025, 0, Math.PI * 2);
+      ctx.arc(center - size * 0.25, center + size * 0.22, size * 0.02, 0, Math.PI * 2);
+      ctx.fill();
+
+      const microLines = ctx.createLinearGradient(center - size * 0.26, center, center + size * 0.26, center);
+      microLines.addColorStop(0, "rgba(255, 255, 255, 0)");
+      microLines.addColorStop(0.2, "rgba(255, 230, 220, 0.6)");
+      microLines.addColorStop(0.8, "rgba(255, 230, 220, 0.45)");
+      microLines.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.strokeStyle = microLines;
+      ctx.lineWidth = size * 0.006;
+      ctx.beginPath();
+      ctx.moveTo(center - size * 0.2, center - size * 0.015);
+      ctx.lineTo(center + size * 0.2, center - size * 0.015);
+      ctx.stroke();
+
+      const lowGlow = ctx.createRadialGradient(center, center, size * 0.2, center, center, size * 0.52);
+      lowGlow.addColorStop(0, "rgba(255, 255, 255, 0)");
+      lowGlow.addColorStop(1, "rgba(30, 0, 0, 0.85)");
+      ctx.fillStyle = lowGlow;
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.52, 0, Math.PI * 2);
+      ctx.fill();
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy?.() ?? 8;
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      return texture;
+    }
     const iceShape = createRoundedRectShape(rinkWidth, rinkDepth, rinkCornerRadius);
     const iceGeometry = new THREE.ShapeGeometry(iceShape, 48);
     const iceMaterial = new THREE.MeshPhongMaterial({
@@ -413,18 +641,21 @@
     ice.receiveShadow = true;
     scene.add(ice);
 
-    const advertTexture = createAdvertTexture();
-    const advert = new THREE.Mesh(
-      new THREE.CircleGeometry(rinkWidth * 0.34, 64),
+    const tcgSpotlightTexture = createTcgSpotlightTexture();
+    const centerAdvert = new THREE.Mesh(
+      new THREE.CircleGeometry(rinkWidth * 0.42, 80),
       new THREE.MeshBasicMaterial({
-        map: advertTexture,
+        map: tcgSpotlightTexture,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.85,
+        depthWrite: true,
+        depthTest: true,
+        blending: THREE.NormalBlending,
       })
     );
-    advert.rotation.x = -Math.PI / 2;
-    advert.position.y = -0.01;
-    scene.add(advert);
+    centerAdvert.rotation.x = -Math.PI / 2;
+    centerAdvert.position.y = 0.01;
+    scene.add(centerAdvert);
 
     const iceGlowShape = createRoundedRectShape(rinkWidth + 1.4, rinkDepth + 1.4, rinkCornerRadius + 0.7);
     const iceGlowGeometry = new THREE.ShapeGeometry(iceGlowShape, 48);
@@ -822,217 +1053,6 @@
     let goalieChangeTimer = 0;
     let lampTimeout;
     let puckDropping = false;
-
-    function createAdvertTexture() {
-      const size = 640;
-      const canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      const center = size / 2;
-
-      ctx.clearRect(0, 0, size, size);
-
-      function drawRoundedRect(cx, cy, width, height, radius) {
-        const hw = width / 2;
-        const hh = height / 2;
-        const r = Math.min(radius, hw, hh);
-        ctx.beginPath();
-        ctx.moveTo(cx - hw + r, cy - hh);
-        ctx.lineTo(cx + hw - r, cy - hh);
-        ctx.quadraticCurveTo(cx + hw, cy - hh, cx + hw, cy - hh + r);
-        ctx.lineTo(cx + hw, cy + hh - r);
-        ctx.quadraticCurveTo(cx + hw, cy + hh, cx + hw - r, cy + hh);
-        ctx.lineTo(cx - hw + r, cy + hh);
-        ctx.quadraticCurveTo(cx - hw, cy + hh, cx - hw, cy + hh - r);
-        ctx.lineTo(cx - hw, cy - hh + r);
-        ctx.quadraticCurveTo(cx - hw, cy - hh, cx - hw + r, cy - hh);
-        ctx.closePath();
-      }
-
-      const baseGradient = ctx.createRadialGradient(center, center, size * 0.12, center, center, size * 0.48);
-      baseGradient.addColorStop(0, "#061129");
-      baseGradient.addColorStop(0.45, "#030919");
-      baseGradient.addColorStop(1, "#01040a");
-      ctx.fillStyle = baseGradient;
-      ctx.beginPath();
-      ctx.arc(center, center, size * 0.48, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      const auraGradient = ctx.createRadialGradient(center, center, size * 0.15, center, center, size * 0.52);
-      auraGradient.addColorStop(0, "rgba(118, 255, 246, 0.45)");
-      auraGradient.addColorStop(0.45, "rgba(74, 125, 255, 0.2)");
-      auraGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-      ctx.fillStyle = auraGradient;
-      ctx.beginPath();
-      ctx.arc(center, center, size * 0.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      const neonGradient = ctx.createLinearGradient(0, 0, size, size);
-      neonGradient.addColorStop(0, "#7b5bff");
-      neonGradient.addColorStop(0.5, "#00f6ff");
-      neonGradient.addColorStop(1, "#ff3fdc");
-      ctx.strokeStyle = neonGradient;
-      ctx.lineWidth = size * 0.038;
-      ctx.shadowColor = "rgba(0, 255, 255, 0.5)";
-      ctx.shadowBlur = 18;
-      ctx.beginPath();
-      ctx.arc(center, center, size * 0.43, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-      ctx.lineWidth = size * 0.008;
-      ctx.beginPath();
-      ctx.arc(center, center, size * 0.37, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.save();
-      ctx.translate(center, center);
-      ctx.rotate(-Math.PI / 6);
-      const stripeGradient = ctx.createLinearGradient(-size * 0.5, 0, size * 0.5, 0);
-      stripeGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
-      stripeGradient.addColorStop(0.45, "rgba(255, 255, 255, 0.2)");
-      stripeGradient.addColorStop(0.55, "rgba(255, 255, 255, 0.35)");
-      stripeGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-      ctx.fillStyle = stripeGradient;
-      ctx.fillRect(-size * 0.55, -size * 0.05, size * 1.1, size * 0.1);
-      ctx.restore();
-
-      const patternCanvas = document.createElement("canvas");
-      patternCanvas.width = patternCanvas.height = 140;
-      const pctx = patternCanvas.getContext("2d");
-      pctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-      pctx.lineWidth = 2;
-      for (let x = -140; x < 140; x += 28) {
-        pctx.beginPath();
-        pctx.moveTo(x + 14, 0);
-        pctx.lineTo(x + 140, 140);
-        pctx.stroke();
-      }
-      for (let x = -140; x < 140; x += 28) {
-        pctx.beginPath();
-        pctx.moveTo(x + 140, 0);
-        pctx.lineTo(x + 14, 140);
-        pctx.stroke();
-      }
-      const pattern = ctx.createPattern(patternCanvas, "repeat");
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(center, center, size * 0.34, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.globalAlpha = 0.8;
-      ctx.fillStyle = pattern;
-      ctx.fillRect(center - size * 0.34, center - size * 0.34, size * 0.68, size * 0.68);
-      ctx.restore();
-
-      const shieldGradient = ctx.createLinearGradient(center, center - size * 0.3, center, center + size * 0.3);
-      shieldGradient.addColorStop(0, "#1f99ff");
-      shieldGradient.addColorStop(0.5, "#3f2b8f");
-      shieldGradient.addColorStop(1, "#0a0513");
-      ctx.fillStyle = shieldGradient;
-      ctx.beginPath();
-      ctx.moveTo(center, center - size * 0.27);
-      ctx.quadraticCurveTo(center + size * 0.24, center - size * 0.22, center + size * 0.22, center);
-      ctx.quadraticCurveTo(center + size * 0.1, center + size * 0.34, center, center + size * 0.38);
-      ctx.quadraticCurveTo(center - size * 0.1, center + size * 0.34, center - size * 0.22, center);
-      ctx.quadraticCurveTo(center - size * 0.24, center - size * 0.22, center, center - size * 0.27);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
-      ctx.lineWidth = size * 0.01;
-      ctx.stroke();
-
-      const badgeRimGradient = ctx.createLinearGradient(center - size * 0.2, center, center + size * 0.2, center);
-      badgeRimGradient.addColorStop(0, "rgba(255, 255, 255, 0.05)");
-      badgeRimGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.35)");
-      badgeRimGradient.addColorStop(1, "rgba(255, 255, 255, 0.05)");
-      ctx.strokeStyle = badgeRimGradient;
-      ctx.lineWidth = size * 0.02;
-      ctx.beginPath();
-      ctx.arc(center, center, size * 0.26, 0, Math.PI * 2);
-      ctx.stroke();
-
-      drawRoundedRect(center, center - size * 0.01, size * 0.62, size * 0.18, size * 0.09);
-      const plateGradient = ctx.createLinearGradient(center, center - size * 0.12, center, center + size * 0.12);
-      plateGradient.addColorStop(0, "rgba(6, 8, 28, 0.9)");
-      plateGradient.addColorStop(0.5, "rgba(12, 18, 52, 0.95)");
-      plateGradient.addColorStop(1, "rgba(6, 8, 28, 0.9)");
-      ctx.fillStyle = plateGradient;
-      ctx.fill();
-
-      ctx.strokeStyle = "rgba(123, 223, 255, 0.5)";
-      ctx.lineWidth = size * 0.008;
-      ctx.stroke();
-
-      ctx.save();
-      ctx.clip();
-      const plateHighlight = ctx.createLinearGradient(center - size * 0.2, center - size * 0.06, center + size * 0.2, center + size * 0.06);
-      plateHighlight.addColorStop(0, "rgba(255, 255, 255, 0)");
-      plateHighlight.addColorStop(0.5, "rgba(255, 255, 255, 0.35)");
-      plateHighlight.addColorStop(1, "rgba(255, 255, 255, 0)");
-      ctx.fillStyle = plateHighlight;
-      ctx.fillRect(center - size * 0.31, center - size * 0.09, size * 0.62, size * 0.18);
-      ctx.restore();
-
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-
-      ctx.shadowColor = "rgba(23, 2, 32, 0.85)";
-      ctx.shadowBlur = 32;
-      ctx.fillStyle = "#f8ddff";
-      ctx.strokeStyle = "rgba(51, 2, 68, 0.9)";
-      ctx.lineWidth = size * 0.009;
-      ctx.font = "900 86px 'Segoe UI'";
-      ctx.strokeText("TARMOLA", center, center - size * 0.08);
-      ctx.fillText("TARMOLA", center, center - size * 0.08);
-
-      ctx.shadowBlur = 18;
-      ctx.fillStyle = "#f4deff";
-      ctx.strokeStyle = "rgba(30, 0, 46, 0.85)";
-      ctx.lineWidth = size * 0.007;
-      ctx.font = "700 48px 'Segoe UI'";
-      ctx.strokeText("CODE GARAGE", center, center + size * 0.02);
-      ctx.fillText("CODE GARAGE", center, center + size * 0.02);
-
-      ctx.shadowBlur = 12;
-      ctx.fillStyle = "#ffd9ff";
-      ctx.strokeStyle = "rgba(28, 0, 24, 0.75)";
-      ctx.lineWidth = size * 0.005;
-      ctx.font = "600 34px 'Segoe UI'";
-      ctx.strokeText("PREMIUM AIR HOCKEY", center, center + size * 0.11);
-      ctx.fillText("PREMIUM AIR HOCKEY", center, center + size * 0.11);
-
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.65)";
-      ctx.lineWidth = size * 0.012;
-      ctx.beginPath();
-      ctx.moveTo(center - size * 0.22, center + size * 0.04);
-      ctx.lineTo(center + size * 0.22, center + size * 0.04);
-      ctx.stroke();
-
-      ctx.fillStyle = "rgba(255, 255, 255, 0.86)";
-      ctx.beginPath();
-      ctx.moveTo(center, center - size * 0.3);
-      ctx.lineTo(center + size * 0.018, center - size * 0.26);
-      ctx.lineTo(center - size * 0.018, center - size * 0.26);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
-      ctx.beginPath();
-      ctx.arc(center + size * 0.16, center - size * 0.2, size * 0.03, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(center - size * 0.2, center + size * 0.24, size * 0.022, 0, Math.PI * 2);
-      ctx.fill();
-
-      return new THREE.CanvasTexture(canvas);
-    }
 
     function createGoalGlowTexture(flip = false) {
       const size = 512;
