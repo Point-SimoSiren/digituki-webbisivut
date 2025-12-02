@@ -7,26 +7,134 @@
   <meta name="description" content="Kosteusmittaukset rakenteista ja materiaalitesteistä sekä laitevuokraus. Mittaukset Porvoon alueella, alkaen 39€.">
   <link rel="icon" href="icons/icon-192.png" type="image/png">
   <style>
-    :root { color-scheme: dark; font-family: 'Segoe UI', Arial, sans-serif; }
-    body { margin:0; background: linear-gradient(135deg, #050b19 0%, #091632 55%, #041024 100%); color: #dbe6ff; min-height:100vh; }
-    .container { max-width:900px; margin:0 auto; padding:2.6rem 1.6rem 3.6rem; }
-    a { color: #8dd6ff; text-decoration:none; }
-    .card { background: rgba(12,19,38,0.9); border-radius:14px; padding:1.6rem; border:1px solid rgba(117,155,255,0.18); }
-    nav { display:flex; gap:1rem; justify-content:center; margin-bottom:1.4rem; }
-    .nav-link { padding:0.45rem 1rem; border-radius:999px; background: rgba(18,29,62,0.55); color:#d9e6ff; text-decoration:none; border:1px solid rgba(116,148,255,0.18); font-weight:600; }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: radial-gradient(circle at 20% -10%, rgba(88, 101, 242, 0.45), transparent 45%),
+                  radial-gradient(circle at 85% 0%, rgba(32, 201, 151, 0.35), transparent 40%),
+                  url('mittarit.jpg') repeat-x center center fixed;
+      background-size: auto 80%;
+      min-height: 100vh;
+      color: #e6efff;
+    }
+    .overlay {
+      background: rgba(7, 9, 17, 0.30);
+      min-height: 100vh;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3.6rem;
+    }
+    nav {
+      text-align: center;
+      margin: 1.5rem 0 2.5rem;
+    }
+    nav a {
+      display: inline-block;
+      margin: 0 0.9rem;
+      color: #a6b7e7;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    nav a:hover,
+    nav a:focus {
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    .nav-link-portal {
+      padding: 0.55rem 1.6rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #5c17ff, #13b0ff 55%, #8dff8b);
+      color: #0b0618 !important;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 25px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-link-portal::after {
+      content: '';
+      position: absolute;
+      inset: -150% 40% auto 40%;
+      height: 300%;
+      width: 25%;
+      background: rgba(255, 255, 255, 0.45);
+      transform: rotate(35deg);
+      transition: transform 0.35s ease;
+    }
+    .nav-link-portal:hover::after,
+    .nav-link-portal:focus::after {
+      transform: rotate(35deg) translateY(-40%);
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #ffffff;
+      text-shadow: 0 5px 25px rgba(20, 210, 255, 0.45);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    h2 {
+      color: #9ec4ff;
+      margin-top: 2rem;
+      letter-spacing: 0.03em;
+    }
+    h3, h4 {
+      letter-spacing: 0.03em;
+    }
+    .card {
+      background: rgba(14, 17, 30, 0.9);
+      border: 1px solid rgba(114, 141, 255, 0.25);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 20px 45px rgba(6, 10, 26, 0.7);
+      margin-bottom: 2rem;
+    }
+    .card p {
+      color: rgba(218, 231, 255, 0.88);
+      line-height: 1.68;
+    }
+    ul {
+      margin-left: 1.4rem;
+      color: rgba(215, 228, 255, 0.9);
+      line-height: 1.65;
+    }
+    a {
+      color: #8dd6ff;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    a:hover,
+    a:focus-visible {
+      color: #c7f1ff;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <nav>
-      <a class="nav-link" href="index.html">Etusivu</a>
-      <a class="nav-link" href="esittely.html">Esittely</a>
-      <a class="nav-link" href="pelit.html">Web-pelit</a>
+  <div class="overlay">
+    <div class="container">
+      <nav>
+      <a href="index.html">Etusivu</a>
+      <a href="esittely.html">Esittely</a>
+      <a href="kosteusmittaus.html">Kosteusmittaus</a>
+      <a href="pelit.html" class="nav-link-portal">Web-pelit</a>
     </nav>
 
     <div class="card">
       <h1>Kosteusmittaus ja laitevuokraus</h1>
-      <p>Tarjoamme kattavat kosteus- ja ilmanlaatumittaukset rakenteista ja materiaaleista (puu, levy, betoni jne.). Mittaukset suoritetaan useammalla erityyppisellä mittarilla ja teemme vertailumittauksia kuivaksi tiedettyihin referenssimateriaaleihin, jotta tulokset ovat luotettavia.</p>
+      <p>Tarjoamme kosteuden- ja ilmanlaadun mittauksia (rakenteet: puu, levy, betoni jne.). 
+        Mittaukset suoritetaan useammalla erityyppisellä mittarilla, monesta eri kohdasta, jotta tulokset ovat luotettavia.</p>
+        <p>Puutuoteteollisuuden kokemuksemme mukaisesti pyrimme tuntemaan mittalaitteemme ja testaamme niitä materiaalien punnitus/kuivaus menetelmällä
+          , jotta tiedämme niiden tyypillisen mittaustarkkuuden eri materiaaleilla.
+        </p>
 
       <h2>Kuinka mittaus tehdään</h2>
       <ul>
@@ -38,15 +146,20 @@
       <h2>Laitteiden vuokraus (Hygglo)</h2>
       <p>Tarjoamme myös laitevuokrausta Hygglo-palvelun kautta. Esimerkkejä vuokrattavista laitteista:</p>
       <ul>
-        <li><a href="https://www.hygglo.fi/i/2af-mestek-wm700-kosteusmittari" target="_blank" rel="noopener noreferrer">Mestek WM700 piikkimittari</a> — 9€/vrk</li>
-        <li><a href="https://www.hygglo.fi/i/e8a-kosteusmittari-replab-piikki-ja-levy-antureilla" target="_blank" rel="noopener noreferrer">RepLab NS-860 piikki/levy yhdistelmä</a> — 9€/vrk</li>
+
+        <li><a href="https://www.hygglo.fi/i/d07-kosteusmittari-pallo-anturilla" target="_blank" rel="noopener noreferrer">Porometisto WTS01 palloanturilla</a> — 8€/vrk</li>
+        <li><a href="https://www.hygglo.fi/i/2af-mestek-wm700-kosteusmittari" target="_blank" rel="noopener noreferrer">Mestek WM700 piikkimittari ja ilmankosteusmittari</a> — 8€/vrk</li>
+        <li><a href="https://www.hygglo.fi/i/e8a-kosteusmittari-replab-piikki-ja-levy-antureilla" target="_blank" rel="noopener noreferrer">RepLab NS-860 piikki/laatta yhdistelmä</a> — 8€/vrk</li>
+        <li><a href=" https://www.hygglo.fi/i/183-ilmanlaatu-mittarit-2-erilaista-paketti" target="_blank" rel="noopener noreferrer">Ilmanlaatumittarit 2 erilaista pakettina</a></li>
         <li><a href="https://www.hygglo.fi/users/LWxDqQHb9-simo" target="_blank" rel="noopener noreferrer">Muut vuokrattavat laitteemme</a></li>
       </ul>
 
-      <h2>Hinnasto (kosteuspalvelut)</h2>
+      <h2>Hinnasto (mittauspalvelut)</h2>
       <ul>
-        <li>Kosteusmittauskäynti — alk. 39€ (sis. laajahkon mittaussarjan kohteesta riippuen).</li>
-        <li>Laitteiden vuokraus — katso Hygglo-ilmoitukset (esim. 9€/vrk laitteesta).</li>
+        <li>Kosteusmittausäynti — alk. 39€ (sis. laajahkon mittaussarjan kohteesta riippuen).</li>
+        <li>Pistorasioiden testaus testerillä 12€ / käynti + 1€ / pistorasia: vaihejännite, oikeat kytkennät, nolla-suojamaa ero, vikavirtasuojauksen toiminta kyseiseltä pistorasialta käsin.</li>
+        <li>Palovaroitinten hankinta- ja asennuspalvelu 15€ / kpl + hankintahinta alk. 5€ / kpl.</li>
+        <li>Laitteiden vuokraus — katso Hygglo-ilmoitukset.</li>
         <li>Matkakulut sisältyvät Porvoon alueella.</li>
       </ul>
 
@@ -59,4 +172,5 @@
     </div>
   </div>
 </body>
+</html>
 </html>
