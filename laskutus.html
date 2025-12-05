@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarmokas laskutus-ohjelma | Tarmola Code Garage</title>
+  <meta name="description" content="Tarmokas-laskutus: asiakasrekisteri, PDF-lasku viivakoodilla, virtuaaliviivakoodi, yrityksen logo ja ALV-erittelyt. 2 kk ilmainen kokeilu, ostohinta 100€ tai 45€/vuosi, myyntilisenssi 1000€." />
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 16% -10%, rgba(88, 101, 242, 0.3), transparent 52%),
+        radial-gradient(circle at 90% 6%, rgba(32, 201, 151, 0.25), transparent 48%),
+        linear-gradient(135deg, #050b19 0%, #0a1836 55%, #041023 100%),
+        url('Laptop.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: #dbe6ff;
+    }
+    .overlay {
+      background: rgba(4, 9, 22, 0.86);
+      backdrop-filter: blur(6px);
+      min-height: 100vh;
+      padding: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.6rem 1.6rem 3.6rem;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.6rem 0 2.3rem;
+    }
+    .nav-link-anim {
+      opacity: 0;
+      transform: translateY(16px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        opacity 0.28s ease-out,
+        transform 0.28s ease-out,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        color 0.2s ease;
+      padding: 0.45rem 1.15rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #d9e6ff;
+      background: rgba(18, 29, 62, 0.55);
+      border: 1px solid rgba(116, 148, 255, 0.3);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .nav-link-anim.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .nav-link-anim:hover,
+    .nav-link-anim:focus-visible {
+      color: #ffffff;
+      background: rgba(78, 131, 255, 0.55);
+      border-color: rgba(160, 210, 255, 0.65);
+      box-shadow: 0 14px 32px rgba(52, 120, 255, 0.28);
+    }
+    .nav-link-active {
+      background: linear-gradient(140deg, rgba(94, 158, 255, 0.55), rgba(65, 198, 255, 0.46));
+      border-color: rgba(135, 210, 255, 0.75);
+      color: #ffffff;
+      box-shadow: 0 16px 36px rgba(58, 132, 255, 0.38);
+    }
+    .nav-link-construction {
+      padding: 0.45rem 1.15rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #d4691e 0%, #e8a237 50%, #d4691e 100%);
+      color: #ffffff !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 20px rgba(212, 105, 30, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(160, 82, 45, 0.6);
+      position: relative;
+      overflow: hidden;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .nav-link-construction::before {
+      content: '! ';
+    }
+    .nav-link-construction::after {
+      content: '';
+      position: absolute;
+      inset: -50% 0 -50% 0;
+      width: 100%;
+      height: 200%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.15) 10px,
+        rgba(255, 255, 255, 0.15) 20px
+      );
+      transform: translateY(0);
+      transition: transform 0.4s ease;
+      pointer-events: none;
+    }
+    .nav-link-construction:hover::after,
+    .nav-link-construction:focus-visible::after {
+      transform: translateY(40%);
+    }
+    .nav-link-portal {
+      padding: 0.55rem 1.6rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #5c17ff, #13b0ff 55%, #8dff8b);
+      color: #051022 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      box-shadow: 0 0 25px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(19, 176, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none !important;
+    }
+    .nav-link-portal::after {
+      content: '';
+      position: absolute;
+      inset: -130% 45% auto 45%;
+      width: 20%;
+      height: 300%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(35deg);
+      transition: transform 0.35s ease;
+      pointer-events: none;
+    }
+    .nav-link-portal:hover::after,
+    .nav-link-portal:focus-visible::after {
+      transform: rotate(35deg) translateY(-40%);
+    }
+    h1 {
+      text-align: center;
+      margin: 0.2rem 0 0.4rem;
+      color: #f4f8ff;
+      letter-spacing: 0.05em;
+      text-shadow: 0 22px 45px rgba(0, 0, 0, 0.55);
+    }
+    h2 {
+      color: #9ec4ff;
+      margin-top: 0;
+      letter-spacing: 0.03em;
+    }
+    h3 {
+      letter-spacing: 0.03em;
+      color: #b2d3ff;
+    }
+    p {
+      color: rgba(218, 231, 255, 0.88);
+      line-height: 1.68;
+    }
+    ul {
+      margin-left: 1.4rem;
+      color: rgba(215, 228, 255, 0.9);
+      line-height: 1.65;
+    }
+    .card {
+      background: rgba(12, 19, 38, 0.84);
+      border-radius: 18px;
+      border: 1px solid rgba(117, 155, 255, 0.28);
+      box-shadow: 0 22px 55px rgba(3, 10, 26, 0.6);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+    .lead {
+      font-size: 1.1rem;
+      max-width: 900px;
+      margin: 0.4rem auto 1.2rem;
+      text-align: center;
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: #8dd6ff;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 0.6rem 0 1.2rem;
+    }
+    .badge {
+      padding: 0.45rem 0.9rem;
+      border-radius: 12px;
+      font-weight: 700;
+      background: rgba(48, 147, 255, 0.22);
+      border: 1px solid rgba(133, 191, 255, 0.45);
+      color: #e8f2ff;
+      box-shadow: inset 0 0 18px rgba(60, 110, 210, 0.25);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      margin-top: 0.8rem;
+    }
+    .cta,
+    .cta-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.45rem;
+      border-radius: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+    .cta {
+      background: linear-gradient(130deg, #5c17ff, #13b0ff 55%, #8dff8b);
+      color: #041024;
+      border: 2px solid rgba(19, 176, 255, 0.4);
+      box-shadow: 0 18px 40px rgba(19, 176, 255, 0.35);
+    }
+    .cta:hover,
+    .cta:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(19, 176, 255, 0.45);
+    }
+    .cta-ghost {
+      color: #dbe6ff;
+      border: 1px solid rgba(133, 191, 255, 0.4);
+      background: rgba(18, 29, 62, 0.5);
+    }
+    .cta-ghost:hover,
+    .cta-ghost:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(200, 230, 255, 0.7);
+      box-shadow: 0 16px 36px rgba(58, 132, 255, 0.28);
+    }
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+    .price-card {
+      border: 1px solid rgba(117, 155, 255, 0.28);
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem;
+      background: rgba(10, 21, 46, 0.8);
+      box-shadow: inset 0 0 12px rgba(65, 118, 255, 0.18);
+    }
+    .price-tag {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #f7fbff;
+      margin: 0 0 0.25rem;
+    }
+    .subline {
+      color: rgba(210, 225, 255, 0.82);
+      margin: 0.15rem 0 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .feature-list li + li {
+      margin-top: 0.4rem;
+    }
+    .collage-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+      align-items: start;
+    }
+    .shot {
+      position: relative;
+      padding: 0.6rem;
+      border-radius: 14px;
+      background: rgba(14, 24, 50, 0.8);
+      border: 1px solid rgba(120, 170, 255, 0.25);
+      box-shadow: inset 0 0 12px rgba(90, 135, 255, 0.2);
+      overflow: visible;
+      isolation: isolate;
+    }
+    .shot img {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+      box-shadow: 0 10px 22px rgba(2, 8, 22, 0.6);
+      transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+      transform-origin: center;
+    }
+    .shot:hover img,
+    .shot:focus-within img {
+      /* kuvan zoomaus */
+      transform: scale(2.7);
+      box-shadow: 0 32px 90px rgba(0, 12, 36, 0.85);
+      filter: brightness(1.08);
+      z-index: 2;
+    }
+    .shot-window6:hover img,
+    .shot-window6:focus-within img {
+      transform: scale(1.6);
+    }
+    .contact {
+      font-size: 1.05rem;
+      margin-top: 1.2rem;
+      background: rgba(16, 25, 48, 0.82);
+      border: 1px solid rgba(129, 178, 255, 0.35);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      color: rgba(229, 239, 255, 0.92);
+      box-shadow: inset 0 0 18px rgba(60, 110, 210, 0.25);
+    }
+    @media (max-width: 700px) {
+      .container {
+        padding: 2rem 1.2rem 3rem;
+      }
+      nav {
+        gap: 0.75rem;
+      }
+      h1 {
+        font-size: 1.9rem;
+      }
+      .lead {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="laskutus.html" class="nav-link-anim nav-link-active" id="nav-link-3" aria-current="page">Laskutus-ohjelma</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="kosteusmittaus.html" class="nav-link-anim nav-link-construction" id="nav-link-6">Kosteusmittaus</a>
+        <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5">Web-pelit</a>
+      </nav>
+
+      <div class="card">
+        <div class="eyebrow">Työpöytäsovellus Windowsille</div>
+        <h1>"Tarmokas" laskutus-ohjelma</h1>
+        <p class="lead">
+          Kevyt laskutustyökalu pienelle yritykselle ja toiminimelle: asiakasrekisteri, PDF-laskut viivakoodilla ja virtuaaliviivakoodilla, oma logo ja ALV-erittelyt yhdellä napilla.
+          Saat 2 kuukauden maksuttoman kokeilujakson ennen ostopäätöstä.
+        </p>
+        <div class="badge-row">
+          <span class="badge">2 kk ilmainen kokeilu</span>
+          <span class="badge">Hinta alk. 100€ (tai 45€ / vuosi)</span>
+          <span class="badge">Myyntilisenssi 1000€</span>
+        </div>
+        <div class="cta-row">
+          <a class="cta" href="tel:+358509109926">Soita ja asennetaan</a>
+          <a class="cta-ghost" href="mailto:simosiren1@gmail.com?subject=Tarmokas%20laskutus%20-demo&body=Hei%2C%20haluan%20kokeilla%20Tarmokas-laskutusohjelmaa.">Pyydä demo</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Mitä sovellus osaa?</h2>
+        <ul class="feature-list">
+          <li>Asiakasrekisteri, jonka tiedoista laskut syntyvät valmiilla laskupohjalla.</li>
+          <li>PDF-laskut viivakoodilla, virtuaaliviivakoodilla ja SEPA-tilisiirtotiedoilla.</li>
+          <li>Yrityksen logo ja ALV-erittelyt valmiiksi aseteltuna laskulle.</li>
+          <li>Maksuehto, viitenumero, viivästyskorko ja laskun alv-summat automaattisesti riveille.</li>
+          <li>Laskumalli, joka on helppo tulostaa tai lähettää sähköpostitse.</li>
+          <li>Päivitykset ja käyttötuki tarvittaessa Porvoon seudulla.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Hinta ja lisenssit</h2>
+        <div class="price-grid">
+          <div class="price-card">
+            <div class="price-tag">100€</div>
+            <div class="subline">Kertasijoitus</div>
+            <p>Yhden käyttäjän lisenssi. Sisältää asennuksen ja käyttöönoton.</p>
+          </div>
+          <div class="price-card">
+            <div class="price-tag">45€ / vuosi</div>
+            <div class="subline">Vuositilaus</div>
+            <p>Joustava vuosimaksu, sama toiminnallisuus kuin kertasijoituksessa.</p>
+          </div>
+          <div class="price-card">
+            <div class="price-tag">30€</div>
+            <div class="subline">Lisäkäyttäjä</div>
+            <p>Saman yrityksen lisäkäyttäjä (tai 10€ / vuosi vuositilauksessa).</p>
+          </div>
+          <div class="price-card">
+            <div class="price-tag">1000€</div>
+            <div class="subline">Myyntilisenssi</div>
+            <p>Vapaus myydä ohjelmaa omalla brändillä ja omalla hinnoittelulla.</p>
+          </div>
+        </div>
+        <p style="margin-top: 1rem;">Kokeile ensin 2 kuukautta ilmaiseksi. Voit päättää kertasijoituksesta tai vuositilauksesta vasta kokeilun jälkeen.</p>
+      </div>
+
+      <div class="card">
+        <h2>Kuvakollaasi</h2>
+        <p>Pidä hiirtä kuvan päällä niin se suurenee – alla pääruudut ja laskumalli.</p>
+      <div class="collage-grid">
+        <figure class="shot">
+          <img src="Window1.png" alt="Asiakaslista ja laskun perustiedot">
+        </figure>
+        <figure class="shot">
+          <img src="Window2.png" alt="Laskurivit ja summat">
+        </figure>
+        <figure class="shot">
+          <img src="Window3.png" alt="Logon ja maksutietojen asetukset">
+        </figure>
+        <figure class="shot">
+          <img src="Window4.png" alt="PDF-lasku virtuaaliviivakoodilla">
+        </figure>
+        <figure class="shot">
+          <img src="Window5.png" alt="PDF-lasku viivakoodilla">
+        </figure>
+        <figure class="shot shot-window6">
+          <img src="Window6.png" alt="Valmis laskupohja asiakkaalle">
+        </figure>
+      </div>
+      </div>
+
+      <div class="card">
+        <h2>Yhteystiedot</h2>
+        <div class="contact">
+          Sovithan asennuksesta tai etädemosta etukäteen:<br>
+          Puhelin ja WhatsApp: 050 910 9926<br>
+          Sähköposti: simosiren1@gmail.com<br>
+          Osoite: Tarmolankatu 5, 06100 PORVOO<br>
+          Y-tunnus: 3572410-5
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Kevyt animaatio nav-linkeille
+    window.addEventListener('DOMContentLoaded', function() {
+      const navLinks = Array.from(document.querySelectorAll('.nav-link-anim'));
+      setTimeout(() => {
+        navLinks.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
+      }, 160);
+    });
+  </script>
+</body>
+</html>
