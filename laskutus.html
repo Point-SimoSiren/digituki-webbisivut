@@ -16,7 +16,7 @@
         radial-gradient(circle at 16% -10%, rgba(88, 101, 242, 0.3), transparent 52%),
         radial-gradient(circle at 90% 6%, rgba(32, 201, 151, 0.25), transparent 48%),
         linear-gradient(135deg, #050b19 0%, #0a1836 55%, #041023 100%),
-        url('Laptop.png') no-repeat center center fixed;
+        url('images/Laptop.png') no-repeat center center fixed;
       background-size: cover;
       min-height: 100vh;
       color: #dbe6ff;
@@ -364,8 +364,8 @@
           <span class="badge">Myyntilisenssi 1000€</span>
         </div>
         <div class="cta-row">
-          <a class="cta" href="tel:+358509109926">Soita ja asennetaan</a>
-          <a class="cta-ghost" href="mailto:simosiren1@gmail.com?subject=Tarmokas%20laskutus%20-demo&body=Hei%2C%20haluan%20kokeilla%20Tarmokas-laskutusohjelmaa.">Pyydä demo</a>
+          <a class="cta" id="cta-call">Soita ja asennetaan</a>
+          <a class="cta-ghost" id="cta-demo">Pyydä demo</a>
         </div>
       </div>
 
@@ -413,22 +413,22 @@
         <p>Pidä hiirtä kuvan päällä niin se suurenee – alla pääruudut ja laskumalli.</p>
       <div class="collage-grid">
         <figure class="shot">
-          <img src="Window1.png" alt="Asiakaslista ja laskun perustiedot">
+          <img src="images/Window1.png" alt="Asiakaslista ja laskun perustiedot">
         </figure>
         <figure class="shot">
-          <img src="Window2.png" alt="Laskurivit ja summat">
+          <img src="images/Window2.png" alt="Laskurivit ja summat">
         </figure>
         <figure class="shot">
-          <img src="Window3.png" alt="Logon ja maksutietojen asetukset">
+          <img src="images/Window3.png" alt="Logon ja maksutietojen asetukset">
         </figure>
         <figure class="shot">
-          <img src="Window4.png" alt="PDF-lasku virtuaaliviivakoodilla">
+          <img src="images/Window4.png" alt="PDF-lasku virtuaaliviivakoodilla">
         </figure>
         <figure class="shot">
-          <img src="Window5.png" alt="PDF-lasku viivakoodilla">
+          <img src="images/Window5.png" alt="PDF-lasku viivakoodilla">
         </figure>
         <figure class="shot shot-window6">
-          <img src="Window6.png" alt="Valmis laskupohja asiakkaalle">
+          <img src="images/Window6.png" alt="Valmis laskupohja asiakkaalle">
         </figure>
       </div>
       </div>
@@ -453,6 +453,34 @@
       setTimeout(() => {
         navLinks.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
       }, 160);
+
+      // Vaihda CTA-nappien teksti yhteystietoihin klikatessa
+      const callCta = document.getElementById('cta-call');
+      const demoCta = document.getElementById('cta-demo');
+      if (callCta) {
+        callCta.addEventListener('click', () => {
+          if (callCta.textContent !== '050 910 9926')
+          callCta.textContent = '050 910 9926';
+          else {
+            callCta.textContent = 'Soita! soita! :)';
+          }
+        });
+      }
+      if (demoCta) {
+        demoCta.addEventListener('click', () => {
+           if (demoCta.textContent !== 'simosiren1@gmail.com') {
+          demoCta.textContent = 'simosiren1@gmail.com';
+           }
+           else if (demoCta.textContent !== 'Pyydä demo! :)') {
+              demoCta.textContent = 'Alempana näet myös kuvia!';
+           }
+
+          else {
+            demoCta.textContent = 'Pyydä demo! :)';
+          }
+         
+        });
+      }
     });
   </script>
 </body>

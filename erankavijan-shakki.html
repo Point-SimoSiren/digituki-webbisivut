@@ -123,7 +123,7 @@
       grid-template-columns: repeat(var(--cols), var(--cell-size));
       grid-template-rows: repeat(var(--rows), var(--cell-size));
       background-image:
-        url("Camokuva.png"),
+        url("images/Camokuva.png"),
         linear-gradient(90deg, rgba(0, 0, 0, 0.2) 1px, transparent 1px),
         linear-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px),
         repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03) 8px, transparent 8px, transparent 16px);
@@ -259,6 +259,31 @@
     .link-btn:hover {
       background: rgba(223, 244, 141, 0.12);
       color: #f6ffca;
+    }
+    .site-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1.3rem auto 0.6rem;
+    }
+    .site-links a {
+      padding: 0.4rem 0.85rem;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      background: rgba(255, 255, 255, 0.85);
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+      transition: transform 0.18s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .site-links a:hover,
+    .site-links a:focus-visible {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
     }
 
     @media (max-width: 768px) {
