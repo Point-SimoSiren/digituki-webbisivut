@@ -259,7 +259,7 @@
       right: 1.5rem;
       background: rgba(15, 28, 60, 0.92);
       color: #f6fbff;
-      padding: 1.1rem 1.6rem;
+      padding: 1.1rem 2.4rem 1.1rem 1.6rem;
       border-radius: 14px;
       box-shadow: 0 18px 40px rgba(6, 12, 28, 0.55);
       cursor: pointer;
@@ -272,6 +272,23 @@
     #installHint:hover,
     #installHint:focus-visible {
       filter: brightness(1.12);
+    }
+    #installHintClose {
+      position: absolute;
+      top: 0.35rem;
+      right: 0.35rem;
+      background: transparent;
+      border: none;
+      color: #d7edff;
+      font-size: 1.05rem;
+      cursor: pointer;
+      padding: 0.15rem 0.35rem;
+      line-height: 1;
+    }
+    #installHintClose:hover,
+    #installHintClose:focus-visible {
+      color: #ffffff;
+      filter: brightness(1.1);
     }
     @keyframes pulse {
       0% { transform: scale(1); }
@@ -328,7 +345,7 @@
         <span class="word-anim" id="word-service"> Code</span>
         <span class="word-anim" id="word-porvoo"> Garage</span>
       </h1>
-      <marquee scrollamount="14"><h2>Linux ja Windows käyttöjärjestelmien asennus, päivitykset- ja käytön opastus, IT-tuki kotikäynnit, verkkosivujen luominen, hostaus ja ylläpito, Pelillisyyden toteutukset sivustoille, Koodarin pienet konsultointityöt, kosteusmittaus rakenteista ja materiaaleista.</h1></marquee>
+      <marquee scrollamount="17" direction="left"><h2>Tervetuloa tutustumaan palveluumme! Välkommen att bekanta dig med våra tjänster!</h2></marquee>
 
       <nav>
         <a href="index.html" class="nav-link-anim nav-link-active" id="nav-link-1" aria-current="page">Etusivu</a>
@@ -366,7 +383,7 @@
           <li>Laskulla viivakoodi, virtuaaliviivakoodi, yrityksen logo, ALV erittelyt, jne.</li>
           <li>Ostohinta 100€ (tai 45 € / vuosimaksu) yhdelle käyttäjälle.</li>
           <li>Lisäkäyttäjät samassa yrityksessä á 30€ (tai á 10€ / vuosi)</li>
-          <li>Myyntilisenssi 1000€, jolla on oikeus myydä sovellusta rajoituksetta kuin omana tuotteenaan.</li>
+         
            <span>_______________________________________</span>
           <h3>Lisätietoja ja hintoja kosteusmittauksesta ja laitevuokrauksesta: <a href="kosteusmittaus.html">Kosteusmittaus &amp; laitevuokraus</a></h3>
           <p>Matkakulut sisältyy Porvoon alueella</p>
@@ -389,7 +406,7 @@
   </div>
 
   <!-- Asennusvinkin elementti -->
-  <div id="installHint">💾 Voit asentaa sivumme laitteellesi..<br>
+  <div id="installHint"><button type="button" id="installHintClose" aria-label="Sulje asennusvinkki">&times;</button> 💾 Voit asentaa sivumme laitteellesi..<br>
     ..niin huomaat miten toimii Progressive Web App<br>
   </div>
 
@@ -411,8 +428,20 @@
 
     const navLinks = Array.from(document.querySelectorAll('.nav-link-anim'));
     setTimeout(() => {
-      navLinks.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
-    }, 480);
+      navLinks.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 210));
+    }, 3000);
+
+    let marqueeEl = document.querySelector('marquee');
+    if (marqueeEl) {
+      setTimeout(() => {
+        const replacement = marqueeEl.cloneNode(true);
+        replacement.setAttribute('direction', 'right');
+        marqueeEl.replaceWith(replacement);
+        marqueeEl = replacement;
+      }, 8000);
+
+      setTimeout(() => marqueeEl?.remove(), 16000);
+    }
   });
 
   // PWA: Service Worker
@@ -427,6 +456,11 @@
   // PWA-asennusvinkki
   let deferredPrompt;
   const installHint = document.getElementById('installHint');
+  const installHintClose = document.getElementById('installHintClose');
+
+  const hideInstallHint = () => {
+    installHint.style.display = 'none';
+  };
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
@@ -434,8 +468,19 @@
     installHint.style.display = 'block';
   });
 
+  if (installHintClose) {
+    installHintClose.addEventListener('click', (event) => {
+      event.stopPropagation();
+      hideInstallHint();
+      deferredPrompt = null;
+    });
+  }
+
   installHint.addEventListener('click', async () => {
-    installHint.style.display = 'none';
+    hideInstallHint();
+    if (!deferredPrompt) {
+      return;
+    }
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     console.log('PWA-asennuksen valinta:', outcome);
