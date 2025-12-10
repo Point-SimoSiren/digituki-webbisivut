@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arpakone – Onnenpyörä</title>
+  <style>
+    :root {
+      --bg: #0b1224;
+      --panel: #111a2f;
+      --accent: #5ac8ff;
+      --text: #eaf1ff;
+      --muted: #9db2d7;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 15% 20%, rgba(90, 200, 255, 0.18), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 121, 198, 0.16), transparent 38%),
+                  linear-gradient(140deg, #050915, #0f1b34 60%, #061026);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.6rem;
+    }
+    .card {
+      width: min(960px, 100%);
+      background: rgba(9, 14, 28, 0.88);
+      border: 1px solid rgba(120, 178, 255, 0.25);
+      border-radius: 18px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+      padding: 1.6rem;
+    }
+    h1 {
+      margin: 0 0 1.2rem;
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.6rem;
+      align-items: center;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid rgba(120, 178, 255, 0.28);
+      background: rgba(17, 30, 56, 0.75);
+      color: var(--text);
+      outline: none;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(90, 200, 255, 0.16);
+    }
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid rgba(120, 178, 255, 0.28);
+      background: rgba(17, 30, 56, 0.75);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .icon-btn:hover,
+    .icon-btn:focus-visible {
+      background: rgba(90, 200, 255, 0.2);
+      border-color: rgba(90, 200, 255, 0.55);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+    .primary {
+      background: linear-gradient(120deg, #5ac8ff, #7df3c9);
+      color: #041024;
+      border: none;
+      padding: 0.95rem 1.4rem;
+      border-radius: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 12px 28px rgba(90, 200, 255, 0.28);
+    }
+    .primary:hover,
+    .primary:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 16px 35px rgba(90, 200, 255, 0.38);
+      outline: none;
+    }
+    .ghost {
+      background: transparent;
+      border: 1px solid rgba(120, 178, 255, 0.35);
+      color: var(--text);
+      padding: 0.95rem 1.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: border 0.15s ease, color 0.15s ease, transform 0.12s ease;
+    }
+    .ghost:hover,
+    .ghost:focus-visible {
+      border-color: var(--accent);
+      color: #ffffff;
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .error {
+      color: #ffb4c2;
+      margin-top: 0.6rem;
+      min-height: 1.2em;
+    }
+    .wheel-stage {
+      display: none;
+      text-align: center;
+      padding: 1rem 0.4rem 0.2rem;
+    }
+    canvas {
+      max-width: 520px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+    }
+    .pointer {
+      margin: 0 auto;
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 26px solid #ffed6f;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+      transform: translateY(6px);
+    }
+    .winner {
+      margin-top: 1.1rem;
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+    }
+    .fade {
+      transition: opacity 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Arpakone</h1>
+
+    <div id="form-stage" class="fade">
+      <p style="margin:0 0 0.8rem; color: var(--muted);">Lisää sanat, joista Arpakone arpoo. Voit lisätä kenttiä plus-painikkeella.</p>
+      <div id="inputs" class="inputs"></div>
+      <div class="actions">
+        <button class="icon-btn" id="add-input" aria-label="Lisää uusi kenttä">+</button>
+        <button class="primary" id="spin-btn">Suorita arvonta</button>
+      </div>
+      <div id="error" class="error"></div>
+    </div>
+
+    <div id="wheel-stage" class="wheel-stage fade" aria-live="polite">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="600" height="600"></canvas>
+      <div id="winner" class="winner"></div>
+      <div class="actions" style="justify-content:center; margin-top:1.2rem;">
+        <button class="ghost" id="back-btn">Muokkaa sanoja</button>
+        <button class="primary" id="respin-btn">Arvo uudestaan</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const inputsContainer = document.getElementById('inputs');
+    const addInputBtn = document.getElementById('add-input');
+    const spinBtn = document.getElementById('spin-btn');
+    const errorEl = document.getElementById('error');
+    const formStage = document.getElementById('form-stage');
+    const wheelStage = document.getElementById('wheel-stage');
+    const backBtn = document.getElementById('back-btn');
+    const respinBtn = document.getElementById('respin-btn');
+    const wheelCanvas = document.getElementById('wheel');
+    const ctx = wheelCanvas.getContext('2d');
+    const winnerEl = document.getElementById('winner');
+
+    let rotation = 0;
+    let spinning = false;
+    let activeWords = [];
+
+    const createInputRow = (value = '') => {
+      const row = document.createElement('div');
+      row.className = 'input-row';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Esim. Pizza, Elokuva, Uinti...';
+      input.value = value;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'icon-btn';
+      removeBtn.type = 'button';
+      removeBtn.textContent = '–';
+      removeBtn.title = 'Poista kenttä';
+      removeBtn.addEventListener('click', () => {
+        row.remove();
+        if (!inputsContainer.children.length) {
+          addInput();
+        }
+      });
+
+      row.appendChild(input);
+      row.appendChild(removeBtn);
+      return row;
+    };
+
+    const addInput = (value = '') => {
+      inputsContainer.appendChild(createInputRow(value));
+    };
+
+    const getWords = () => {
+      const words = [];
+      inputsContainer.querySelectorAll('input').forEach((input) => {
+        const val = input.value.trim();
+        if (val) words.push(val);
+      });
+      return words;
+    };
+
+    const showError = (msg) => {
+      errorEl.textContent = msg || '';
+    };
+
+    const toggleStages = (showWheel) => {
+      if (showWheel) {
+        formStage.style.opacity = '0';
+        wheelStage.style.display = 'block';
+        setTimeout(() => {
+          formStage.style.display = 'none';
+          wheelStage.style.opacity = '1';
+        }, 220);
+      } else {
+        wheelStage.style.opacity = '0';
+        setTimeout(() => {
+          wheelStage.style.display = 'none';
+          formStage.style.display = 'block';
+          requestAnimationFrame(() => formStage.style.opacity = '1');
+        }, 220);
+      }
+    };
+
+    const drawWheel = (words) => {
+      const { width, height } = wheelCanvas;
+      const radius = width / 2;
+      ctx.clearRect(0, 0, width, height);
+
+      const slice = (Math.PI * 2) / words.length;
+      for (let i = 0; i < words.length; i++) {
+        const start = rotation + i * slice;
+        const end = start + slice;
+        ctx.beginPath();
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius - 4, start, end);
+        ctx.closePath();
+        const hue = (i * 360 / words.length + 20) % 360;
+        ctx.fillStyle = `hsl(${hue}, 75%, 56%)`;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(12, 18, 36, 0.8)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(start + slice / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0b1224';
+        ctx.font = '16px "Segoe UI", sans-serif';
+        ctx.fillText(words[i], radius - 18, 6);
+        ctx.restore();
+      }
+    };
+
+    const pickWinner = (words) => {
+      const slice = (Math.PI * 2) / words.length;
+      const angleAtPointer = (-Math.PI / 2 - rotation) % (Math.PI * 2); // pointer is at top, pointing down
+      const angle = (angleAtPointer + Math.PI * 2) % (Math.PI * 2);
+      const index = Math.floor(angle / slice);
+      return words[index];
+    };
+
+    const spinWheel = () => {
+      if (spinning) return;
+      const words = activeWords;
+      rotation = rotation % (Math.PI * 2);
+      let velocity = 20 + Math.random() * 14; // rad/s initial
+      const friction = 0.992 + Math.random() * 0.003; // longer, variable spin
+      const minVelocity = 0.02;
+      spinning = true;
+      winnerEl.textContent = 'Pyörä pyörii...';
+
+      const animate = () => {
+        if (!spinning) return;
+        rotation += velocity * 0.016;
+        velocity *= friction;
+        drawWheel(words);
+        if (velocity < minVelocity) {
+          spinning = false;
+          const winner = pickWinner(words);
+          winnerEl.textContent = `Valittu: ${winner}`;
+          return;
+        }
+        requestAnimationFrame(animate);
+      };
+      animate();
+    };
+
+    // Event bindings
+    addInputBtn.addEventListener('click', () => addInput());
+    spinBtn.addEventListener('click', () => {
+      const words = getWords();
+      if (words.length < 2) {
+        showError('Lisää vähintään kaksi sanaa.');
+        return;
+      }
+      showError('');
+      activeWords = words;
+      drawWheel(words);
+      toggleStages(true);
+      setTimeout(spinWheel, 120);
+    });
+
+    backBtn.addEventListener('click', () => {
+      spinning = false;
+      toggleStages(false);
+    });
+
+    respinBtn.addEventListener('click', () => {
+      if (activeWords.length < 2) return;
+      spinning = false;
+      setTimeout(() => spinWheel(), 80);
+    });
+
+    // Start with two inputs
+    addInput('Pizza');
+    addInput('Elokuva-ilta');
+  </script>
+</body>
+</html>
