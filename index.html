@@ -28,11 +28,12 @@
   <meta name="twitter:title" content="Tarmola Code Garage | Linux-asennus ja digituki Porvoossa">
   <meta name="twitter:description" content="Digituki, Linux-asennus, verkkosivut ja mini CRM pienyrityksille Porvoossa.">
 
-  <!-- PWA META -->
+  <!-- PWA META pois käytöstä
   <meta name="theme-color" content="#081632">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/icon-512.png">
+  -->
 
   <style>
     :root {
@@ -252,6 +253,7 @@
       display: inline-block;
       animation: pulse 2.4s ease-in-out infinite;
     }
+    /* PWA asennusvihjeen tyylit pois käytöstä
     #installHint {
       display: none;
       position: fixed;
@@ -290,6 +292,7 @@
       color: #ffffff;
       filter: brightness(1.1);
     }
+    */
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.08); }
@@ -302,11 +305,13 @@
       nav {
         gap: 0.75rem;
       }
+      /*
       #installHint {
         left: 1rem;
         right: 1rem;
         bottom: 1rem;
       }
+      */
     }
   </style>
   <script type="application/ld+json">
@@ -404,11 +409,13 @@
       </div>
     </div>
   </div>
-
-  <!-- Asennusvinkin elementti -->
-  <div id="installHint"><button type="button" id="installHintClose" aria-label="Sulje asennusvinkki">&times;</button> 💾 Voit asentaa sivumme laitteellesi..<br>
+ 
+  <!-- Asennusvinkin elementti poistettu käytöstä
+  <div id="installHint"><button type="button" id="installHintClose" aria-label="Sulje asennusvinkki">&times;</button> ?? Voit asentaa sivumme laitteellesi..<br>
     ..niin huomaat miten toimii Progressive Web App<br>
   </div>
+  -->
+
 
   <script>
   // Animaatiot
@@ -444,6 +451,7 @@
     }
   });
 
+  /* PWA-koodi pois käytöstä
   // PWA: Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
@@ -486,6 +494,7 @@
     console.log('PWA-asennuksen valinta:', outcome);
     deferredPrompt = null;
   });
+  */
   </script>
 </body>
 </html>

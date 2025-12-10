@@ -1,3 +1,5 @@
+// PWA service worker poistettu käytöstä
+/*
 const CACHE_NAME = 'code-porvoo-v2';
 const FILES_TO_CACHE = [
   '/',
@@ -29,3 +31,4 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request).then((response) => response || fetch(event.request)),
   );
 });
+*/
