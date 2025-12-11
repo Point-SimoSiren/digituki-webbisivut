@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8M7EXFFWLD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8M7EXFFWLD');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maantietopeli – harjoittele kaupunkeja, jokia ja vuoria</title>
+  <meta name="description" content="Maantietopeli, jossa harjoittelet kaupunkeja, jokia ja vuoria 20 kysymyksen kierroksilla. Opettele valtioita ja osavaltioita hauskoilla monivalinnoilla.">
+  <meta name="keywords" content="maantieto, maantieto peli, maantietopeli, maantiedon harjoituksia, maantieto kysymyksiä, kaupungit ja maat, joet, vuoret, vuoristot">
+  <link rel="canonical" href="https://tarmola-code.fi/maantietopeli.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Maantietopeli – harjoittele kaupunkeja, jokia ja vuoria">
+  <meta property="og:description" content="Maantietopeli, jossa harjoittelet kaupunkeja, jokia ja vuoria 20 kysymyksen kierroksilla. Opettele valtioita ja osavaltioita hauskoilla monivalinnoilla.">
+  <meta property="og:url" content="https://tarmola-code.fi/maantietopeli.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Maantietopeli – harjoittele kaupunkeja, jokia ja vuoria">
+  <meta name="twitter:description" content="Maantietopeli, jossa harjoittelet kaupunkeja, jokia ja vuoria 20 kysymyksen kierroksilla. Opettele valtioita ja osavaltioita hauskoilla monivalinnoilla.">
+  <style>
+    :root {
+      --bg: #050910;
+      --panel: rgba(12, 16, 32, 0.9);
+      --accent: #5ef0c8;
+      --accent-2: #8bb4ff;
+      --text: #e8f0ff;
+      --muted: #9fb4d6;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(142, 209, 255, 0.25), transparent 45%),
+        radial-gradient(circle at 82% 12%, rgba(255, 176, 145, 0.28), transparent 40%),
+        linear-gradient(135deg, #071024, #0b142b 35%, #0a1233 70%, #0f1c44);
+      color: var(--text);
+      padding: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .shell {
+      width: min(1080px, 100%);
+      background: var(--panel);
+      border: 1px solid rgba(114, 156, 255, 0.3);
+      border-radius: 20px;
+      padding: clamp(1.2rem, 2vw, 2.1rem);
+      box-shadow: 0 28px 55px rgba(0, 0, 0, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+    .shell::before,
+    .shell::after {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(45px);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .shell::before {
+      inset: -120px auto auto -120px;
+      background: radial-gradient(circle, rgba(94, 240, 200, 0.4), transparent 60%);
+    }
+    .shell::after {
+      inset: auto -120px -140px auto;
+      background: radial-gradient(circle, rgba(139, 180, 255, 0.3), transparent 60%);
+    }
+    header {
+      text-align: center;
+      margin-bottom: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      letter-spacing: 0.02em;
+      text-shadow: 0 6px 26px rgba(94, 240, 200, 0.35);
+    }
+    header p {
+      margin: 0.6rem auto 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.5;
+    }
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .mode-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(114, 156, 255, 0.35);
+      border-radius: 14px;
+      padding: 1.2rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .mode-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(94, 240, 200, 0.7);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(94, 240, 200, 0.16);
+      color: #c8ffea;
+      border: 1px solid rgba(94, 240, 200, 0.35);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+    .mode-card h3 {
+      margin: 0;
+      color: #ffffff;
+    }
+    .mode-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .mode-card button {
+      align-self: flex-start;
+      padding: 0.75rem 1.1rem;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(120deg, #5ef0c8, #8bb4ff);
+      color: #0a1020;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(94, 240, 200, 0.25);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .mode-card button:hover,
+    .mode-card button:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(94, 240, 200, 0.32);
+      outline: none;
+    }
+    .section {
+      background: rgba(6, 9, 20, 0.85);
+      border: 1px solid rgba(114, 156, 255, 0.25);
+      border-radius: 16px;
+      padding: 1.2rem;
+      margin-top: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+    .progress-line {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(114, 156, 255, 0.25);
+      overflow: hidden;
+      margin: 0.4rem 0 1rem;
+    }
+    .progress-line span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(120deg, #5ef0c8, #8bb4ff);
+      transition: width 0.25s ease;
+    }
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .question {
+      margin: 0.4rem 0 1rem;
+      font-size: 1.2rem;
+      color: #ffffff;
+    }
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem;
+    }
+    .option-btn {
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(114, 156, 255, 0.35);
+      color: #ffffff;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .option-btn:hover,
+    .option-btn:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(94, 240, 200, 0.9);
+      box-shadow: 0 12px 24px rgba(94, 240, 200, 0.22);
+      outline: none;
+    }
+    .option-btn.correct {
+      border-color: #5ef0c8;
+      background: rgba(94, 240, 200, 0.14);
+      color: #cafff0;
+    }
+    .option-btn.wrong {
+      border-color: #ff9aa2;
+      background: rgba(255, 154, 162, 0.12);
+    }
+    .feedback {
+      margin-top: 0.8rem;
+      color: #c5d6ff;
+      min-height: 1.4rem;
+      font-weight: 600;
+    }
+    .actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .ghost {
+      padding: 0.8rem 1.1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(114, 156, 255, 0.4);
+      background: transparent;
+      color: #e8f0ff;
+      cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.15s ease;
+    }
+    .ghost:hover,
+    .ghost:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(94, 240, 200, 0.8);
+      outline: none;
+    }
+    .primary {
+      padding: 0.85rem 1.2rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(120deg, #5ef0c8, #8bb4ff);
+      color: #0a1020;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(94, 240, 200, 0.24);
+      transition: transform 0.12s ease, box-shadow 0.15s ease;
+    }
+    .primary:hover,
+    .primary:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(94, 240, 200, 0.3);
+      outline: none;
+    }
+    .hidden { display: none; }
+    .result {
+      text-align: center;
+      color: #ffffff;
+    }
+    .result h2 {
+      margin: 0.4rem 0;
+      font-size: 1.8rem;
+    }
+    .result p { color: var(--muted); }
+    @media (max-width: 640px) {
+      .options { grid-template-columns: 1fr; }
+      body { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <h1>Maantieto-peli</h1>
+      <p>Valitse harjoittelumoodi ja testaa maantiedon perustiedot: kaupungit, vuoret ja joet. Jokainen kierros arpoo 20 kohdetta valmiista listasta.</p>
+    </header>
+
+    <section id="mode-stage">
+      <div class="mode-grid">
+        <div class="mode-card">
+          <span class="pill">Kaupungit 20/100</span>
+          <h3>Kaupungit</h3>
+          <p>Saa nimen ja valitse oikea maa tai Yhdysvaltojen tapauksessa oikea osavaltio. Listalla on isoja ja pieniä kohteita eri mantereilta.</p>
+          <button data-mode="cities">Aloita kaupungit</button>
+        </div>
+        <div class="mode-card">
+          <span class="pill">Vuoret 20/60</span>
+          <h3>Vuoret ja vuoristot</h3>
+          <p>Yksittäisiä huippuja ja kokonaisia vuoristoja. Valitse maa, johon kohde sijoittuu.</p>
+          <button data-mode="mountains">Aloita vuoret</button>
+        </div>
+        <div class="mode-card">
+          <span class="pill">Joet 20/60</span>
+          <h3>Joet</h3>
+          <p>Arvaa missä maassa joki virtaa tai pääosin sijaitsee. Mukana suuria ja pienempiä vesireittejä.</p>
+          <button data-mode="rivers">Aloita joet</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz-stage" class="section hidden" aria-live="polite">
+      <div class="status-row">
+        <div id="mode-label"></div>
+        <div id="score-label"></div>
+      </div>
+      <div class="progress-line" aria-hidden="true"><span id="progress-bar"></span></div>
+      <div id="question-text" class="question"></div>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+      <div class="actions">
+        <button class="ghost" id="back-btn">Takaisin valintaan</button>
+        <button class="primary" id="next-btn" disabled>Seuraava</button>
+      </div>
+    </section>
+
+    <section id="result-stage" class="section hidden result">
+      <h2 id="result-title"></h2>
+      <p id="result-detail"></p>
+      <div class="actions" style="justify-content:center;">
+        <button class="primary" id="replay-btn">Pelaa uusi kierros</button>
+        <button class="ghost" id="change-mode-btn">Vaihda pelimoodia</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const cityPool = [
+      { name: 'Helsinki', answer: 'Suomi' },
+      { name: 'Stockholm', answer: 'Ruotsi' },
+      { name: 'Oslo', answer: 'Norja' },
+      { name: 'Copenhagen', answer: 'Tanska' },
+      { name: 'Reykjavik', answer: 'Islanti' },
+      { name: 'London', answer: 'Iso-Britannia' },
+      { name: 'Manchester', answer: 'Iso-Britannia' },
+      { name: 'Paris', answer: 'Ranska' },
+      { name: 'Lyon', answer: 'Ranska' },
+      { name: 'Marseille', answer: 'Ranska' },
+      { name: 'Berlin', answer: 'Saksa' },
+      { name: 'Munich', answer: 'Saksa' },
+      { name: 'Hamburg', answer: 'Saksa' },
+      { name: 'Vienna', answer: 'Itavalta' },
+      { name: 'Zurich', answer: 'Sveitsi' },
+      { name: 'Geneva', answer: 'Sveitsi' },
+      { name: 'Rome', answer: 'Italia' },
+      { name: 'Milan', answer: 'Italia' },
+      { name: 'Naples', answer: 'Italia' },
+      { name: 'Madrid', answer: 'Espanja' },
+      { name: 'Barcelona', answer: 'Espanja' },
+      { name: 'Valencia', answer: 'Espanja' },
+      { name: 'Lisbon', answer: 'Portugali' },
+      { name: 'Porto', answer: 'Portugali' },
+      { name: 'Brussels', answer: 'Belgia' },
+      { name: 'Amsterdam', answer: 'Alankomaat' },
+      { name: 'Dublin', answer: 'Irlanti' },
+      { name: 'Warsaw', answer: 'Puola' },
+      { name: 'Krakow', answer: 'Puola' },
+      { name: 'Prague', answer: 'Tsekki' },
+      { name: 'Budapest', answer: 'Unkari' },
+      { name: 'Bratislava', answer: 'Slovakia' },
+      { name: 'Ljubljana', answer: 'Slovenia' },
+      { name: 'Zagreb', answer: 'Kroatia' },
+      { name: 'Belgrade', answer: 'Serbia' },
+      { name: 'Sofia', answer: 'Bulgaria' },
+      { name: 'Bucharest', answer: 'Romania' },
+      { name: 'Athens', answer: 'Kreikka' },
+      { name: 'Thessaloniki', answer: 'Kreikka' },
+      { name: 'Istanbul', answer: 'Turkki' },
+      { name: 'Ankara', answer: 'Turkki' },
+      { name: 'Tallinn', answer: 'Viro' },
+      { name: 'Riga', answer: 'Latvia' },
+      { name: 'Vilnius', answer: 'Liettua' },
+      { name: 'Kyiv', answer: 'Ukraina' },
+      { name: 'Minsk', answer: 'Valko-Venaja' },
+      { name: 'Saint Petersburg', answer: 'Venaja' },
+      { name: 'Moscow', answer: 'Venaja' },
+      { name: 'Tbilisi', answer: 'Georgia' },
+      { name: 'Yerevan', answer: 'Armenia' },
+      { name: 'Baku', answer: 'Azerbaidzan' },
+      { name: 'Cairo', answer: 'Egypti' },
+      { name: 'Casablanca', answer: 'Marokko' },
+      { name: 'Lagos', answer: 'Nigeria' },
+      { name: 'Nairobi', answer: 'Kenia' },
+      { name: 'Cape Town', answer: 'Etela-Afrikka' },
+      { name: 'Johannesburg', answer: 'Etela-Afrikka' },
+      { name: 'Addis Ababa', answer: 'Etiopia' },
+      { name: 'Accra', answer: 'Ghana' },
+      { name: 'Dakar', answer: 'Senegal' },
+      { name: 'Algiers', answer: 'Algeria' },
+      { name: 'Tunis', answer: 'Tunisia' },
+      { name: 'Doha', answer: 'Qatar' },
+      { name: 'Dubai', answer: 'Yhdistyneet Arabiemiirikunnat' },
+      { name: 'Abu Dhabi', answer: 'Yhdistyneet Arabiemiirikunnat' },
+      { name: 'Riyadh', answer: 'Saudi-Arabia' },
+      { name: 'Jeddah', answer: 'Saudi-Arabia' },
+      { name: 'Tehran', answer: 'Iran' },
+      { name: 'Baghdad', answer: 'Irak' },
+      { name: 'Jerusalem', answer: 'Israel' },
+      { name: 'Amman', answer: 'Jordania' },
+      { name: 'Beirut', answer: 'Libanon' },
+      { name: 'Karachi', answer: 'Pakistan' },
+      { name: 'Lahore', answer: 'Pakistan' },
+      { name: 'New Delhi', answer: 'Intia' },
+      { name: 'Mumbai', answer: 'Intia' },
+      { name: 'Bangalore', answer: 'Intia' },
+      { name: 'Chennai', answer: 'Intia' },
+      { name: 'Dhaka', answer: 'Bangladesh' },
+      { name: 'Bangkok', answer: 'Thaimaa' },
+      { name: 'Hanoi', answer: 'Vietnam' },
+      { name: 'Ho Chi Minh City', answer: 'Vietnam' },
+      { name: 'Manila', answer: 'Filippiinit' },
+      { name: 'Jakarta', answer: 'Indonesia' },
+      { name: 'Singapore', answer: 'Singapore' },
+      { name: 'Kuala Lumpur', answer: 'Malesia' },
+      { name: 'Sydney', answer: 'Australia' },
+      { name: 'Melbourne', answer: 'Australia' },
+      { name: 'Auckland', answer: 'Uusi-Seelanti' },
+      { name: 'Toronto', answer: 'Kanada' },
+      { name: 'Vancouver', answer: 'Kanada' },
+      { name: 'Montreal', answer: 'Kanada' },
+      { name: 'Mexico City', answer: 'Meksiko' },
+      { name: 'Buenos Aires', answer: 'Argentiina' },
+      { name: 'Santiago', answer: 'Chile' },
+      { name: 'Lima', answer: 'Peru' },
+      { name: 'New York City', answer: 'New York' },
+      { name: 'Los Angeles', answer: 'California' },
+      { name: 'Chicago', answer: 'Illinois' },
+      { name: 'Houston', answer: 'Texas' }
+    ];
+
+    const mountainPool = [
+      { name: 'Mount Everest', answer: 'Nepal' },
+      { name: 'K2', answer: 'Pakistan' },
+      { name: 'Mont Blanc', answer: 'Ranska' },
+      { name: 'Matterhorn', answer: 'Sveitsi' },
+      { name: 'Kilimanjaro', answer: 'Tanzania' },
+      { name: 'Mount Kenya', answer: 'Kenia' },
+      { name: 'Mount Elbrus', answer: 'Venaja' },
+      { name: 'Atlas Mountains', answer: 'Marokko' },
+      { name: 'Drakensberg', answer: 'Etela-Afrikka' },
+      { name: 'Andit', answer: 'Peru' },
+      { name: 'Rocky Mountains', answer: 'Yhdysvallat' },
+      { name: 'Sierra Nevada', answer: 'Espanja' },
+      { name: 'Pyrenees', answer: 'Espanja' },
+      { name: 'Carpathians', answer: 'Romania' },
+      { name: 'Appalachian Mountains', answer: 'Yhdysvallat' },
+      { name: 'Mount Fuji', answer: 'Japani' },
+      { name: 'Aoraki Mount Cook', answer: 'Uusi-Seelanti' },
+      { name: 'Denali', answer: 'Yhdysvallat' },
+      { name: 'Mauna Kea', answer: 'Yhdysvallat' },
+      { name: 'Ben Nevis', answer: 'Iso-Britannia' },
+      { name: 'Dolomiitit', answer: 'Italia' },
+      { name: 'Aconcagua', answer: 'Argentiina' },
+      { name: 'Mount Ararat', answer: 'Turkki' },
+      { name: 'Mount Sinai', answer: 'Egypti' },
+      { name: 'Mount Etna', answer: 'Italia' },
+      { name: 'Mount Olympus', answer: 'Kreikka' },
+      { name: 'Pamir Mountains', answer: 'Tadzikistan' },
+      { name: 'Ural Mountains', answer: 'Venaja' },
+      { name: 'Caucasus Mountains', answer: 'Georgia' },
+      { name: 'Zagros Mountains', answer: 'Iran' },
+      { name: 'Tatra Mountains', answer: 'Slovakia' },
+      { name: 'Table Mountain', answer: 'Etela-Afrikka' },
+      { name: 'Rwenzori Mountains', answer: 'Uganda' },
+      { name: 'Pikes Peak', answer: 'Yhdysvallat' },
+      { name: 'Mount Kinabalu', answer: 'Malesia' },
+      { name: 'Uluru', answer: 'Australia' },
+      { name: 'Serra do Mar', answer: 'Brasilia' },
+      { name: 'Sierra Madre Oriental', answer: 'Meksiko' },
+      { name: 'Taurus Mountains', answer: 'Turkki' },
+      { name: 'Cerro Torre', answer: 'Argentiina' },
+      { name: 'Annapurna', answer: 'Nepal' },
+      { name: 'Dhaulagiri', answer: 'Nepal' },
+      { name: 'Manaslu', answer: 'Nepal' },
+      { name: 'Kangchenjunga', answer: 'Nepal' },
+      { name: 'Cho Oyu', answer: 'Nepal' },
+      { name: 'Shishapangma', answer: 'Kiina' },
+      { name: 'Mount Logan', answer: 'Kanada' },
+      { name: 'Mount Rainier', answer: 'Yhdysvallat' },
+      { name: 'Mount Whitney', answer: 'Yhdysvallat' },
+      { name: 'Mount Hood', answer: 'Yhdysvallat' },
+      { name: 'Mount Shasta', answer: 'Yhdysvallat' },
+      { name: 'Mount Toubkal', answer: 'Marokko' },
+      { name: 'Mount Chimborazo', answer: 'Ecuador' },
+      { name: 'Cotopaxi', answer: 'Ecuador' },
+      { name: 'Illimani', answer: 'Bolivia' },
+      { name: 'Sajama', answer: 'Bolivia' },
+      { name: 'Mount Triglav', answer: 'Slovenia' },
+      { name: 'Grossglockner', answer: 'Itavalta' },
+      { name: 'Galdhopiggen', answer: 'Norja' },
+      { name: 'Snowdon', answer: 'Iso-Britannia' }
+    ];
+
+    const riverPool = [
+      { name: 'Amazon', answer: 'Brasilia' },
+      { name: 'Nile', answer: 'Egypti' },
+      { name: 'Congo', answer: 'Kongo' },
+      { name: 'Niger', answer: 'Nigeria' },
+      { name: 'Zambezi', answer: 'Zambia' },
+      { name: 'Orange River', answer: 'Etela-Afrikka' },
+      { name: 'Limpopo', answer: 'Etela-Afrikka' },
+      { name: 'Volga', answer: 'Venaja' },
+      { name: 'Danube', answer: 'Unkari' },
+      { name: 'Rhine', answer: 'Saksa' },
+      { name: 'Seine', answer: 'Ranska' },
+      { name: 'Thames', answer: 'Iso-Britannia' },
+      { name: 'Loire', answer: 'Ranska' },
+      { name: 'Po', answer: 'Italia' },
+      { name: 'Ebro', answer: 'Espanja' },
+      { name: 'Tagus', answer: 'Portugali' },
+      { name: 'Douro', answer: 'Portugali' },
+      { name: 'Ganges', answer: 'Intia' },
+      { name: 'Brahmaputra', answer: 'Bangladesh' },
+      { name: 'Indus', answer: 'Pakistan' },
+      { name: 'Mekong', answer: 'Vietnam' },
+      { name: 'Irrawaddy', answer: 'Myanmar' },
+      { name: 'Yangtze', answer: 'Kiina' },
+      { name: 'Yellow River', answer: 'Kiina' },
+      { name: 'Amur', answer: 'Venaja' },
+      { name: 'Ob', answer: 'Venaja' },
+      { name: 'Yenisei', answer: 'Venaja' },
+      { name: 'Lena', answer: 'Venaja' },
+      { name: 'Mississippi', answer: 'Yhdysvallat' },
+      { name: 'Missouri', answer: 'Yhdysvallat' },
+      { name: 'Colorado River', answer: 'Yhdysvallat' },
+      { name: 'Rio Grande', answer: 'Yhdysvallat' },
+      { name: 'Saint Lawrence', answer: 'Kanada' },
+      { name: 'Yukon', answer: 'Kanada' },
+      { name: 'Murray', answer: 'Australia' },
+      { name: 'Darling', answer: 'Australia' },
+      { name: 'Waikato', answer: 'Uusi-Seelanti' },
+      { name: 'Tigris', answer: 'Irak' },
+      { name: 'Euphrates', answer: 'Irak' },
+      { name: 'Jordan River', answer: 'Jordania' },
+      { name: 'Orinoco', answer: 'Venezuela' },
+      { name: 'Magdalena', answer: 'Kolumbia' },
+      { name: 'Parana', answer: 'Argentiina' },
+      { name: 'Paraguay River', answer: 'Paraguay' },
+      { name: 'Uruguay River', answer: 'Uruguay' },
+      { name: 'Sao Francisco', answer: 'Brasilia' },
+      { name: 'Tocantins', answer: 'Brasilia' },
+      { name: 'Madeira River', answer: 'Brasilia' },
+      { name: 'Godavari', answer: 'Intia' },
+      { name: 'Krishna River', answer: 'Intia' },
+      { name: 'Yamuna', answer: 'Intia' },
+      { name: 'Narmada', answer: 'Intia' },
+      { name: 'Salween', answer: 'Myanmar' },
+      { name: 'Red River', answer: 'Vietnam' },
+      { name: 'Fraser River', answer: 'Kanada' },
+      { name: 'Mackenzie River', answer: 'Kanada' },
+      { name: 'Vistula', answer: 'Puola' },
+      { name: 'Elbe', answer: 'Saksa' },
+      { name: 'Dnieper', answer: 'Ukraina' },
+      { name: 'Rhone', answer: 'Ranska' }
+    ];
+
+    const modes = {
+      cities: {
+        label: 'Kaupungit',
+        pool: cityPool,
+        questions: 20,
+        buildQuestion: (item) => `Missa maassa tai osavaltiossa sijaitsee kaupunki ${item.name}?`
+      },
+      mountains: {
+        label: 'Vuoret ja vuoristot',
+        pool: mountainPool,
+        questions: 20,
+        buildQuestion: (item) => `Missa maassa sijaitsee ${item.name}?`
+      },
+      rivers: {
+        label: 'Joet',
+        pool: riverPool,
+        questions: 20,
+        buildQuestion: (item) => `Missa maassa virtaa ${item.name}?`
+      }
+    };
+
+    const modeButtons = document.querySelectorAll('[data-mode]');
+    const modeStage = document.getElementById('mode-stage');
+    const quizStage = document.getElementById('quiz-stage');
+    const resultStage = document.getElementById('result-stage');
+    const modeLabel = document.getElementById('mode-label');
+    const scoreLabel = document.getElementById('score-label');
+    const progressBar = document.getElementById('progress-bar');
+    const questionText = document.getElementById('question-text');
+    const optionsEl = document.getElementById('options');
+    const feedbackEl = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const backBtn = document.getElementById('back-btn');
+    const resultTitle = document.getElementById('result-title');
+    const resultDetail = document.getElementById('result-detail');
+    const replayBtn = document.getElementById('replay-btn');
+    const changeModeBtn = document.getElementById('change-mode-btn');
+
+    let currentMode = null;
+    let questionSet = [];
+    let currentIndex = 0;
+    let score = 0;
+    let locked = false;
+
+    const shuffle = (arr) => {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    };
+
+    const sampleQuestions = (pool, count) => shuffle(pool).slice(0, count);
+
+    const buildOptions = (pool, correct) => {
+      const opts = new Set([correct.answer]);
+      while (opts.size < 4) {
+        const candidate = pool[Math.floor(Math.random() * pool.length)].answer;
+        if (candidate !== correct.answer) opts.add(candidate);
+      }
+      return shuffle([...opts]);
+    };
+
+    const renderQuestion = () => {
+      const item = questionSet[currentIndex];
+      const opts = buildOptions(currentMode.pool, item);
+      modeLabel.textContent = `${currentMode.label} • ${currentIndex + 1}/${currentMode.questions}`;
+      scoreLabel.textContent = `Pisteet: ${score}`;
+      questionText.textContent = currentMode.buildQuestion(item);
+      optionsEl.innerHTML = '';
+      opts.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.addEventListener('click', () => handleAnswer(btn, opt === item.answer, item.answer));
+        optionsEl.appendChild(btn);
+      });
+      feedbackEl.textContent = '';
+      locked = false;
+      nextBtn.disabled = true;
+      nextBtn.textContent = currentIndex === currentMode.questions - 1 ? 'Nayta tulokset' : 'Seuraava';
+      progressBar.style.width = `${((currentIndex) / currentMode.questions) * 100}%`;
+    };
+
+    const handleAnswer = (button, isCorrect, correctAnswer) => {
+      if (locked) return;
+      locked = true;
+      const buttons = Array.from(document.querySelectorAll('.option-btn'));
+      buttons.forEach((btn) => btn.disabled = true);
+      button.classList.add(isCorrect ? 'correct' : 'wrong');
+      const correctBtn = buttons.find((btn) => btn.textContent === correctAnswer);
+      if (correctBtn) correctBtn.classList.add('correct');
+      if (isCorrect) {
+        score += 1;
+        feedbackEl.textContent = 'Oikein!';
+      } else {
+        feedbackEl.textContent = `Vaarin. Oikea vastaus: ${correctAnswer}`;
+      }
+      nextBtn.disabled = false;
+      progressBar.style.width = `${((currentIndex + 1) / currentMode.questions) * 100}%`;
+      scoreLabel.textContent = `Pisteet: ${score}`;
+    };
+
+    const startMode = (modeKey) => {
+      currentMode = modes[modeKey];
+      questionSet = sampleQuestions(currentMode.pool, currentMode.questions);
+      currentIndex = 0;
+      score = 0;
+      modeStage.classList.add('hidden');
+      resultStage.classList.add('hidden');
+      quizStage.classList.remove('hidden');
+      renderQuestion();
+    };
+
+    const showResult = () => {
+      quizStage.classList.add('hidden');
+      resultStage.classList.remove('hidden');
+      resultTitle.textContent = `Sait ${score} / ${currentMode.questions} oikein`;
+      const success = score >= Math.ceil(currentMode.questions * 0.75);
+      resultDetail.textContent = success
+        ? 'Hieno tulos! Kokeile seuraavaksi toista pelimuotoa tai hae uusi kierros samoilla kysymyksilla.'
+        : 'Hyva yritys. Pelaa uusi kierros tai vaihda pelimuotoa ja treenaa lisää.';
+    };
+
+    modeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => startMode(btn.dataset.mode));
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (nextBtn.disabled) return;
+      currentIndex += 1;
+      if (currentIndex >= currentMode.questions) {
+        showResult();
+        return;
+      }
+      renderQuestion();
+    });
+
+    backBtn.addEventListener('click', () => {
+      quizStage.classList.add('hidden');
+      resultStage.classList.add('hidden');
+      modeStage.classList.remove('hidden');
+    });
+
+    replayBtn.addEventListener('click', () => {
+      if (!currentMode) return;
+      startMode(Object.keys(modes).find((key) => modes[key] === currentMode));
+    });
+
+    changeModeBtn.addEventListener('click', () => {
+      resultStage.classList.add('hidden');
+      modeStage.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
