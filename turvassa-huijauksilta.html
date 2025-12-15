@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8M7EXFFWLD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8M7EXFFWLD');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turvassa huijauksilta &ndash; opas kansalaiselle | Tarmola Code Garage</title>
+  <meta name="description" content="Selke&auml; ja k&auml;yt&auml;nn&ouml;llinen opas nykyajan huijauksia vastaan: rauhallisuus, tietojen suojaus, puhelut, viestit, linkit ja turvarajat.">
+  <meta name="keywords" content="huijaukset, verkkohuijaus, pankkihuijaus, puhelinhuijaus, ik&auml;ihmisten turvallisuus, tietoturva">
+  <meta name="author" content="Tarmola Code Garage">
+  <link rel="canonical" href="https://tarmola-code.fi/turvassa-huijauksilta.html">
+  <meta property="og:title" content="Turvassa huijauksilta &ndash; opas kansalaiselle">
+  <meta property="og:description" content="Selke&auml; ja k&auml;yt&auml;nn&ouml;llinen opas nykyajan huijauksia vastaan: &auml;l&auml; kiirehdi, &auml;l&auml; anna tietoja, lopeta puhelu ja v&auml;lt&auml; linkkej&auml;.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tarmola-code.fi/turvassa-huijauksilta.html">
+  <meta property="og:image" content="https://tarmola-code.fi/icons/icon-512.png">
+  <meta property="og:locale" content="fi_FI">
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b14;
+      --surface: rgba(13, 18, 32, 0.74);
+      --surface-strong: rgba(13, 18, 32, 0.88);
+      --text: #eaf0ff;
+      --muted: rgba(234, 240, 255, 0.80);
+      --border: rgba(160, 190, 255, 0.18);
+      --border-strong: rgba(160, 190, 255, 0.30);
+      --accent: #6ee7ff;
+      --accent-2: #63b3ff;
+      --warn: #ffb454;
+      --shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
+      --shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+      --max-width: 980px;
+      font-family: ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(7, 11, 20, 0.88) 0%, rgba(7, 11, 20, 0.70) 44%, rgba(7, 11, 20, 0.92) 100%),
+        radial-gradient(900px 460px at 15% 0%, rgba(99, 179, 255, 0.22), transparent 60%),
+        radial-gradient(700px 380px at 90% 10%, rgba(110, 231, 255, 0.14), transparent 55%),
+        url('images/Laptop.png') center / cover no-repeat fixed;
+    }
+
+    .overlay {
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: clamp(1.25rem, 3vw, 2.6rem) 1.25rem 3.75rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin: 1.15rem 0 2.1rem;
+    }
+
+    .nav-link-anim {
+      opacity: 0;
+      transform: translateY(10px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.56rem 1.05rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: rgba(234, 240, 255, 0.88);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+      transition:
+        opacity 0.28s ease-out,
+        transform 0.28s ease-out,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        color 0.2s ease,
+        filter 0.2s ease;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .nav-link-anim.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-link-anim:hover,
+    .nav-link-anim:focus-visible {
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(160, 190, 255, 0.32);
+      color: #ffffff;
+      filter: drop-shadow(0 10px 22px rgba(99, 179, 255, 0.14));
+      outline: none;
+    }
+
+    .nav-link-active {
+      border-color: rgba(110, 231, 255, 0.50);
+      background: rgba(110, 231, 255, 0.10);
+      color: rgba(234, 240, 255, 0.96);
+    }
+
+    .nav-link-portal {
+      background: linear-gradient(120deg, rgba(92, 23, 255, 0.85), rgba(19, 176, 255, 0.82) 55%, rgba(141, 255, 139, 0.75));
+      color: #070b14;
+      border-color: rgba(255, 255, 255, 0.28);
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
+    }
+
+    .nav-link-construction {
+      background: linear-gradient(135deg, #d4691e 0%, #e8a237 50%, #d4691e 100%);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.30);
+    }
+
+    .page-logo {
+      height: 2.5em;
+      vertical-align: middle;
+      margin-right: 0.4em;
+      filter: drop-shadow(0 14px 44px rgba(99, 179, 255, 0.30));
+    }
+
+    h1 {
+      margin: 0;
+      padding-top: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      color: #ffffff;
+      font-size: clamp(2.05rem, 5vw, 3.05rem);
+      letter-spacing: 0.02em;
+      text-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    .eyebrow {
+      margin: 0.2rem 0 0.85rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.85rem;
+      color: rgba(155, 209, 255, 0.92);
+    }
+
+    .intro {
+      text-align: center;
+      margin: 0.6rem auto 0.75rem;
+      max-width: 75ch;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+      line-height: 1.7;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 0.9rem 0 1.7rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.05rem;
+      border-radius: 999px;
+      border: 1px solid rgba(160, 190, 255, 0.28);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(234, 240, 255, 0.92);
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      text-decoration: none;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(110, 231, 255, 0.50);
+      outline: none;
+    }
+
+    .button--primary {
+      background: linear-gradient(120deg, rgba(110, 231, 255, 0.35), rgba(99, 179, 255, 0.20));
+      border-color: rgba(110, 231, 255, 0.55);
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--surface-strong), var(--surface));
+      border-radius: var(--radius);
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow);
+      padding: clamp(1.05rem, 2vw, 1.75rem);
+      margin-bottom: 1.25rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2 {
+      margin: 0 0 0.8rem;
+      letter-spacing: 0.02em;
+      font-size: clamp(1.25rem, 2.7vw, 1.65rem);
+      color: rgba(227, 239, 255, 0.95);
+    }
+
+    .card h3 {
+      margin: 1rem 0 0.4rem;
+      color: rgba(234, 240, 255, 0.96);
+      letter-spacing: 0.01em;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0.75rem 0;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    ul {
+      margin: 0.55rem 0 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    li {
+      margin: 0.4rem 0;
+    }
+
+    .callout {
+      border: 1px solid rgba(110, 231, 255, 0.25);
+      background: rgba(110, 231, 255, 0.07);
+      box-shadow: 0 12px 32px rgba(110, 231, 255, 0.08);
+    }
+
+    .callout strong {
+      color: rgba(234, 240, 255, 0.98);
+    }
+
+    .tip {
+      margin-top: 0.85rem;
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 180, 84, 0.28);
+      background: rgba(255, 180, 84, 0.07);
+      color: rgba(234, 240, 255, 0.92);
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        padding: 1.25rem 1rem 3rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-link-anim {
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+      .button {
+        transition: none !important;
+      }
+    }
+
+    @media print {
+      nav,
+      .toolbar {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        color: #111 !important;
+      }
+      .card {
+        background: transparent !important;
+        box-shadow: none !important;
+        border-color: #ccc !important;
+      }
+      p,
+      ul {
+        color: #111 !important;
+      }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Turvassa huijauksilta \u2013 opas kansalaiselle",
+    "inLanguage": "fi",
+    "author": {
+      "@type": "Organization",
+      "name": "Tarmola Code Garage"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tarmola Code Garage"
+    },
+    "datePublished": "2025-12-16",
+    "dateModified": "2025-12-16",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://tarmola-code.fi/turvassa-huijauksilta.html"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="laskutus.html" class="nav-link-anim" id="nav-link-3">Laskutus-ohjelma</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="turvassa-huijauksilta.html" class="nav-link-anim nav-link-active" id="nav-link-7" aria-current="page">Turvassa huijauksilta</a>
+        <a href="kosteusmittaus.html" class="nav-link-anim nav-link-construction" id="nav-link-6">Kosteusmittaus</a>
+        <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5">Web-pelit</a>
+      </nav>
+
+      <div class="eyebrow">Selke&auml; ja k&auml;yt&auml;nn&ouml;llinen opas nykyajan huijauksia vastaan</div>
+      <h1>
+        <img src="images/TuxiC.png" alt="Tarmola Code Garage -logo" class="page-logo">
+        TURVASSA HUIJAUKSILTA
+      </h1>
+
+      <p class="intro">Nyky&auml;&auml;n huijaukset ovat yleistyneet. Ne voivat tulla puhelimitse, tekstiviestill&auml;, s&auml;hk&ouml;postilla tai internetin kautta. Huijarit eiv&auml;t etsi tyhmi&auml; ihmisi&auml;, vaan luottavaisia ja kohteliaita. Siksi kuka tahansa voi joutua huijatuksi.</p>
+      <p class="intro">T&auml;m&auml;n oppaan tarkoitus on kertoa, miten huijauksilta voi suojautua ja miksi n&auml;m&auml; keinot ovat t&auml;rkeit&auml;.</p>
+
+      <div class="toolbar">
+        <a class="button button--primary" href="#rauha">Siirry peruss&auml;&auml;nt&ouml;ihin</a>
+        <a class="button" href="#epaily">Jos ep&auml;ilet huijausta</a>
+        <button class="button" type="button" onclick="window.print()">Tulosta / tallenna PDF</button>
+      </div>
+
+      <main>
+        <section class="card callout" id="rauha">
+          <h2>Rauhallisuus on paras suoja</h2>
+          <p>Huijarit pyrkiv&auml;t aina luomaan kiireen tunteen. He saattavat sanoa, ett&auml; tilisi suljetaan, rahasi ovat vaarassa tai l&auml;heisesi on pulassa. Kiireess&auml; ihminen ei ehdi ajatella rauhassa.</p>
+          <p>Oikeat viranomaiset, pankit tai yritykset eiv&auml;t vaadi v&auml;lit&ouml;nt&auml; toimintaa puhelimessa tai viestill&auml;. Jos jokin asia on oikeasti t&auml;rke&auml;, sen voi hoitaa my&ouml;hemmin.</p>
+          <div class="tip"><strong>Siksi t&auml;rke&auml; peruss&auml;&auml;nt&ouml; on:</strong> &Auml;l&auml; tee mit&auml;&auml;n kiireess&auml;.</div>
+        </section>
+
+        <section class="card" id="tiedot">
+          <h2>Tietoja ei saa antaa kenellek&auml;&auml;n</h2>
+          <p>Pankkitunnukset, kortin tiedot, henkil&ouml;tunnus ja puhelimeen tulevat kertakoodit ovat avaimia raha-asioihisi ja henkil&ouml;llisyyteesi. Kun ne p&auml;&auml;tyv&auml;t v&auml;&auml;r&auml;&auml;n k&auml;siin, huijari voi esiinty&auml; sinuna.</p>
+          <p>Pankki, poliisi tai mik&auml;&auml;n luotettava taho ei koskaan pyyd&auml; n&auml;it&auml; tietoja puhelimessa, viestill&auml; tai s&auml;hk&ouml;postissa. Jos joku kysyy niit&auml;, kyseess&auml; on huijaus.</p>
+          <p>Jos tietoja antaa, seuraukset voivat olla vakavia: tililt&auml; voi kadota rahaa, nimiss&auml;si voidaan tehd&auml; ostoksia tai ottaa lainoja, ja ongelmien selvitt&auml;minen voi kest&auml;&auml; pitk&auml;&auml;n.</p>
+        </section>
+
+        <section class="card" id="puhelut-varauksella">
+          <h2>Puheluihin saa suhtautua varauksella</h2>
+          <p>Tuntemattomista numeroista tulevat puhelut ovat yleinen huijausten alku. Erityisen yleisi&auml; ovat niin sanotut h&auml;l&auml;risoitot, joissa puhelu katkeaa heti. Tarkoitus on saada sinut soittamaan takaisin.</p>
+          <h3>Takaisinsoitto voi</h3>
+          <ul>
+            <li>maksaa paljon</li>
+            <li>ohjata maksulliseen numeroon</li>
+            <li>kertoa huijarille, ett&auml; numerosi on aktiivinen</li>
+          </ul>
+          <p>Jos asia olisi t&auml;rke&auml;, soittaja j&auml;tt&auml;isi viestin tai soittaisi uudelleen.</p>
+          <div class="tip"><strong>Muista:</strong> Sinulla ei ole velvollisuutta vastata tuntemattomiin numeroihin eik&auml; soittaa niihin takaisin.</div>
+        </section>
+
+        <section class="card" id="lopeta-puhelu">
+          <h2>Puhelun saa aina lopettaa</h2>
+          <p>Huijarit ovat usein kohteliaita ja vakuuttavia. He k&auml;ytt&auml;v&auml;t hyv&auml;kseen ihmisen halua olla yst&auml;v&auml;llinen. Mit&auml; pidemp&auml;&auml;n puhelu jatkuu, sit&auml; vaikeampi siit&auml; on irrottautua.</p>
+          <p>Ep&auml;ilytt&auml;v&auml;n puhelun saa ja kannattaa lopettaa heti. T&auml;m&auml; ei ole ep&auml;kohteliasta, vaan viisasta.</p>
+          <div class="tip"><strong>Hyv&auml; lause on esimerkiksi:</strong> &ldquo;En hoida asioita puhelimessa.&rdquo; Sen j&auml;lkeen puhelu poikki.</div>
+        </section>
+
+        <section class="card" id="linkit">
+          <h2>Viestej&auml; ja linkkej&auml; ei pid&auml; klikata</h2>
+          <p>Tekstiviesteiss&auml; ja s&auml;hk&ouml;posteissa voi olla linkkej&auml;, jotka n&auml;ytt&auml;v&auml;t tulevan pankilta, viranomaiselta tai postilta. Linkki voi kuitenkin vied&auml; huijaussivulle, joka n&auml;ytt&auml;&auml; aidolta.</p>
+          <p>Pelkk&auml; kirjautuminen v&auml;&auml;r&auml;lle sivulle voi riitt&auml;&auml; siihen, ett&auml; tietosi varastetaan. My&ouml;s laitteen turvallisuus voi vaarantua.</p>
+          <h3>Turvallisin tapa on aina</h3>
+          <ul>
+            <li>olla klikkaamatta linkkej&auml;</li>
+            <li>menn&auml; itse tutulle verkkosivulle</li>
+            <li>tai soittaa viralliseen asiakaspalvelunumeroon</li>
+          </ul>
+        </section>
+
+        <section class="card" id="henkilotiedot">
+          <h2>Henkil&ouml;tiedot ovat arvokkaita</h2>
+          <p>Henkil&ouml;tunnus ja muut henkil&ouml;tiedot mahdollistavat identiteettivarkauden. Niiden avulla huijari voi tehd&auml; sopimuksia ja ostoksia nimiss&auml;si.</p>
+          <p>Siksi paperit kannattaa s&auml;ilytt&auml;&auml; lukitussa paikassa ja vanhat asiakirjat silputa. Henkil&ouml;tietoja ei pid&auml; antaa puhelimessa tai viesteiss&auml;.</p>
+        </section>
+
+        <section class="card" id="kysyminen">
+          <h2>Kysyminen on t&auml;rke&auml; turvakeino</h2>
+          <p>Huijarit pyrkiv&auml;t usein est&auml;m&auml;&auml;n kysym&auml;st&auml; neuvoa. He saattavat sanoa, ett&auml; asia on salainen tai kiireellinen.</p>
+          <div class="tip"><strong>Siksi hyv&auml; s&auml;&auml;nt&ouml; on:</strong> &Auml;l&auml; tee taloudellisia p&auml;&auml;t&ouml;ksi&auml; ennen kuin olet kysynyt l&auml;heiselt&auml; tai pankilta.</div>
+          <p>Ulkopuolinen n&auml;kee tilanteen usein heti selke&auml;mmin.</p>
+        </section>
+
+        <section class="card" id="tekniset">
+          <h2>Tekniset turvakeinot helpottavat arkea</h2>
+          <h3>Puhelimeen kannattaa asettaa</h3>
+          <ul>
+            <li>ulkomaisten numeroiden esto</li>
+            <li>maksullisten numeroiden esto</li>
+            <li>h&auml;iritsevien numeroiden esto</li>
+          </ul>
+          <h3>Pankissa kannattaa pyyt&auml;&auml;</h3>
+          <ul>
+            <li>tilikohtaiset turvarajat</li>
+            <li>p&auml;ivitt&auml;iset siirtorajat</li>
+            <li>korttien k&auml;ytt&ouml;rajoitukset</li>
+          </ul>
+          <p>N&auml;m&auml; est&auml;v&auml;t suurten vahinkojen syntymisen, vaikka jokin menisi pieleen.</p>
+        </section>
+
+        <section class="card" id="epaily">
+          <h2>Jos ep&auml;ilet huijausta</h2>
+          <p>Jos jokin tuntuu oudolta:</p>
+          <ul>
+            <li>lopeta yhteydenpito</li>
+            <li>soita itse pankkiin</li>
+            <li>kerro l&auml;heiselle</li>
+            <li>tarvittaessa ota yhteys poliisiin</li>
+          </ul>
+          <p>Huijatuksi tuleminen ei ole h&auml;pe&auml;. Huijarit ovat ammattilaisia, ja huijauksia tapahtuu joka p&auml;iv&auml;.</p>
+        </section>
+
+        <section class="card callout" id="lopuksi">
+          <h2>Lopuksi</h2>
+          <p><strong>Turvallinen ihminen ei ole ep&auml;luuloinen</strong>, vaan rauhallinen, harkitseva ja valmis kysym&auml;&auml;n neuvoa.</p>
+          <div class="tip">Sinulla on oikeus sanoa ei, lopettaa puhelu ja ottaa aikaa.</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const links = Array.from(document.querySelectorAll('.nav-link-anim'));
+      setTimeout(() => {
+        links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
+      }, 480);
+    });
+  </script>
+</body>
+</html>
