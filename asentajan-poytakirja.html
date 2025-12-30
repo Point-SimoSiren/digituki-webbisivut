@@ -13,15 +13,15 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WorkCounter &ndash; mobiili ajanseuranta työkohteille | Tarmola Code Garage</title>
-  <meta name="description" content="WorkCounter on yksinkertainen ja edullinen mobiilisovellus tuntikirjaukseen kohdekohtaisesti. Aloita, tauota ja jatka useita kohteita &ndash; tiedot tallentuvat paikallisesti puhelimeen.">
-  <meta name="keywords" content="ajanseuranta, tuntilaskenta, työkohde, työaika, mobiilisovellus, paikallinen tallennus, SQLite">
+  <title>Asentajan p&ouml;yt&auml;kirja &ndash; tarkastusraportti ja allekirjoitus mobiilissa | Tarmola Code Garage</title>
+  <meta name="description" content="Asentajan p&ouml;yt&auml;kirja on mobiilisovellus s&auml;hk&ouml;asennusten tarkastusraportteihin: sy&ouml;t&auml; mittaustulokset, allekirjoita mobiilissa ja tallenna valmis p&ouml;yt&auml;kirja PDF:n&auml;." />
+  <meta name="keywords" content="p&ouml;yt&auml;kirja, tarkastusraportti, s&auml;hk&ouml;asennus, mittaustulokset, allekirjoitus, PDF, mobiilisovellus, lomakepohjat" />
   <meta name="author" content="Tarmola Code Garage">
-  <link rel="canonical" href="https://tarmola-code.fi/workcounter.html">
-  <meta property="og:title" content="WorkCounter &ndash; mobiili ajanseuranta työkohteille">
-  <meta property="og:description" content="Yksinkertainen ja edullinen kohdekohtainen ajanseuranta: aloita, tauota, vaihda kohdetta ja jatka myöhemmin. Paikallinen tallennus puhelimeen.">
+  <link rel="canonical" href="https://tarmola-code.fi/asentajan-poytakirja.html">
+  <meta property="og:title" content="Asentajan p&ouml;yt&auml;kirja &ndash; mobiiliraportointi ja allekirjoitus">
+  <meta property="og:description" content="T&auml;yt&auml; tarkastusraportti, sy&ouml;t&auml; mittaustulokset ja allekirjoita mobiilissa. Lopputuloksena valmis allekirjoitettu p&ouml;yt&auml;kirja PDF-muodossa." />
   <meta property="og:type" content="product">
-  <meta property="og:url" content="https://tarmola-code.fi/workcounter.html">
+  <meta property="og:url" content="https://tarmola-code.fi/asentajan-poytakirja.html">
   <meta property="og:image" content="https://tarmola-code.fi/icons/icon-512.png">
   <meta property="og:locale" content="fi_FI">
 
@@ -127,12 +127,6 @@
       outline: none;
     }
 
-    .nav-link-active {
-      border-color: rgba(110, 231, 255, 0.50);
-      background: rgba(110, 231, 255, 0.10);
-      color: rgba(234, 240, 255, 0.96);
-    }
-
     .nav-link-portal {
       background: linear-gradient(120deg, rgba(92, 23, 255, 0.85), rgba(19, 176, 255, 0.82) 55%, rgba(141, 255, 139, 0.75));
       color: #070b14;
@@ -165,6 +159,7 @@
       font-size: clamp(2.05rem, 5vw, 3.05rem);
       letter-spacing: 0.02em;
       text-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      text-align: center;
     }
 
     h2 {
@@ -247,6 +242,60 @@
       font-weight: 650;
       letter-spacing: 0.02em;
       font-size: 0.92rem;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+      margin-top: 0.9rem;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.05rem;
+      border-radius: 999px;
+      border: 1px solid rgba(160, 190, 255, 0.30);
+      background: rgba(110, 231, 255, 0.12);
+      color: rgba(234, 240, 255, 0.96);
+      text-decoration: none;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .cta-btn:hover,
+    .cta-btn:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(110, 231, 255, 0.18);
+      border-color: rgba(110, 231, 255, 0.55);
+      outline: none;
+    }
+
+    .cta-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.05rem;
+      border-radius: 999px;
+      border: 1px solid rgba(160, 190, 255, 0.30);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(234, 240, 255, 0.92);
+      text-decoration: none;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .cta-ghost:hover,
+    .cta-ghost:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(160, 190, 255, 0.48);
+      outline: none;
     }
 
     .price-grid {
@@ -339,25 +388,24 @@
 
     .carousel-btn:hover,
     .carousel-btn:focus-visible {
-      background: rgba(99, 179, 255, 0.14);
+      background: rgba(110, 231, 255, 0.10);
       border-color: rgba(110, 231, 255, 0.45);
+      transform: translateY(-1px);
       outline: none;
     }
 
-    .carousel-btn:active {
-      transform: translateY(1px);
-    }
-
     .carousel-dots {
-      display: inline-flex;
+      display: flex;
       gap: 0.45rem;
-      align-items: center;
+      flex-wrap: wrap;
       justify-content: center;
+      align-items: center;
       flex: 1;
     }
 
     .dot {
       appearance: none;
+      border: 0;
       width: 10px;
       height: 10px;
       border-radius: 50%;
@@ -383,6 +431,11 @@
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
       border: 0;
+    }
+
+    .contact {
+      color: rgba(234, 240, 255, 0.86);
+      line-height: 1.8;
     }
 
     @media (max-width: 900px) {
@@ -422,81 +475,120 @@
 
       <h1>
         <img src="images/TuxiC.png" alt="Tarmola Code Garage -logo" class="page-logo">
-        WorkCounter
+        Asentajan p&ouml;yt&auml;kirja
       </h1>
 
       <div class="card">
         <div class="hero-grid">
           <div>
-            <h2>Mobiili ajanseuranta työkohteille</h2>
-            <p>WorkCounter on yksinkertainen mobiilisovellus, jolla pidät kirjaa eri työkohteiden ajankäytöstä kohdekohtaisesti. Tarkoitus on olla laajempia ja kalliimpia työnohjausjärjestelmiä edullisempi ja helpompi, mutta silti ratkaista ajanseurantaan liittyvät arjen ongelmat.</p>
+            <p>Asentajan p&ouml;yt&auml;kirja on mobiilisovellus, jolla t&auml;yt&auml;t s&auml;hk&ouml;asennuksen tarkastusraportin, sy&ouml;t&auml;t mittaustulokset ja allekirjoitat suoraan mobiililaitteessa.</p>
+            <p>Lopputuloksena syntyy <strong>valmis allekirjoitettu p&ouml;yt&auml;kirja PDF-muodossa</strong> &ndash; helposti arkistoitavaksi tai l&auml;hetett&auml;v&auml;ksi asiakkaalle.</p>
             <div class="badge-row">
-              <span class="badge">Paikallinen tallennus puhelimeen</span>
-              <span class="badge">Aloita &ndash; Tauko &ndash; Jatka &ndash; Lopeta</span>
-              <span class="badge">1 kk ilmainen kokeilu</span>
+              <span class="badge">PDF</span>
+              <span class="badge">Allekirjoitus</span>
+              <span class="badge">Mittaustulokset</span>
+              <span class="badge">Lomakepohjat</span>
+              <span class="badge">R&auml;&auml;t&auml;l&ouml;it&auml;viss&auml;</span>
+            </div>
+            <div class="cta-row">
+              <a class="cta-btn" href="yritysohjelmistot.html">Takaisin yritysohjelmistoihin</a>
+              <a class="cta-ghost" id="cta-demo">Pyyd&auml; demo</a>
             </div>
           </div>
           <div>
-            <h3>Miksi WorkCounter?</h3>
+            <h3>Kenelle?</h3>
             <ul>
-              <li>Pidä yksi kohde tauolla, tee välillä toista ja palaa takaisin.</li>
-              <li>Näet ajan reaaliaikaisesti (tunnit ja minuutit) kohteen näkymässä.</li>
-              <li>Kohteelle tallentuu kokonaisaika ja kuvaus (esim. “käyttövesiputken korjaus”).</li>
+              <li>Pienille asennusliikkeille ilman rajoituksia.</li>
+              <li>Kun raportointi halutaan nopeasti valmiiksi ty&ouml;maalla.</li>
+              <li>Kun p&ouml;yt&auml;kirjat halutaan selke&auml;sti arkistoon PDF:n&auml;.</li>
             </ul>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <h2>Kuvakaappaukset</h2>
-        <p>Android-emulaattorista otetut kuvakaappaukset sovelluksen näkymistä.</p>
+        <h2>Mit&auml; sovellus mahdollistaa?</h2>
+        <ul>
+          <li>Tarkastusraportin t&auml;ytt&ouml; mobiilissa yleisimmill&auml; lomakepohjilla.</li>
+          <li>Mittaustulosten sy&ouml;tt&ouml; selke&auml;sti samaan kokonaisuuteen.</li>
+          <li>Allekirjoitus mobiililaitteessa.</li>
+          <li>Valmis allekirjoitettu p&ouml;yt&auml;kirja PDF-muodossa.</li>
+          <li>Lomakepohjat ovat r&auml;&auml;t&auml;l&ouml;it&auml;viss&auml; yrityksen tarpeisiin.</li>
+          <li>Tarvittaessa voidaan toteuttaa vastaava kokonaisuus esim. LVI-asennuksiin.</li>
+        </ul>
+      </div>
 
-        <div class="carousel" id="wc-carousel" role="region" aria-label="WorkCounter kuvakaruselli" tabindex="0">
+      <div class="card">
+        <h2>Kuvakaappaukset</h2>
+        <p>Kuvissa esimerkkej&auml; n&auml;kymist&auml; ja p&ouml;yt&auml;kirjan t&auml;yt&ouml;st&auml;.</p>
+        <div class="carousel" id="ap-carousel" role="region" aria-label="Asentajan p&ouml;yt&auml;kirja kuvakaruselli" tabindex="0">
           <div class="carousel-viewport">
-            <div class="carousel-track" id="wc-track">
+            <div class="carousel-track" id="ap-track">
               <figure class="carousel-slide">
-                <img src="images/WTime1.png" loading="lazy" alt="WorkCounter: kohdelista ja ajanseuranta">
-                <figcaption>Kohdelista: näet kohteet ja kokonaisajan yhdellä silmäyksellä.</figcaption>
+                <img src="images/Mittaus1.png" loading="lazy" alt="Asentajan p&ouml;yt&auml;kirja: lomakkeen aloitusn&auml;kym&auml;">
+                <figcaption>Lomakepohja ja aloitusn&auml;kym&auml;.</figcaption>
               </figure>
               <figure class="carousel-slide">
-                <img src="images/WTime2.png" loading="lazy" alt="WorkCounter: kohteen ajastin ja painikkeet">
-                <figcaption>Kohteen ajastin: aloita, tauota, jatka ja lopeta kohdekohtaisesti.</figcaption>
+                <img src="images/Mittaus2.png" loading="lazy" alt="Asentajan p&ouml;yt&auml;kirja: perustiedot ja kohde">
+                <figcaption>Perustiedot ja kohteen tiedot.</figcaption>
               </figure>
               <figure class="carousel-slide">
-                <img src="images/WTime3.png" loading="lazy" alt="WorkCounter: kohteen tiedot ja kuvaus">
-                <figcaption>Kohteen tiedot: osoite ja työn kuvaus vapaamuotoisesti.</figcaption>
+                <img src="images/Mittaus3.png" loading="lazy" alt="Asentajan p&ouml;yt&auml;kirja: mittaustulosten sy&ouml;tt&ouml;">
+                <figcaption>Mittaustulosten sy&ouml;tt&ouml; ja tarkistus.</figcaption>
+              </figure>
+              <figure class="carousel-slide">
+                <img src="images/Mittaus4.png" loading="lazy" alt="Asentajan p&ouml;yt&auml;kirja: tarkastuslistat">
+                <figcaption>Tarkastuslistat ja valinnat.</figcaption>
+              </figure>
+              <figure class="carousel-slide">
+                <img src="images/Mittaus5.png" loading="lazy" alt="Asentajan p&ouml;yt&auml;kirja: allekirjoitus mobiilissa">
+                <figcaption>Allekirjoitus suoraan laitteessa.</figcaption>
+              </figure>
+              <figure class="carousel-slide">
+                <img src="images/Mittaus6.png" loading="lazy" alt="Asentajan p&ouml;yt&auml;kirja: valmis PDF-p&ouml;yt&auml;kirja">
+                <figcaption>Valmis p&ouml;yt&auml;kirja PDF-muodossa.</figcaption>
               </figure>
             </div>
           </div>
 
           <div class="carousel-controls">
-            <button class="carousel-btn" id="wc-prev" type="button" aria-label="Edellinen kuva">Edellinen</button>
-            <div class="carousel-dots" id="wc-dots" aria-label="Valitse kuva"></div>
-            <span class="sr-only" id="wc-status" aria-live="polite"></span>
-            <button class="carousel-btn" id="wc-next" type="button" aria-label="Seuraava kuva">Seuraava</button>
+            <button class="carousel-btn" id="ap-prev" type="button" aria-label="Edellinen kuva">Edellinen</button>
+            <div class="carousel-dots" id="ap-dots" aria-label="Valitse kuva"></div>
+            <span class="sr-only" id="ap-status" aria-live="polite"></span>
+            <button class="carousel-btn" id="ap-next" type="button" aria-label="Seuraava kuva">Seuraava</button>
           </div>
         </div>
       </div>
 
       <div class="card">
         <h2>Hinta</h2>
-        <p>Kokeile ensin ilmaiseksi 1 kk ilman sitoutumista. Sen jälkeen voit valita sopivan vaihtoehdon.</p>
         <div class="price-grid">
           <div class="price-card">
-            <div class="price-tag">1 kk</div>
-            <div class="subline">Ilmainen kokeilu</div>
-            <p>Ei sitoutumista. Testaa rauhassa omilla kohteillasi.</p>
+            <div class="price-tag">alk. 380&nbsp;&euro; / vuosi</div>
+            <div class="subline">Pienille asennusliikkeille &ndash; ilman rajoituksia</div>
+            <p>Ei erillisi&auml; k&auml;ytt&ouml;rajoja pienille toimijoille. Kysy sopivin lisenssi ja toteutus teid&auml;n tarpeisiin.</p>
           </div>
           <div class="price-card">
-            <div class="price-tag">39€</div>
-            <div class="subline">6 kk jaksoissa</div>
-            <p>Edullinen ja helppo tapa pitää sovellus käytössä.</p>
+            <div class="price-tag">Lomakepohjat</div>
+            <div class="subline">Valmiit + r&auml;&auml;t&auml;l&ouml;it&auml;viss&auml;</div>
+            <p>Sis&auml;lt&auml;&auml; yleisimm&auml;t pohjat, joita voi muokata yrityksen malliin.</p>
           </div>
           <div class="price-card">
-            <div class="price-tag">149€</div>
-            <div class="subline">Kokonaan omaksi</div>
-            <p>Yksi kertamaksu. Yksinkertainen vaihtoehto pitkäaikaiseen käyttöön.</p>
+            <div class="price-tag">Laajennukset</div>
+            <div class="subline">My&ouml;s esim. LVI</div>
+            <p>Tarvittaessa toteutetaan vastaava raportointi muille asennusaloille.</p>
           </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Yhteystiedot</h2>
+        <div class="contact">
+          Sovithan asennuksesta tai et&auml;demosta etuk&auml;teen:<br>
+          Puhelin ja WhatsApp: 050 910 9926<br>
+          S&auml;hk&ouml;posti: simosiren1@gmail.com<br>
+          Osoite: Tarmolankatu 5, 06100 PORVOO<br>
+          Y-tunnus: 3572410-5
         </div>
       </div>
     </div>
@@ -512,11 +604,11 @@
           links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
         }, 220);
 
-        const track = document.getElementById('wc-track');
-        const prev = document.getElementById('wc-prev');
-        const next = document.getElementById('wc-next');
-        const dotsHost = document.getElementById('wc-dots');
-        const status = document.getElementById('wc-status');
+        const track = document.getElementById('ap-track');
+        const prev = document.getElementById('ap-prev');
+        const next = document.getElementById('ap-next');
+        const dotsHost = document.getElementById('ap-dots');
+        const status = document.getElementById('ap-status');
         if (!track || !prev || !next || !dotsHost || !status) return;
 
         const slides = Array.from(track.querySelectorAll('.carousel-slide'));
@@ -560,7 +652,7 @@
           const dot = document.createElement('button');
           dot.type = 'button';
           dot.className = 'dot';
-          dot.setAttribute('aria-label', `Näytä kuva ${i + 1}`);
+          dot.setAttribute('aria-label', `N&auml;yt&auml; kuva ${i + 1}`);
           dot.setAttribute('aria-current', i === 0 ? 'true' : 'false');
           dot.addEventListener('click', () => {
             stopAuto();
@@ -579,7 +671,7 @@
           go(index + 1);
         });
 
-        document.getElementById('wc-carousel')?.addEventListener('keydown', (e) => {
+        document.getElementById('ap-carousel')?.addEventListener('keydown', (e) => {
           if (e.key === 'ArrowLeft') {
             e.preventDefault();
             stopAuto();
@@ -591,6 +683,17 @@
             go(index + 1);
           }
         });
+
+        const demoCta = document.getElementById('cta-demo');
+        if (demoCta) {
+          demoCta.addEventListener('click', () => {
+            if (demoCta.textContent !== 'simosiren1@gmail.com') {
+              demoCta.textContent = 'simosiren1@gmail.com';
+            } else {
+              demoCta.textContent = 'Pyyd&auml; demo';
+            }
+          });
+        }
 
         setStatus();
         render();

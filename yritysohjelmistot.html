@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8M7EXFFWLD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8M7EXFFWLD');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yritysohjelmistot | Tarmola Code Garage</title>
+  <meta name="description" content="Edulliset ja helppok&auml;ytt&ouml;iset yritysohjelmistot pienille firmoille: laskutus, ajanseuranta ja mobiilip&ouml;yt&auml;kirja." />
+  <meta name="keywords" content="yritysohjelmistot, laskutus, ajanseuranta, p&ouml;yt&auml;kirja, mobiilisovellus, PDF, viivakoodi, allekirjoitus" />
+  <meta name="author" content="Tarmola Code Garage">
+  <link rel="canonical" href="https://tarmola-code.fi/yritysohjelmistot.html">
+  <meta property="og:title" content="Yritysohjelmistot | Tarmola Code Garage">
+  <meta property="og:description" content="Laskutus, ajanseuranta ja Asentajan p&ouml;yt&auml;kirja &ndash; edulliset sovellukset pienille yrityksille." />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tarmola-code.fi/yritysohjelmistot.html">
+  <meta property="og:image" content="https://tarmola-code.fi/icons/icon-512.png">
+  <meta property="og:locale" content="fi_FI">
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b14;
+      --surface: rgba(13, 18, 32, 0.74);
+      --surface-strong: rgba(13, 18, 32, 0.88);
+      --text: #eaf0ff;
+      --muted: rgba(234, 240, 255, 0.80);
+      --border: rgba(160, 190, 255, 0.18);
+      --border-strong: rgba(160, 190, 255, 0.30);
+      --accent: #6ee7ff;
+      --accent-2: #63b3ff;
+      --shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
+      --shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+      --max-width: 980px;
+      font-family: ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(7, 11, 20, 0.88) 0%, rgba(7, 11, 20, 0.70) 44%, rgba(7, 11, 20, 0.92) 100%),
+        radial-gradient(900px 460px at 15% 0%, rgba(99, 179, 255, 0.22), transparent 60%),
+        radial-gradient(700px 380px at 90% 10%, rgba(110, 231, 255, 0.14), transparent 55%),
+        url('images/Laptop.png') center / cover no-repeat fixed;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .overlay {
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: clamp(1.25rem, 3vw, 2.6rem) 1.25rem 3.75rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin: 1.15rem 0 2.1rem;
+    }
+
+    .nav-link-anim {
+      opacity: 0;
+      transform: translateY(10px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.56rem 1.05rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: rgba(234, 240, 255, 0.88);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+      transition:
+        opacity 0.28s ease-out,
+        transform 0.28s ease-out,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        color 0.2s ease,
+        filter 0.2s ease;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .nav-link-anim.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-link-anim:hover,
+    .nav-link-anim:focus-visible {
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(160, 190, 255, 0.32);
+      color: #ffffff;
+      filter: drop-shadow(0 10px 22px rgba(99, 179, 255, 0.14));
+      outline: none;
+    }
+
+    .nav-link-active {
+      border-color: rgba(110, 231, 255, 0.50);
+      background: rgba(110, 231, 255, 0.10);
+      color: rgba(234, 240, 255, 0.96);
+    }
+
+    .nav-link-portal {
+      background: linear-gradient(120deg, rgba(92, 23, 255, 0.85), rgba(19, 176, 255, 0.82) 55%, rgba(141, 255, 139, 0.75));
+      color: #070b14;
+      border-color: rgba(255, 255, 255, 0.28);
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
+    }
+
+    .nav-link-construction {
+      background: linear-gradient(135deg, #d4691e 0%, #e8a237 50%, #d4691e 100%);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.30);
+    }
+
+    .page-logo {
+      height: 2.5em;
+      vertical-align: middle;
+      margin-right: 0.4em;
+      filter: drop-shadow(0 14px 44px rgba(99, 179, 255, 0.30));
+    }
+
+    h1 {
+      margin: 0;
+      padding-top: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      color: #ffffff;
+      font-size: clamp(2.05rem, 5vw, 3.05rem);
+      letter-spacing: 0.02em;
+      text-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    h2 {
+      margin: 1.25rem 0 0.8rem;
+      color: rgba(227, 239, 255, 0.92);
+      letter-spacing: 0.02em;
+      font-size: clamp(1.2rem, 2.7vw, 1.55rem);
+    }
+
+    h3 {
+      margin: 0.95rem 0 0.45rem;
+      letter-spacing: 0.01em;
+      color: rgba(234, 240, 255, 0.96);
+    }
+
+    p {
+      margin: 0.75rem 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    ul {
+      margin: 0.65rem 0 0;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    li {
+      margin: 0.4rem 0;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: rgba(110, 231, 255, 0.45);
+      text-underline-offset: 0.22em;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: #c7f1ff;
+      text-decoration-color: rgba(199, 241, 255, 0.75);
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--surface-strong), var(--surface));
+      border-radius: var(--radius);
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow);
+      padding: clamp(1.05rem, 2vw, 1.75rem);
+      margin-bottom: 1.25rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.95rem;
+      margin-top: 0.75rem;
+    }
+
+    .product-card {
+      border: 1px solid rgba(160, 190, 255, 0.26);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem 1.05rem;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 0.6rem;
+      align-content: start;
+    }
+
+    .product-title {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: 0.01em;
+      color: rgba(234, 240, 255, 0.98);
+    }
+
+    .product-meta {
+      color: rgba(234, 240, 255, 0.72);
+      font-weight: 650;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+      margin-top: 0.2rem;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.58rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(160, 190, 255, 0.30);
+      background: rgba(110, 231, 255, 0.12);
+      color: rgba(234, 240, 255, 0.96);
+      text-decoration: none;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .cta-btn:hover,
+    .cta-btn:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(110, 231, 255, 0.18);
+      border-color: rgba(110, 231, 255, 0.55);
+      outline: none;
+    }
+
+    .contact {
+      color: rgba(234, 240, 255, 0.86);
+      line-height: 1.8;
+    }
+
+    @media (max-width: 900px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-link-anim {
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="yritysohjelmistot.html" class="nav-link-anim nav-link-active" id="nav-link-3" aria-current="page">Yritysohjelmistot</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="turvassa-huijauksilta.html" class="nav-link-anim" id="nav-link-7">Turvassa huijauksilta</a>
+        <a href="kosteusmittaus.html" class="nav-link-anim nav-link-construction" id="nav-link-6">Kosteusmittaus</a>
+        <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5">Web-pelit</a>
+      </nav>
+
+      <h1>
+        <img src="images/TuxiC.png" alt="Tarmola Code Garage -logo" class="page-logo">
+        Yritysohjelmistot
+      </h1>
+
+      <div class="card">
+        <p>Alla on yritysohjelmistotuotteeni. Yhteinen nimitt&auml;j&auml;: helppo k&auml;ytt&ouml;&ouml;notto, selke&auml; toiminnallisuus ja edullinen hinta pienille yrityksille.</p>
+        <p>Tarvittaessa onnistuu my&ouml;s r&auml;&auml;t&auml;l&ouml;inti ja vastaavan sovelluksen toteutus eri toimialalle.</p>
+      </div>
+
+      <div class="card">
+        <h2>Sovellukset</h2>
+        <div class="product-grid">
+          <div class="product-card">
+            <h3 class="product-title">Tarmokas &ndash; laskutus-ohjelma</h3>
+            <div class="product-meta">Ty&ouml;p&ouml;yt&auml;sovellus &middot; PDF-laskut</div>
+            <p>Asiakasrekisteri ja laskunluonti valmiilla pohjalla. PDF-laskut viivakoodilla, virtuaaliviivakoodilla ja ALV-erittelyill&auml;.</p>
+            <div class="cta-row">
+              <a class="cta-btn" href="laskutus.html">Avaa esittely</a>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <h3 class="product-title">WorkCounter</h3>
+            <div class="product-meta">Mobiilisovellus &middot; Ajank&auml;ytt&ouml; kohteille</div>
+            <p>Yksinkertainen kohdekohtainen ajanseuranta: aloita, tauota, vaihda kohdetta ja jatka my&ouml;hemmin. Tiedot tallentuvat paikallisesti puhelimeen.</p>
+            <div class="cta-row">
+              <a class="cta-btn" href="workcounter.html">Avaa esittely</a>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <h3 class="product-title">Asentajan p&ouml;yt&auml;kirja</h3>
+            <div class="product-meta">Mobiilisovellus &middot; Raportointi ja allekirjoitus</div>
+            <p>T&auml;yt&auml; s&auml;hk&ouml;asennuksen tarkastusraportti mobiilissa, sy&ouml;t&auml; mittaustulokset ja allekirjoita laitteessa. Lopputuloksena valmis allekirjoitettu p&ouml;yt&auml;kirja PDF-muodossa.</p>
+            <p>Sis&auml;lt&auml;&auml; yleisimpi&auml; lomakepohjia, joita voi r&auml;&auml;t&auml;l&ouml;id&auml;. My&ouml;s esim. LVI-asennuksiin voidaan toteuttaa vastaava.</p>
+            <div class="cta-row">
+              <a class="cta-btn" href="asentajan-poytakirja.html">Avaa esittely</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Yhteystiedot</h2>
+        <div class="contact">
+          Sovithan asennuksesta tai et&auml;demosta etuk&auml;teen:<br>
+          Puhelin ja WhatsApp: 050 910 9926<br>
+          S&auml;hk&ouml;posti: simosiren1@gmail.com<br>
+          Osoite: Tarmolankatu 5, 06100 PORVOO<br>
+          Y-tunnus: 3572410-5
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const links = Array.from(document.querySelectorAll('.nav-link-anim'));
+      setTimeout(() => {
+        links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
+      }, 220);
+    });
+  </script>
+</body>
+</html>
+
