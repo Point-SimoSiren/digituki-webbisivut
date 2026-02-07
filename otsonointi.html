@@ -12,7 +12,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Otsonointipalvelu | Tarmola Code Garage</title>
+  <title>Tarmolan otsonointikammio | Tarmola Code Garage</title>
   <meta name="description" content="Huonekalujen ja esineiden otsonointikäsittely kuomulliseen peräkärryyn rakennetussa otsonointikammiossa. Hinta alk. 15 euroa.">
   <link rel="icon" href="icons/icon-192.png" type="image/png">
   <style>
@@ -20,22 +20,89 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: radial-gradient(circle at 20% -10%, rgba(88, 101, 242, 0.45), transparent 45%),
-                  radial-gradient(circle at 85% 0%, rgba(32, 201, 151, 0.35), transparent 40%),
-                  url('images/Laptop.png') no-repeat center center fixed;
-      background-size: cover;
       min-height: 100vh;
       color: #e6efff;
+      background:
+        radial-gradient(1100px 700px at 18% 8%, rgba(84, 237, 255, 0.16), transparent 62%),
+        radial-gradient(980px 640px at 84% 22%, rgba(58, 202, 255, 0.12), transparent 58%),
+        radial-gradient(900px 560px at 50% 95%, rgba(67, 255, 195, 0.10), transparent 65%),
+        linear-gradient(140deg, #06121b, #0a1d2b 45%, #0b2430 100%);
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: -22%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.84;
+      filter: blur(44px) saturate(165%);
+      background:
+        conic-gradient(from 220deg at 50% 50%,
+          rgba(48, 255, 211, 0.00),
+          rgba(83, 235, 255, 0.32),
+          rgba(94, 190, 255, 0.24),
+          rgba(48, 255, 211, 0.00),
+          rgba(37, 255, 160, 0.22),
+          rgba(48, 255, 211, 0.00));
+      animation: chemicalSwirl 11.5s linear infinite;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.11;
+      mix-blend-mode: soft-light;
+      background-image: radial-gradient(circle at 1px 1px, rgba(220, 250, 255, 0.85) 1px, transparent 0);
+      background-size: 5px 5px;
+      animation: grainShift 6.5s steps(10) infinite;
     }
     .overlay {
-      background: rgba(7, 9, 17, 0.80);
       min-height: 100vh;
       padding: 0;
+      position: relative;
+      z-index: 1;
+      background: rgba(5, 10, 18, 0.54);
+      backdrop-filter: blur(1px);
+      overflow: hidden;
+    }
+    .overlay::before {
+      content: '';
+      position: fixed;
+      inset: -12%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.64;
+      background:
+        radial-gradient(32% 26% at 16% 22%, rgba(150, 252, 255, 0.38), transparent 72%),
+        radial-gradient(28% 22% at 78% 26%, rgba(82, 190, 255, 0.34), transparent 72%),
+        radial-gradient(22% 18% at 46% 72%, rgba(57, 255, 192, 0.30), transparent 70%);
+      animation: reactionPulse 5.2s ease-in-out infinite alternate;
+    }
+    .overlay::after {
+      content: '';
+      position: fixed;
+      inset: -8%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.46;
+      filter: blur(16px);
+      mix-blend-mode: screen;
+      background:
+        radial-gradient(18% 16% at 24% 44%, rgba(122, 255, 244, 0.42), transparent 72%),
+        radial-gradient(15% 14% at 62% 34%, rgba(90, 201, 255, 0.36), transparent 72%),
+        radial-gradient(14% 12% at 74% 66%, rgba(120, 255, 195, 0.32), transparent 72%);
+      animation: sparkDrift 4.8s ease-in-out infinite alternate;
     }
     .container {
       max-width: 920px;
       margin: 0 auto;
       padding: 2rem 1.5rem 3.6rem;
+      position: relative;
+      z-index: 2;
     }
     nav {
       text-align: center;
@@ -99,12 +166,13 @@
       max-width: 760px;
     }
     .card {
-      background: rgba(14, 17, 30, 0.9);
-      border: 1px solid rgba(114, 141, 255, 0.25);
+      background: linear-gradient(145deg, rgba(18, 32, 45, 0.62), rgba(16, 24, 41, 0.46));
+      border: 1px solid rgba(130, 218, 255, 0.34);
       border-radius: 20px;
       padding: 1.75rem;
-      box-shadow: 0 20px 45px rgba(6, 10, 26, 0.7);
+      box-shadow: 0 28px 60px rgba(4, 10, 22, 0.62), inset 0 1px 0 rgba(220, 245, 255, 0.22);
       margin-bottom: 1.5rem;
+      backdrop-filter: blur(12px);
     }
     h2 {
       color: #9ec4ff;
@@ -133,6 +201,25 @@
       font-weight: 700;
       color: #b9ffe8;
     }
+    @keyframes chemicalSwirl {
+      0% { transform: rotate(0deg) scale(1.02); }
+      50% { transform: rotate(180deg) scale(1.08); }
+      100% { transform: rotate(360deg) scale(1.02); }
+    }
+    @keyframes reactionPulse {
+      0% { transform: translate3d(-2.8%, -1.8%, 0) scale(1); opacity: 0.42; }
+      50% { transform: translate3d(1.8%, 2.4%, 0) scale(1.05); opacity: 0.66; }
+      100% { transform: translate3d(-1.2%, 2.8%, 0) scale(1.08); opacity: 0.78; }
+    }
+    @keyframes sparkDrift {
+      0% { transform: translate3d(-2%, 0%, 0) scale(1); }
+      50% { transform: translate3d(1.4%, -1.8%, 0) scale(1.06); }
+      100% { transform: translate3d(-1.4%, 2.2%, 0) scale(1.03); }
+    }
+    @keyframes grainShift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(10px, 8px); }
+    }
   </style>
   <link rel="stylesheet" href="shared-nav.css">
 </head>
@@ -149,8 +236,8 @@
         <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5">Web-pelit</a>
       </nav>
 
-      <h1>Otsonointipalvelu</h1>
-      <p class="lead">Huonekalujen ja esineiden otsonointikäsittely kuomulliseen peräkärryyn rakennetussa otsonointikammiossa. Palvelu sopii esimerkiksi hajujen poistoon ja tavaroiden raikastamiseen.</p>
+      <h1>Tarmolan otsonointikammio</h1>
+      <p class="lead">Huonekalujen ja esineiden otsonointikäsittely kuomulliseen peräkärryyn rakennetussa otsonointikammiossa. Palvelu sopii esimerkiksi hajujen poistoon ja tavaroiden raikastamiseen. Emme tarjoa kiinteistöjen otsonointia.</p>
 
       <section class="card">
         <h2>Mikä on otsoni ja miten otsonointi toimii</h2>
