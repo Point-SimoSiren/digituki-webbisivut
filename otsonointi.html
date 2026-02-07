@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8M7EXFFWLD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8M7EXFFWLD');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Otsonointipalvelu | Tarmola Code Garage</title>
+  <meta name="description" content="Huonekalujen ja esineiden otsonointikäsittely kuomulliseen peräkärryyn rakennetussa otsonointikammiossa. Hinta alk. 15 euroa.">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: radial-gradient(circle at 20% -10%, rgba(88, 101, 242, 0.45), transparent 45%),
+                  radial-gradient(circle at 85% 0%, rgba(32, 201, 151, 0.35), transparent 40%),
+                  url('images/Laptop.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: #e6efff;
+    }
+    .overlay {
+      background: rgba(7, 9, 17, 0.80);
+      min-height: 100vh;
+      padding: 0;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3.6rem;
+    }
+    nav {
+      text-align: center;
+      margin: 1.5rem 0 2.5rem;
+    }
+    nav a {
+      display: inline-block;
+      margin: 0 0.9rem;
+      color: #a6b7e7;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    nav a:hover,
+    nav a:focus {
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    .nav-link-portal {
+      padding: 0.55rem 1.6rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #5c17ff, #13b0ff 55%, #8dff8b);
+      color: #0b0618 !important;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 25px rgba(19, 176, 255, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-link-construction {
+      padding: 0.55rem 1.6rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #d4691e 0%, #e8a237 50%, #d4691e 100%);
+      color: #ffffff !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 20px rgba(212, 105, 30, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(160, 82, 45, 0.6);
+      position: relative;
+      overflow: hidden;
+      font-weight: 700;
+    }
+    .nav-link-construction::before {
+      content: '⚒️';
+      margin-right: 0.5rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      color: #ffffff;
+      text-shadow: 0 5px 25px rgba(20, 210, 255, 0.45);
+      margin-bottom: 1.1rem;
+      text-align: center;
+    }
+    .lead {
+      text-align: center;
+      color: #d6e5ff;
+      line-height: 1.7;
+      margin: 0 auto 1.8rem;
+      max-width: 760px;
+    }
+    .card {
+      background: rgba(14, 17, 30, 0.9);
+      border: 1px solid rgba(114, 141, 255, 0.25);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 20px 45px rgba(6, 10, 26, 0.7);
+      margin-bottom: 1.5rem;
+    }
+    h2 {
+      color: #9ec4ff;
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.03em;
+    }
+    p {
+      color: rgba(218, 231, 255, 0.92);
+      line-height: 1.65;
+      margin: 0 0 0.7rem;
+    }
+    ul {
+      margin: 0.2rem 0 0;
+      padding-left: 1.2rem;
+      color: rgba(215, 228, 255, 0.95);
+      line-height: 1.6;
+    }
+    .price {
+      display: inline-block;
+      margin-top: 0.3rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 10px;
+      background: rgba(26, 255, 191, 0.16);
+      border: 1px solid rgba(159, 255, 225, 0.45);
+      font-weight: 700;
+      color: #b9ffe8;
+    }
+  </style>
+  <link rel="stylesheet" href="shared-nav.css">
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="yritysohjelmistot.html" class="nav-link-anim" id="nav-link-3">Yritysohjelmistot</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="turvassa-huijauksilta.html" class="nav-link-anim" id="nav-link-7">Turvassa huijauksilta</a>
+        <a href="otsonointi.html" class="nav-link-anim nav-link-construction nav-link-active" id="nav-link-6" aria-current="page">Otsonointi</a>
+        <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5">Web-pelit</a>
+      </nav>
+
+      <h1>Otsonointipalvelu</h1>
+      <p class="lead">Huonekalujen ja esineiden otsonointikäsittely kuomulliseen peräkärryyn rakennetussa otsonointikammiossa. Palvelu sopii esimerkiksi hajujen poistoon ja tavaroiden raikastamiseen.</p>
+
+      <section class="card">
+        <h2>Miten palvelu toimii</h2>
+        <ul>
+          <li>Otsonointi tehdään erillisessä kuomulliseen peräkärryyn rakennetussa otsonointikammiossa.</li>
+          <li>Käsittelyaika ja käsittelykertojen määrä sovitaan kohteen mukaan.</li>
+          <li>Palvelu soveltuu monille huonekaluille ja irtoesineille, jotka mahtuvat turvallisesti kammioon.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Hinta ja logistiikka</h2>
+        <p class="price">Hinta alk. 15€</p>
+        <p>Huonekalujen nouto otsonoitavaksi ja palautus voidaan sopia erikseen.</p>
+        <p>Lopullinen hinta määräytyy kohteen koon, määrän ja mahdollisen kuljetustarpeen mukaan.</p>
+      </section>
+
+      <section class="card">
+        <h2>Yhteydenotto</h2>
+        <p>Varaukset ja kyselyt:</p>
+        <p>Puhelin / WhatsApp: 050 910 9926<br>Sähköposti: simosiren1@gmail.com</p>
+      </section>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const links = Array.from(document.querySelectorAll('.nav-link-anim'));
+      setTimeout(() => {
+        links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
+      }, 90);
+    });
+  </script>
+</body>
+</html>
+
+
