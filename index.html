@@ -287,6 +287,13 @@
       user-select: none;
     }
 
+    .divider {
+      height: 1px;
+      margin: 1rem 0;
+      background: rgba(160, 190, 255, 0.18);
+      border-radius: 999px;
+    }
+
     .contact {
       font-size: 1.05rem;
       margin-top: 1.1rem;
@@ -296,6 +303,62 @@
       padding: 1.1rem 1.25rem;
       color: rgba(234, 240, 255, 0.90);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    .note {
+      margin: 0.8rem 0 0;
+      font-size: 0.98rem;
+      color: rgba(234, 240, 255, 0.78);
+    }
+
+    .cta-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+      color: #f5fbff;
+      background: linear-gradient(135deg, #244c73, #2f5f90);
+      border: 1px solid rgba(23, 38, 56, 0.25);
+      box-shadow: var(--shadow-soft);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .cta-link:hover,
+    .cta-link:focus-visible {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, #1f456a, #2b6b9f);
+      border-color: rgba(23, 38, 56, 0.34);
+      color: #ffffff;
+    }
+
+    .cta-text-mobile {
+      display: none;
+    }
+
+    .cta-text-desktop {
+      display: inline;
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .cta-text-mobile {
+        display: inline;
+      }
+
+      .cta-text-desktop {
+        display: none;
+      }
     }
 
     a {
@@ -392,48 +455,90 @@
         <a href="pelit.html" class="nav-link-anim nav-link-portal" id="nav-link-5">Web-pelit</a>
       </nav>
 
-      <div class="card">
-        <h4>Edullinen ammattilaisen apu kaikenlaisissa tietokoneisiin, tietoturvaan ja teknisiin laitteisiin liittyvissä kysymyksissä ja tarpeissa.</h4>
-        <h4>ATK-tuki, päivitykset, ohjelmien asennukset, käyttöjärjestelmäasennukset, verkkosivut ja ohjelmistoratkaisut samasta osoitteesta.</h2>
-        <h4>Huonekalujen, tekstiilien ja esineiden otsonointikäsittely kuomulliseen peräkärryyn rakennetussa otsonointikammiossa. Hinta alk. 15€: <a href="otsonointi.html">Otsonointipalvelu</a>.</h4>
-        <h4>Palovaroittimien asennukset, paristojen vaihdot, tavaroiden kuljetukset peräkärryllä hoituu myös.</h4>
-        <h4>Arvostelut: keskiarvo 5 tähteä. <a href="https://www.google.com/search?sca_esv=94f317455afcf545&sxsrf=ANbL-n6fDW5Kve4uCFKfKJFe-Sq3FH1Xag:1770495547916&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOQFZ_iPAtovUSgLgOPE-kGD8f4ZAjF2HJpWpB1lTU8r4pygYtPjssZ-6BUYjiG3CDnDnMdgS1VAHhond66YdeD8FpeLGDbgb-QEHWWf6_SwBDJrXZg%3D%3D&q=Tarmola+Code+Garage+Reviews&sa=X&ved=2ahUKEwi239bxmciSAxWoFxAIHSZ7KLoQ0bkNegQIHRAF&biw=1575&bih=725&dpr=1.22" target="_blank" rel="noopener noreferrer">Google-arvostelut</a></h4>
-        
-        <h4>Tuorein sivustoreferenssi: Esim. tämän kaltainen sivusto 239€. Vuoden täysi hostaus ja ylläpito alk. 89€
-        <a href="https://ala-korpula.fi" target="_blank" rel="noopener noreferrer">ala-korpulan klapifirma</a></h4>
-      </div>
+      <main>
+        <section class="card">
+          <h2>Rauhallista apua tietokoneen kanssa</h2>
+          <p>Tarvitsetko apua kotona tai etänä? Autan Porvoon alueella selkeästi ja ilman turhaa teknistä kieltä – kerrotaan ensin mitä tehdään, ja edetään vasta kun se tuntuu turvalliselta.</p>
+          <ul>
+            <li>Hidas tietokone, päivitykset ja ohjelmien asennukset</li>
+            <li>Uusi laite käyttöön, tiedostojen siirto ja varmuuskopiointi</li>
+            <li>Tietoturva ja huijausviestit (mitä uskaltaa klikata, mitä ei)</li>
+            <li>Windows- ja Linux-asennukset</li>
+          </ul>
+          <div class="cta-links" aria-label="Yhteydenotto">
+            <a class="cta-link" href="tel:+358509109926">
+              <span class="cta-text-mobile">Soita</span>
+              <span class="cta-text-desktop">050 910 9926</span>
+            </a>
+            <a class="cta-link" href="https://wa.me/358509109926" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a class="cta-link" href="mailto:simosiren1@gmail.com">Sähköposti</a>
+          </div>
+          <p class="note">Sovithan tapaamisesta aina etukäteen. Matkakulut sisältyvät Porvoon alueella.</p>
+        </section>
 
+        <section class="card">
+          <h2>Pienyrityksille: verkkosivut ja koodarikonsultointi</h2>
+          <p>Kun tarvitset edullisesti toimivat ja tyylikkäät verkkosivut – tai pienen räätälöidyn ohjelmistoratkaisun – hoidetaan homma ketterästi ja läpinäkyvästi. Saat selkeän tarjouksen, ja ylläpidosta sovitaan erikseen.</p>
+          <ul>
+            <li>Uudet verkkosivut tai nykyisen sivuston päivitys</li>
+            <li>Hostaus ja ylläpito (päivitykset, varmistukset, pienet muutokset)</li>
+            <li>Räätälöidyt pienet työkalut, kuten mini-CRM tai lomake-/raportointiratkaisut</li>
+            <li>Koodarin konsultointi: sparraus, koodikatselmointi, bugikorjaukset</li>
+          </ul>
+          <p class="note">Lisätiedot: <a href="yritysohjelmistot.html">Yritysohjelmistot</a>. Kuka olen: <a href="esittely.html">Esittely</a>.</p>
+        </section>
 
-      <div class="card">
-        <h2>Hinnasto</h2>
-        <ul>
-          <li>ATK- ja Digituen kotikäynti 40€ sis. max 1h, sen jälkeen 10€ / 30 min</li>
-          <li>Myös etäyhteys tai neuvonta puhelimessa on mahdollinen</li>
-          <li>Linux asennus 40 €</li>
-          <li>Windows 11 asennus tai päivitys 40 €</li>
-         
-          <span>_______________________________________</span>
-          <li>Verkkosivut alk. 239€</li>
-          <li>Hostaus ja sivuston ylläpito alk. 89€ / vuosi</li>
-           <span>_______________________________________</span>
-          <h3>Lisätiedot ja hinnasto yritysohjelmista: <a href="yritysohjelmistot.html">Yritysohjelmistot</a></h3>
-          <h3>Lisätiedot ja hinnasto otsonointipalvelusta: <a href="otsonointi.html">Otsonointipalvelu</a></h3>
-          <p>Matkakulut sisältyy Porvoon alueella</p>
-          <p>ALV ei mene mistään, koska liikevaihto on alle ALV rajan.</p>
-        </ul>
-      </div>
+        <section class="card">
+          <h2>Luottamus ja tietosuoja</h2>
+          <ul>
+            <li>Sovitaan työ ja hinta etukäteen – ei yllätyslaskuja</li>
+            <li>Käsittelen laitteella vain sovitut asiat, ja selitän mitä teen</li>
+            <li>En pyydä pankkitunnuksia enkä tallenna salasanoja</li>
+          </ul>
+          <p class="note">Jos sinua huolettaa huijaus tai epäilyttävä viesti, katso myös <a href="turvassa-huijauksilta.html">Turvassa huijauksilta</a>.</p>
+        </section>
 
-      <div class="card">
-        <h2>Yhteystiedot</h2>
-        <div class="contact">
-          Sovithan tapaamisesta aina etukäteen:
-          Puhelin ja WhatsApp: 050 910 9926<br>
-          Sähköposti: simosiren1@gmail.com<br>
-          Osoite: Tarmolankatu 5, 06100 PORVOO<br>
-          Y-tunnus: 3572410-5<br>
-          https://tarmola-code.fi
-        </div>
-      </div>
+        <section class="card">
+          <h2>Arvostelut ja referenssit</h2>
+          <p>Katso asiakkaiden kokemuksia: <a href="https://www.google.com/search?sca_esv=94f317455afcf545&sxsrf=ANbL-n6fDW5Kve4uCFKfKJFe-Sq3FH1Xag:1770495547916&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOQFZ_iPAtovUSgLgOPE-kGD8f4ZAjF2HJpWpB1lTU8r4pygYtPjssZ-6BUYjiG3CDnDnMdgS1VAHhond66YdeD8FpeLGDbgb-QEHWWf6_SwBDJrXZg%3D%3D&q=Tarmola+Code+Garage+Reviews&sa=X&ved=2ahUKEwi239bxmciSAxWoFxAIHSZ7KLoQ0bkNegQIHRAF&biw=1575&bih=725&dpr=1.22" target="_blank" rel="noopener noreferrer">Google-arvostelut</a>.</p>
+          <p>Tuore sivustoreferenssi: <a href="https://ala-korpula.fi" target="_blank" rel="noopener noreferrer">Ala-Korpulan klapifirma</a>.</p>
+          <p class="note">Muut palvelut, kuten <a href="otsonointi.html">otsonointipalvelu</a>, löytyvät omilta sivuiltaan.</p>
+        </section>
+
+        <section class="card">
+          <h2>Hinnasto</h2>
+          <h3>Digituki ja asennukset</h3>
+          <ul>
+            <li>ATK- ja digitukikäynti 40 € (sis. max 1 h), sen jälkeen 10 € / 30 min</li>
+            <li>Myös etäyhteys tai neuvonta puhelimessa on mahdollinen</li>
+            <li>Linux-asennus 40 €</li>
+            <li>Windows 11 -asennus tai päivitys 40 €</li>
+          </ul>
+
+          <div class="divider" aria-hidden="true"></div>
+
+          <h3>Verkkosivut</h3>
+          <ul>
+            <li>Verkkosivut alk. 239 €</li>
+            <li>Hostaus ja sivuston ylläpito alk. 89 € / vuosi</li>
+          </ul>
+          <p class="note">Lisätiedot ja hinnasto yritysohjelmista: <a href="yritysohjelmistot.html">Yritysohjelmistot</a></p>
+          <p class="note">Lisätiedot ja hinnasto otsonointipalvelusta: <a href="otsonointi.html">Otsonointipalvelu</a></p>
+          <p class="note">ALV: en ole alv-velvollinen (liikevaihto alle alv-rajan).</p>
+        </section>
+
+        <section class="card">
+          <h2>Yhteystiedot</h2>
+          <div class="contact">
+            Sovithan tapaamisesta aina etukäteen:<br>
+            Puhelin ja WhatsApp: <a href="tel:+358509109926">050 910 9926</a><br>
+            Sähköposti: <a href="mailto:simosiren1@gmail.com">simosiren1@gmail.com</a><br>
+            Osoite: Tarmolankatu 5, 06100 PORVOO<br>
+            Y-tunnus: 3572410-5<br>
+            <a href="https://tarmola-code.fi/">https://tarmola-code.fi</a>
+          </div>
+        </section>
+      </main>
     </div>
   </div>
  
@@ -513,4 +618,3 @@
   </script>
 </body>
 </html>
-
