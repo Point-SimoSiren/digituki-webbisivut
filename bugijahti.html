@@ -107,9 +107,54 @@
     .game-area {
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: 100dvh;
+      min-height: 100vh;
       overflow: hidden;
       cursor: crosshair;
+      touch-action: manipulation;
+    }
+    .hud {
+      position: fixed;
+      top: 4.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 28;
+      display: flex;
+      gap: 0.6rem;
+      align-items: stretch;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: min(92vw, 460px);
+      pointer-events: none;
+    }
+    .hud-item {
+      flex: 1 1 130px;
+      min-width: 118px;
+      padding: 0.5rem 0.7rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    .hud-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(29, 53, 87, 0.78);
+      margin-bottom: 0.2rem;
+    }
+    .hud-value {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1d3557;
+      line-height: 1.2;
+    }
+    .hud-value--warn {
+      color: #b11c1c;
     }
     .bug {
       position: absolute;
@@ -209,14 +254,42 @@
         width: var(--bug-size-mobile);
         height: var(--bug-size-mobile);
       }
+      body {
+        background-attachment: scroll;
+      }
+      .hud {
+        top: 3.6rem;
+        width: min(95vw, 520px);
+        gap: 0.45rem;
+      }
+      .hud-item {
+        min-width: 100px;
+        padding: 0.45rem 0.55rem;
+      }
+      .hud-label {
+        font-size: 0.66rem;
+      }
+      .hud-value {
+        font-size: 0.98rem;
+      }
       .back-button {
         top: 0.75rem;
         left: 0.75rem;
-        font-size: 0.9rem;
-        padding: 0.4rem 0.85rem;
+        font-size: 0.78rem;
+        padding: 0.34rem 0.62rem;
       }
       .halloween-link {
+        top: 0.75rem;
         right: 0.75rem;
+      }
+      .portal-return {
+        top: auto;
+        bottom: 0.7rem;
+      }
+      .portal-return .nav-link-portal {
+        padding: 0.42rem 1rem;
+        font-size: 0.76rem;
+        letter-spacing: 0.04em;
       }
       .message-overlay .message-box {
         max-width: 280px;
@@ -235,6 +308,21 @@
         font-size: 0.95rem;
       }
     }
+    @media (max-width: 420px) {
+      .hud {
+        top: 3.4rem;
+      }
+      .hud-item {
+        flex: 1 1 96px;
+      }
+      .portal-return .nav-link-portal {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.72rem;
+      }
+      .message-overlay .message-box {
+        max-width: 265px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -242,10 +330,25 @@
   <a class="back-button" href="index.html">Takaisin sivustolle</a>
   <a class="back-button halloween-link" href="halloweengame.html">Halloween peli</a>
   <div class="game-area" id="game-area">
+    <div class="hud" id="game-hud" aria-live="polite">
+      <div class="hud-item">
+        <span class="hud-label">Level</span>
+        <span class="hud-value" id="hud-level">1 / 5</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Bugeja jäljellä</span>
+        <span class="hud-value" id="hud-remaining">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Aika</span>
+        <span class="hud-value" id="hud-timer">Ei aikarajaa</span>
+      </div>
+    </div>
     <div id="intro-message" class="message-overlay visible" aria-hidden="false">
       <div class="message-box">
         <h2>Bugijahti alkaa!</h2>
-        <p>Hoidat bugit napsauttamalla hiirellä tai napauttamalla ruutua.</p>
+        <p>Hoidat bugit napsauttamalla hiirellä tai napauttamalla ruutua. Peli sisältää 5 leveliä.</p>
+        <p>Kahdessa viimeisessä levelissä on aikaraja.</p>
         <p>Mobiililaitteella peli toimii parhaiten, kun käännät laitteen vaakatasoon.</p>
         <div class="message-actions">
           <button id="start-button" type="button">Aloita bugijahti</button>
@@ -254,8 +357,8 @@
     </div>
     <div id="completion-message" class="message-overlay" aria-hidden="true">
       <div class="message-box">
-        <h2>Hienoa suoritusta!</h2>
-        <p>Kaikki kaksi tasoa on nyt selätetty. Jatketaanko vielä vai piipahdetaan kotisivulla?</p>
+        <h2 id="completion-title">Hienoa suoritusta!</h2>
+        <p id="completion-text">Kaikki viisi tasoa on nyt selätetty. Jatketaanko vielä vai piipahdetaan kotisivulla?</p>
         <div class="message-actions">
           <button id="restart-button" type="button">Aloita bugijahti uudelleen</button>
           <a id="visit-button" href="index.html">Vieraile sivustollamme</a>
@@ -270,22 +373,117 @@
       const startButton = document.getElementById('start-button');
       const message = document.getElementById('completion-message');
       const restartButton = document.getElementById('restart-button');
-      const BUGS_PER_LEVEL = 14;
+      const completionTitle = document.getElementById('completion-title');
+      const completionText = document.getElementById('completion-text');
+      const hudLevel = document.getElementById('hud-level');
+      const hudRemaining = document.getElementById('hud-remaining');
+      const hudTimer = document.getElementById('hud-timer');
       const LEVELS = [
-        { desktopSize: '2cm', mobileSize: '0.8cm' }, // Level 1: bigger bugs
-        { desktopSize: '1cm', mobileSize: '0.4cm' }, // Level 2: original size
+        {
+          desktopSize: '2.5cm',
+          mobileSize: '1.35cm',
+          bugCount: 8,
+          moveMin: 1400,
+          moveVariation: 1200
+        },
+        {
+          desktopSize: '2.1cm',
+          mobileSize: '1.1cm',
+          bugCount: 10,
+          moveMin: 1200,
+          moveVariation: 1100
+        },
+        {
+          desktopSize: '1.6cm',
+          mobileSize: '0.9cm',
+          bugCount: 12,
+          moveMin: 980,
+          moveVariation: 900
+        },
+        {
+          desktopSize: '1.25cm',
+          mobileSize: '0.72cm',
+          bugCount: 14,
+          moveMin: 860,
+          moveVariation: 780,
+          timeLimitSec: 28
+        },
+        {
+          desktopSize: '1.05cm',
+          mobileSize: '0.62cm',
+          bugCount: 16,
+          moveMin: 760,
+          moveVariation: 660,
+          timeLimitSec: 22
+        }
       ];
-      const MOVE_MIN = 900;
-      const MOVE_VARIATION = 1400;
       let levelIndex = 0;
       let caught = 0;
+      let timeLeft = null;
+      let countdownTimer = null;
+      let gameRunning = false;
 
       const activeTimers = new Map();
 
+      function getCurrentLevel() {
+        return LEVELS[levelIndex];
+      }
+
       function applyLevelStyles() {
-        const currentLevel = LEVELS[levelIndex];
+        const currentLevel = getCurrentLevel();
         document.documentElement.style.setProperty('--bug-size-desktop', currentLevel.desktopSize);
         document.documentElement.style.setProperty('--bug-size-mobile', currentLevel.mobileSize);
+      }
+
+      function clearCountdown() {
+        if (countdownTimer) {
+          clearInterval(countdownTimer);
+          countdownTimer = null;
+        }
+      }
+
+      function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = String(seconds % 60).padStart(2, '0');
+        return `${mins}:${secs}`;
+      }
+
+      function updateHud() {
+        const currentLevel = getCurrentLevel();
+        const levelNumber = Math.min(levelIndex + 1, LEVELS.length);
+        const remaining = Math.max(0, currentLevel.bugCount - caught);
+        hudLevel.textContent = `${levelNumber} / ${LEVELS.length}`;
+        hudRemaining.textContent = String(remaining);
+        if (typeof currentLevel.timeLimitSec === 'number') {
+          hudTimer.textContent = formatTime(Math.max(0, timeLeft ?? 0));
+          hudTimer.classList.toggle('hud-value--warn', (timeLeft ?? 0) <= 10);
+        } else {
+          hudTimer.textContent = 'Ei aikarajaa';
+          hudTimer.classList.remove('hud-value--warn');
+        }
+      }
+
+      function startCountdownIfNeeded() {
+        const currentLevel = getCurrentLevel();
+        clearCountdown();
+        if (typeof currentLevel.timeLimitSec !== 'number') {
+          timeLeft = null;
+          updateHud();
+          return;
+        }
+        timeLeft = currentLevel.timeLimitSec;
+        updateHud();
+        countdownTimer = setInterval(() => {
+          if (!gameRunning) {
+            return;
+          }
+          timeLeft -= 1;
+          updateHud();
+          if (timeLeft <= 0) {
+            clearCountdown();
+            failLevelByTimeout();
+          }
+        }, 1000);
       }
 
       function randomPosition(bug) {
@@ -306,15 +504,18 @@
       }
 
       function scheduleMove(bug) {
+        const currentLevel = getCurrentLevel();
         const timerId = setTimeout(() => {
+          if (!gameRunning) {
+            return;
+          }
           if (bug.dataset.caught === 'true') {
             return;
           }
           randomPosition(bug);
           scheduleMove(bug);
-        }, MOVE_MIN + Math.random() * MOVE_VARIATION);
+        }, currentLevel.moveMin + Math.random() * currentLevel.moveVariation);
         activeTimers.set(bug, timerId);
-        bug.dataset.timerId = String(timerId);
       }
 
       function clearMoveTimer(bug) {
@@ -326,6 +527,9 @@
       }
 
       function catchBug(bug) {
+        if (!gameRunning) {
+          return;
+        }
         if (bug.dataset.caught === 'true') {
           return;
         }
@@ -340,7 +544,8 @@
           setTimeout(() => {
             bug.remove();
             caught += 1;
-            if (caught === BUGS_PER_LEVEL) {
+            updateHud();
+            if (caught === getCurrentLevel().bugCount) {
               advanceLevel();
             }
           }, 280);
@@ -381,8 +586,13 @@
         introMessage.setAttribute('aria-hidden', 'true');
       }
 
-      function showCompletion() {
+      function showCompletion(title, text) {
+        gameRunning = false;
+        clearCountdown();
+        removeExistingBugs();
         hideIntro();
+        completionTitle.textContent = title;
+        completionText.textContent = text;
         message.classList.add('visible');
         message.setAttribute('aria-hidden', 'false');
         setTimeout(() => {
@@ -397,29 +607,45 @@
 
       function startLevel() {
         caught = 0;
+        gameRunning = true;
         removeExistingBugs();
         applyLevelStyles();
-        for (let i = 0; i < BUGS_PER_LEVEL; i += 1) {
+        const currentLevel = getCurrentLevel();
+        for (let i = 0; i < currentLevel.bugCount; i += 1) {
           createBug(i);
         }
+        startCountdownIfNeeded();
+        updateHud();
       }
 
       function startGame() {
         hideIntro();
         hideCompletion();
+        clearCountdown();
         levelIndex = 0;
         startLevel();
       }
 
       function advanceLevel() {
+        clearCountdown();
         levelIndex += 1;
         if (levelIndex < LEVELS.length) {
           setTimeout(() => {
             startLevel();
           }, 600);
         } else {
-          showCompletion();
+          showCompletion(
+            'Hienoa suoritusta!',
+            'Kaikki viisi tasoa on nyt selätetty. Jatketaanko vielä vai piipahdetaan kotisivulla?'
+          );
         }
+      }
+
+      function failLevelByTimeout() {
+        showCompletion(
+          'Aika loppui!',
+          `Level ${levelIndex + 1} meni niukasti ohi. Aloita uusi kierros alusta ja kokeile uudelleen.`
+        );
       }
 
       startButton.addEventListener('click', () => {
@@ -441,6 +667,7 @@
         });
       });
 
+      updateHud();
       showIntro();
     });
   </script>
