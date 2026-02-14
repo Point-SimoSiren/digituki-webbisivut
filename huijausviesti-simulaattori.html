@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huijausviesti-simulaattori | Tarmola Code Garage</title>
+  <meta name="description" content="Tunnista huijausviestit turvallisesti: harjoittele sähköposti- ja tekstiviestihuijausten tunnistamista selaimessa.">
+  <link rel="stylesheet" href="shared-nav.css">
+  <link rel="stylesheet" href="site-refresh.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", Arial, sans-serif;
+      --bg-1: #040b17;
+      --bg-2: #0a1a33;
+      --card: rgba(11, 19, 37, 0.84);
+      --border: rgba(133, 170, 255, 0.28);
+      --text: #e7eeff;
+      --muted: #b5c4ee;
+      --accent: #62d7ff;
+      --ok: #44d09a;
+      --bad: #ff6f86;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(66, 214, 255, 0.2), transparent 45%),
+        radial-gradient(circle at 86% 10%, rgba(124, 114, 255, 0.24), transparent 38%),
+        linear-gradient(145deg, var(--bg-1), var(--bg-2));
+    }
+    .overlay {
+      min-height: 100vh;
+      background: rgba(3, 8, 17, 0.68);
+      backdrop-filter: blur(5px);
+    }
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 2rem 1.2rem 3rem;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      justify-content: center;
+      margin-bottom: 1.6rem;
+    }
+    .nav-link-anim {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .nav-link-anim.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .nav-link-anim:not(.nav-link-portal) {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.45rem 1rem;
+      background: rgba(18, 30, 59, 0.62);
+    }
+    .nav-link-anim:not(.nav-link-portal):hover,
+    .nav-link-anim:not(.nav-link-portal):focus-visible {
+      background: rgba(77, 129, 255, 0.52);
+      border-color: rgba(155, 213, 255, 0.64);
+    }
+    .nav-link-portal {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 0.55rem 1.2rem;
+      color: #061024;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #63d8ff, #74a9ff 50%, #8dffb6);
+      border: 1px solid rgba(142, 238, 255, 0.58);
+    }
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.2rem 1.2rem 1.4rem;
+      box-shadow: 0 18px 42px rgba(2, 8, 24, 0.5);
+      margin-bottom: 1rem;
+    }
+    h1 {
+      margin: 0 0 0.6rem;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: #f2f7ff;
+    }
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+    .pill {
+      background: rgba(16, 33, 66, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      font-weight: 600;
+      color: #d5e5ff;
+      font-size: 0.93rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.1rem;
+      box-shadow: 0 18px 42px rgba(2, 8, 24, 0.45);
+    }
+    .msg-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+    .field {
+      background: rgba(8, 16, 33, 0.84);
+      border: 1px solid rgba(108, 148, 242, 0.28);
+      border-radius: 12px;
+      padding: 0.72rem 0.82rem;
+    }
+    .field strong {
+      color: #9fd2ff;
+    }
+    .message {
+      white-space: pre-line;
+      line-height: 1.58;
+      color: #d9e6ff;
+      margin: 0;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 0.85rem;
+    }
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 0.72rem 1rem;
+      cursor: pointer;
+      font-weight: 700;
+      color: #031022;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+      transform: none;
+    }
+    .btn-scam { background: linear-gradient(120deg, #ff6f88, #ff8b68); }
+    .btn-safe { background: linear-gradient(120deg, #67ffd3, #7cc8ff); }
+    .btn-next, .btn-restart {
+      background: linear-gradient(120deg, #8ce0ff, #9fa3ff);
+    }
+    .feedback {
+      margin-top: 0.8rem;
+      border-radius: 12px;
+      border: 1px solid rgba(107, 145, 236, 0.35);
+      background: rgba(8, 16, 33, 0.84);
+      padding: 0.85rem;
+      line-height: 1.56;
+      color: var(--muted);
+    }
+    .feedback.ok { border-color: rgba(70, 198, 150, 0.68); }
+    .feedback.bad { border-color: rgba(255, 108, 132, 0.68); }
+    .hidden { display: none; }
+    .result h2 { margin: 0 0 0.5rem; }
+    .result ul {
+      margin: 0.5rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--muted);
+    }
+    .result p { color: var(--muted); }
+    @media (max-width: 640px) {
+      .container { padding: 1.5rem 0.9rem 2.5rem; }
+      .hero, .card { padding: 1rem; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="yritysohjelmistot.html" class="nav-link-anim" id="nav-link-3">Yritysohjelmistot</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="turvassa-huijauksilta.html" class="nav-link-anim" id="nav-link-7">Turvassa huijauksilta</a>
+        <a href="pelit.html" class="nav-link-anim nav-link-portal visible" id="nav-link-5">Web-pelit</a>
+      </nav>
+
+      <section class="hero">
+        <h1>Huijausviesti-simulaattori</h1>
+        <p class="lead">Lue viesti, arvioi onko kyse huijauksesta vai aidosta viestistä, ja tarkista perustelu. Harjoitus opettaa huomaamaan kiire, epäselvät linkit, kalastelu ja poikkeavat lähettäjät.</p>
+        <div class="stats">
+          <span class="pill" id="progress-pill">Tilanne: 1/10</span>
+          <span class="pill" id="score-pill">Pisteet: 0</span>
+          <span class="pill" id="format-pill">Formaatti: Sähköposti</span>
+        </div>
+      </section>
+
+      <section class="card" id="quiz-card" aria-live="polite">
+        <div class="msg-grid">
+          <div class="field"><strong id="sender-label">Lähettäjä:</strong> <span id="sender"></span></div>
+          <div class="field" id="subject-field"><strong>Aihe:</strong> <span id="subject"></span></div>
+          <div class="field">
+            <strong id="message-label">Viesti:</strong>
+            <p class="message" id="message"></p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn-scam" id="scam-btn">Tämä on huijaus</button>
+          <button class="btn-safe" id="safe-btn">Tämä on aito</button>
+          <button class="btn-next" id="next-btn" disabled>Seuraava viesti</button>
+        </div>
+        <div class="feedback hidden" id="feedback"></div>
+      </section>
+
+      <section class="card result hidden" id="result-card">
+        <h2 id="result-title"></h2>
+        <p id="result-text"></p>
+        <ul>
+          <li>Tarkista aina lähettäjän osoite ja verkkotunnus.</li>
+          <li>Varo kiirettä, uhkailua tai liian hyvää tarjousta.</li>
+          <li>Älä kirjaudu linkistä, vaan kirjoita palvelun osoite itse.</li>
+          <li>Älä anna pankkitunnuksia tai kertakäyttökoodeja viestillä.</li>
+        </ul>
+        <div class="actions">
+          <button class="btn-restart" id="restart-btn">Pelaa uudelleen</button>
+          <button class="btn-next" id="back-btn">Takaisin pelilistaan</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const scenarios = [
+      {
+        channel: "sms",
+        sender: "+358 40 723 1984",
+        subject: "",
+        message: "POSTI: Pakettisi odottaa tullivahvistusta. Maksa 2,90 EUR 30 min sisällä: posti-fi-track.link/verify",
+        isScam: true,
+        reason: "Lyhytlinkki, kiire ja maksupyyntö SMS-viestissä ovat tyypillisiä huijausmerkkejä."
+      },
+      {
+        sender: "postin-tuki@posti-finland-delivery.com",
+        subject: "Toimitus epäonnistui - maksa 2,90 EUR",
+        message: "Pakettisi odottaa vahvistusta.\nAvaa linkki ja maksa käsittelymaksu 2,90 EUR 30 minuutin sisällä.",
+        isScam: true,
+        reason: "Poikkeava lähettäjäosoite, kiireellinen aikaraja ja maksupyyntö viittaavat huijaukseen."
+      },
+      {
+        channel: "sms",
+        sender: "S-PANKKI",
+        subject: "",
+        message: "Turvahavainto: tilisi lukitaan pian. Vahvista pankkitunnus ja kertakoodi: spankki-turva.com",
+        isScam: true,
+        reason: "Pankkitunnusten ja kertakoodin pyyntö linkin kautta on selvä kalastelu."
+      },
+      {
+        sender: "no-reply@oma-pankki.fi",
+        subject: "Muistutus: vahvista tietosi",
+        message: "Turvallisuussyistä pyydämme vahvistamaan käyttäjätunnuksen, salasanan ja avainlukukoodin tämän viestin linkistä.",
+        isScam: true,
+        reason: "Pankit eivät pyydä tunnuksia tai koodeja sähköpostin linkin kautta."
+      },
+      {
+        sender: "asiakaspalvelu@kirjasto.porvoo.fi",
+        subject: "Noutovaraus on saapunut",
+        message: "Varaamasi teos on noudettavissa pääkirjastosta 7 päivän ajan. Tervetuloa!",
+        isScam: false,
+        reason: "Viesti ei pyydä kirjautumista, maksua tai arkaluonteisia tietoja ja lähettäjä on uskottava."
+      },
+      {
+        sender: "support@microsoft-secure-alert.net",
+        subject: "Tietokoneesi on saanut viruksen",
+        message: "Soita heti numeroon 09 123 4567. Muuten kaikki tiedostosi poistetaan.",
+        isScam: true,
+        reason: "Paniikkia luova uhkailu ja epävirallinen domain ovat tyypillisiä huijauksen merkkejä."
+      },
+      {
+        channel: "sms",
+        sender: "HAMMASAsema",
+        subject: "",
+        message: "Muistutus: aikasi huomenna klo 10.30. Peru aika soittamalla ajanvaraukseen 010 123 4567.",
+        isScam: false,
+        reason: "Normaali muistutusviesti ilman maksupyyntöä tai kirjautumista on uskottava."
+      },
+      {
+        sender: "laskutus@sahkoyhtio.fi",
+        subject: "E-lasku saatavilla OmaSahko-palvelussa",
+        message: "Uusi lasku on julkaistu. Kirjaudu palveluun selaimen kautta tarkistamaan summa ja eräpäivä.",
+        isScam: false,
+        reason: "Viesti ohjaa kirjautumaan omaan palveluun ilman tunnusten pyytämistä viestissä."
+      },
+      {
+        channel: "sms",
+        sender: "+358 50 991 2801",
+        subject: "",
+        message: "Moi, numero vaihtui. Maksa lainaamasi 120 EUR heti tälle tilille FI88 9999 1234 0000 55.",
+        isScam: true,
+        reason: "Tuntematon numero ja kiireellinen rahapyyntö ilman varmistusta ovat klassinen huijauskuvio."
+      },
+      {
+        sender: "hr@yrityspalvelut-global.com",
+        subject: "Työtarjous 5800 EUR/kk ilman kokemusta",
+        message: "Vahvista henkilöllisyys lähettämällä henkilötunnus ja kuva passista vastauksena tähän viestiin.",
+        isScam: true,
+        reason: "Epärealistinen lupaus yhdistettynä henkilötietojen kalasteluun on selkeä riskimerkki."
+      },
+      {
+        sender: "kuitti@verkkokauppa.fi",
+        subject: "Tilauksesi #12984 kuitti",
+        message: "Kiitos tilauksestasi. Kuitti löytyy asiakastililtäsi, johon voit kirjautua normaalisti verkkokaupan etusivulta.",
+        isScam: false,
+        reason: "Normaali kuittiviesti ei sisällä painostusta tai epäilyttäviä toimenpiteitä."
+      },
+      {
+        sender: "whatsapp-security@verify-safe.net",
+        subject: "Tilisi suljetaan 12h sisällä",
+        message: "Jotta tili ei sulkeudu, syötä kirjautumistiedot oheiseen lomakkeeseen.",
+        isScam: true,
+        reason: "Tilin sulkemisella painostaminen ja kirjautumistietojen pyyntö linkin kautta viittaavat huijaukseen."
+      },
+      {
+        sender: "varaukset@hammasasema.fi",
+        subject: "Aikamuistutus huomiselle",
+        message: "Muistutus: hammashoitokäynti huomenna klo 10.30. Jos et pääse paikalle, peru aika soittamalla ajanvaraukseen.",
+        isScam: false,
+        reason: "Sisältö on neutraali muistutus eikä pyydä maksua tai tunnuksia."
+      },
+      {
+        sender: "paypaI-security@outlook.com",
+        subject: "Epätavallinen kirjautuminen havaittu",
+        message: "Kirjaudu heti sisään alla olevasta linkistä tai tilisi lukitaan.",
+        isScam: true,
+        reason: "Lähettäjäosoitteen nimi muistuttaa tunnettua palvelua, mutta on väärennetty ja painostava."
+      }
+    ];
+
+    const senderEl = document.getElementById("sender");
+    const senderLabelEl = document.getElementById("sender-label");
+    const subjectEl = document.getElementById("subject");
+    const subjectFieldEl = document.getElementById("subject-field");
+    const messageLabelEl = document.getElementById("message-label");
+    const messageEl = document.getElementById("message");
+    const progressPill = document.getElementById("progress-pill");
+    const scorePill = document.getElementById("score-pill");
+    const formatPill = document.getElementById("format-pill");
+    const feedbackEl = document.getElementById("feedback");
+    const scamBtn = document.getElementById("scam-btn");
+    const safeBtn = document.getElementById("safe-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const quizCard = document.getElementById("quiz-card");
+    const resultCard = document.getElementById("result-card");
+    const resultTitle = document.getElementById("result-title");
+    const resultText = document.getElementById("result-text");
+    const restartBtn = document.getElementById("restart-btn");
+    const backBtn = document.getElementById("back-btn");
+
+    let index = 0;
+    let score = 0;
+    let locked = false;
+    let pool = [];
+
+    const shuffle = (arr) => {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    };
+
+    const updateStats = () => {
+      progressPill.textContent = `Tilanne: ${index + 1}/${pool.length}`;
+      scorePill.textContent = `Pisteet: ${score}`;
+    };
+
+    const renderScenario = () => {
+      const item = pool[index];
+      const isSms = item.channel === "sms";
+      senderEl.textContent = item.sender;
+      subjectEl.textContent = item.subject;
+      messageEl.textContent = item.message;
+      senderLabelEl.textContent = isSms ? "Numero:" : "Lähettäjä:";
+      messageLabelEl.textContent = isSms ? "SMS-viesti:" : "Viesti:";
+      subjectFieldEl.classList.toggle("hidden", isSms);
+      formatPill.textContent = `Formaatti: ${isSms ? "SMS" : "Sähköposti"}`;
+      feedbackEl.className = "feedback hidden";
+      feedbackEl.textContent = "";
+      nextBtn.disabled = true;
+      scamBtn.disabled = false;
+      safeBtn.disabled = false;
+      locked = false;
+      updateStats();
+    };
+
+    const evaluate = (userThinksScam) => {
+      if (locked) return;
+      locked = true;
+      const item = pool[index];
+      const correct = userThinksScam === item.isScam;
+      if (correct) score += 1;
+
+      feedbackEl.className = `feedback ${correct ? "ok" : "bad"}`;
+      feedbackEl.innerHTML = `<strong>${correct ? "Oikein." : "Väärin."}</strong> ${item.reason}`;
+      scorePill.textContent = `Pisteet: ${score}`;
+      scamBtn.disabled = true;
+      safeBtn.disabled = true;
+      nextBtn.disabled = false;
+      nextBtn.textContent = index === pool.length - 1 ? "Näytä tulos" : "Seuraava viesti";
+    };
+
+    const showResult = () => {
+      quizCard.classList.add("hidden");
+      resultCard.classList.remove("hidden");
+      progressPill.textContent = `Valmis: ${pool.length}/${pool.length}`;
+      scorePill.textContent = `Pisteet: ${score}`;
+
+      const ratio = score / pool.length;
+      if (ratio >= 0.9) {
+        resultTitle.textContent = "Erinomainen tunnistaja";
+        resultText.textContent = "Tunnistat huijausmerkit erittäin hyvin. Tämä on vahva taso arjen digiturvassa.";
+      } else if (ratio >= 0.7) {
+        resultTitle.textContent = "Hyvä perusosaaminen";
+        resultText.textContent = "Hyvä suoritus. Kiinnitä vielä huomiota kiirettä luoviin viesteihin ja linkkien domainiin.";
+      } else {
+        resultTitle.textContent = "Harjoittele vielä";
+        resultText.textContent = "Käy vinkit läpi ja kokeile uudelleen. Harjoittelu parantaa nopeasti huijausten tunnistamista.";
+      }
+    };
+
+    const startGame = () => {
+      pool = shuffle(scenarios);
+      index = 0;
+      score = 0;
+      resultCard.classList.add("hidden");
+      quizCard.classList.remove("hidden");
+      renderScenario();
+      nextBtn.textContent = "Seuraava viesti";
+    };
+
+    scamBtn.addEventListener("click", () => evaluate(true));
+    safeBtn.addEventListener("click", () => evaluate(false));
+    nextBtn.addEventListener("click", () => {
+      if (nextBtn.disabled) return;
+      index += 1;
+      if (index >= pool.length) {
+        showResult();
+        return;
+      }
+      renderScenario();
+    });
+    restartBtn.addEventListener("click", startGame);
+    backBtn.addEventListener("click", () => {
+      window.location.href = "pelit.html";
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = Array.from(document.querySelectorAll(".nav-link-anim"));
+      setTimeout(() => {
+        links.forEach((link, i) => setTimeout(() => link.classList.add("visible"), i * 100));
+      }, 260);
+      startGame();
+    });
+  </script>
+</body>
+</html>
