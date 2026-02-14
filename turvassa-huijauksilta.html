@@ -262,6 +262,24 @@
       margin: 0.4rem 0;
     }
 
+    ul span {
+      display: block;
+      height: 1px;
+      margin: 1rem 0;
+      background: rgba(160, 190, 255, 0.18);
+      border-radius: 999px;
+      font-size: 0;
+      line-height: 0;
+      user-select: none;
+    }
+
+    .divider {
+      height: 1px;
+      margin: 1rem 0;
+      background: rgba(160, 190, 255, 0.18);
+      border-radius: 999px;
+    }
+
     .callout {
       border: 1px solid rgba(110, 231, 255, 0.25);
       background: rgba(110, 231, 255, 0.07);
@@ -281,6 +299,63 @@
       color: rgba(234, 240, 255, 0.92);
       line-height: 1.6;
       font-size: 1.05rem;
+    }
+
+    .contact {
+      font-size: 1.05rem;
+      margin-top: 1.1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem;
+      color: rgba(234, 240, 255, 0.90);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+      line-height: 1.7;
+    }
+
+    .note {
+      margin: 0.8rem 0 0;
+      font-size: 0.98rem;
+      color: rgba(234, 240, 255, 0.78);
+    }
+
+    .meta {
+      margin: 0.25rem auto 0.5rem;
+      text-align: center;
+      max-width: 78ch;
+      color: rgba(234, 240, 255, 0.72);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .toc {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.6rem;
+    }
+
+    .toc li {
+      margin: 0.55rem 0;
+    }
+
+    .toc li::before {
+      content: '– ';
+      color: rgba(234, 240, 255, 0.55);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: rgba(110, 231, 255, 0.45);
+      text-underline-offset: 0.22em;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: #c7f1ff;
+      text-decoration-color: rgba(199, 241, 255, 0.75);
+      outline: none;
     }
 
     @media (max-width: 700px) {
@@ -318,6 +393,11 @@
       ul {
         color: #111 !important;
       }
+      .contact,
+      .note,
+      .meta {
+        color: #111 !important;
+      }
     }
   </style>
 
@@ -336,7 +416,7 @@
       "name": "Tarmola Code Garage"
     },
     "datePublished": "2025-12-16",
-    "dateModified": "2025-12-16",
+    "dateModified": "2026-02-14",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://tarmola-code.fi/turvassa-huijauksilta.html"
@@ -363,17 +443,47 @@
         <img src="images/TuxiC.png" alt="Tarmola Code Garage -logo" class="page-logo">
         TURVASSA HUIJAUKSILTA
       </h1>
+      <p class="meta">P&auml;ivitetty: <time datetime="2026-02-14">14.2.2026</time>. T&auml;m&auml; on yleisluonteinen opas &ndash; jos ep&auml;ilet vahinkoa tai rikosta, ole yhteydess&auml; omaan pankkiin ja tarvittaessa poliisiin.</p>
 
       <p class="intro">Nyky&auml;&auml;n huijaukset ovat yleistyneet. Ne voivat tulla puhelimitse, tekstiviestill&auml;, s&auml;hk&ouml;postilla tai internetin kautta. Huijarit eiv&auml;t etsi tyhmi&auml; ihmisi&auml;, vaan luottavaisia ja kohteliaita. Siksi kuka tahansa voi joutua huijatuksi.</p>
       <p class="intro">T&auml;m&auml;n oppaan tarkoitus on kertoa, miten huijauksilta voi suojautua ja miksi n&auml;m&auml; keinot ovat t&auml;rkeit&auml;.</p>
 
       <div class="toolbar">
-        <a class="button button--primary" href="#rauha">Siirry peruss&auml;&auml;nt&ouml;ihin</a>
+        <a class="button button--primary" href="#pikaohje">Siirry pikaohjeeseen</a>
         <a class="button" href="#epaily">Jos ep&auml;ilet huijausta</a>
         <button class="button" type="button" onclick="window.print()">Tulosta / tallenna PDF</button>
       </div>
 
       <main>
+        <section class="card callout" id="pikaohje">
+          <h2>Pikaohje (30 sekuntia)</h2>
+          <ul>
+            <li>Pys&auml;hdy. &Auml;l&auml; tee mit&auml;&auml;n kiireess&auml;.</li>
+            <li>&Auml;l&auml; anna pankkitunnuksia, korttitietoja, henkil&ouml;tunnusta tai puhelimeen tulevia koodeja kenellek&auml;&auml;n.</li>
+            <li>&Auml;l&auml; asenna et&auml;yhteysohjelmia (esim. &ldquo;tuki&rdquo;) tuntemattoman pyynn&ouml;st&auml;.</li>
+            <li>&Auml;l&auml; klikkaa viestien linkkej&auml;. Mene itse pankin/yrityksen sivulle tai sovellukseen.</li>
+            <li>Jos ep&auml;ilet: katkaise yhteys ja soita itse viralliseen numeroon.</li>
+          </ul>
+          <p class="note">Vinkki: tee l&auml;heisen kanssa etuk&auml;teen yhteinen &ldquo;turvas&auml;&auml;nt&ouml;&rdquo;: isoja p&auml;&auml;t&ouml;ksi&auml; ei tehd&auml; koskaan yksin tai puhelussa.</p>
+        </section>
+
+        <section class="card" id="sisalto">
+          <h2>Sis&auml;llysluettelo</h2>
+          <ul class="toc">
+            <li><a href="#rauha">Rauhallisuus on paras suoja</a></li>
+            <li><a href="#tiedot">Tietoja ei saa antaa kenellek&auml;&auml;n</a></li>
+            <li><a href="#puhelut-varauksella">Puheluihin saa suhtautua varauksella</a></li>
+            <li><a href="#lopeta-puhelu">Puhelun saa aina lopettaa</a></li>
+            <li><a href="#linkit">Viestej&auml; ja linkkej&auml; ei pid&auml; klikata</a></li>
+            <li><a href="#henkilotiedot">Henkil&ouml;tiedot ovat arvokkaita</a></li>
+            <li><a href="#kysyminen">Kysyminen on t&auml;rke&auml; turvakeino</a></li>
+            <li><a href="#tekniset">Tekniset turvakeinot helpottavat arkea</a></li>
+            <li><a href="#epaily">Jos ep&auml;ilet huijausta</a></li>
+            <li><a href="#lisaohjeet">Lis&auml;ohjeita ja tukea</a></li>
+            <li><a href="#lopuksi">Lopuksi</a></li>
+          </ul>
+        </section>
+
         <section class="card callout" id="rauha">
           <h2>Rauhallisuus on paras suoja</h2>
           <p>Huijarit pyrkiv&auml;t aina luomaan kiireen tunteen. He saattavat sanoa, ett&auml; tilisi suljetaan, rahasi ovat vaarassa tai l&auml;heisesi on pulassa. Kiireess&auml; ihminen ei ehdi ajatella rauhassa.</p>
@@ -441,7 +551,7 @@
             <li>maksullisten numeroiden esto</li>
             <li>h&auml;iritsevien numeroiden esto</li>
           </ul>
-          <h3>Pankissa kannattaa pyyt&auml;&auml;</h3>
+          <h3>Verkkopankissa kannattaa asettaa</h3>
           <ul>
             <li>tilikohtaiset turvarajat</li>
             <li>p&auml;ivitt&auml;iset siirtorajat</li>
@@ -462,11 +572,35 @@
           <p>Huijatuksi tuleminen ei ole h&auml;pe&auml;. Huijarit ovat ammattilaisia, ja huijauksia tapahtuu joka p&auml;iv&auml;.</p>
         </section>
 
+        <section class="card" id="lisaohjeet">
+          <h2>Lis&auml;ohjeita ja tukea</h2>
+          <p>Jos haluat varmistaa asetukset ja turvarajat k&auml;yt&auml;nn&ouml;ss&auml; (puhelin, s&auml;hk&ouml;posti, selain, verkkopankin rajoitukset), apua kannattaa pyyt&auml;&auml; ajoissa.</p>
+
+          <h3>Luotettavia lis&auml;ohjeita</h3>
+          <ul>
+            <li><a href="https://poliisi.fi/" target="_blank" rel="noopener noreferrer">Poliisi</a> &ndash; huijaukset ja rikosilmoitusohjeet</li>
+            <li><a href="https://www.kyberturvallisuuskeskus.fi/" target="_blank" rel="noopener noreferrer">Kyberturvallisuuskeskus</a> &ndash; ajankohtaisia varoituksia ja ohjeita</li>
+            <li><a href="https://www.suomi.fi/" target="_blank" rel="noopener noreferrer">Suomi.fi</a> &ndash; viranomaispalvelut ja tunnistautuminen</li>
+          </ul>
+
+          <div class="divider" aria-hidden="true"></div>
+
+          <h3>Tarvitsetko apua asetusten kanssa?</h3>
+          <p class="note">Tarmola Code Garage tarjoaa my&ouml;s digitukea Porvoon alueella. K&auml;ynti sovitaan aina etuk&auml;teen, ja laitteella tehd&auml;&auml;n vain sovitut asiat.</p>
+          <div class="contact">
+            Puhelin ja WhatsApp: <a href="tel:+358509109926">050 910 9926</a><br>
+            S&auml;hk&ouml;posti: <a href="mailto:simosiren1@gmail.com">simosiren1@gmail.com</a><br>
+            Osoite: Tarmolankatu 5, 06100 PORVOO
+          </div>
+        </section>
+
         <section class="card callout" id="lopuksi">
           <h2>Lopuksi</h2>
           <p><strong>Turvallinen ihminen ei ole ep&auml;luuloinen</strong>, vaan rauhallinen, harkitseva ja valmis kysym&auml;&auml;n neuvoa.</p>
-          <div class="tip">Sinulla on oikeus sanoa ei, lopettaa puhelu ja ottaa aikaa.</div>
+          <div class="tip"><strong>Muista:</strong> Sinulla on oikeus sanoa ei, lopettaa puhelu ja ottaa aikaa.</div>
         </section>
+
+   
       </main>
     </div>
   </div>
@@ -481,4 +615,3 @@
   </script>
 </body>
 </html>
-
