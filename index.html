@@ -14,19 +14,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarmola Code Garage | digituki | asennukset | verkkosivut | ohjelmistot | Porvoossa</title>
-  <meta name="description" content="Tarmola Code Garage auttaa Porvoon alueen kotitalouksia ja pienyrittäjiä Linux-asennuksissa, digitukikäynneissä, verkkosivujen päivityksessä ja ketterissä koodausprojekteissa.">
-  <meta name="keywords" content="linux asennus porvoo, otsonointi porvoo, digituki porvoo, it-tuki porvoo, verkkosivut porvoo, koodari porvoo, mini crm, pwa-kehitys">
+  <meta name="description" content="Tarmola Code Garage auttaa Porvoon alueella IT-tuessa ja ATK-avussa: it-tuki Porvoo, atk-tuki Porvoo, it-apu Porvoo ja atk-apu Porvoo kotona tai etänä. Lisäksi Linux-asennukset, digituki ja verkkosivupalvelut.">
+  <meta name="keywords" content="linux asennus porvoo, otsonointi porvoo, digituki porvoo, it-tuki porvoo, atk-tuki porvoo, it-apu porvoo, atk-apu porvoo, tietokoneapu porvoo, verkkosivut porvoo, koodari porvoo, pwa-kehitys">
   <meta name="author" content="Simo Sirén">
   <link rel="canonical" href="https://tarmola-code.fi/">
+  <link rel="alternate" hreflang="fi-FI" href="https://tarmola-code.fi/">
+  <link rel="alternate" hreflang="x-default" href="https://tarmola-code.fi/">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="geo.region" content="FI-18">
+  <meta name="geo.placename" content="Porvoo">
+  <meta name="geo.position" content="60.3923;25.6651">
+  <meta name="ICBM" content="60.3923, 25.6651">
   <meta property="og:title" content="Tarmola Code Garage | Verkkosivut, Linux-asennus ja digituki Porvoossa">
-  <meta property="og:description" content="Linux-asennukset, digituki, verkkosivujen päivitykset ja ohjelmistokehitys Porvoossa.">
+  <meta property="og:description" content="IT-tuki, ATK-tuki, it-apu ja atk-apu Porvoossa. Lisäksi Linux-asennukset, digituki ja verkkosivupalvelut.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tarmola-code.fi/">
   <meta property="og:image" content="https://tarmola-code.fi/icons/icon-512.png">
   <meta property="og:locale" content="fi_FI">
+  <meta property="og:site_name" content="Tarmola Code Garage">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tarmola Code Garage | Linux-asennus ja digituki Porvoossa">
-  <meta name="twitter:description" content="Digituki, Linux-asennus, verkkosivut ja mini CRM pienyrityksille Porvoossa.">
+  <meta name="twitter:description" content="IT-tuki, ATK-tuki, it-apu ja atk-apu Porvoossa. Lisäksi Linux-asennukset, digituki ja verkkosivupalvelut.">
 
   <!-- PWA META pois käytöstä
   <meta name="theme-color" content="#081632">
@@ -409,13 +418,65 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "ProfessionalService", "ComputerRepair"],
     "name": "Tarmola Code Garage",
     "image": "https://tarmola-code.fi/icons/icon-512.png",
     "url": "https://tarmola-code.fi/",
     "telephone": "+358509109926",
+    "email": "simosiren1@gmail.com",
     "priceRange": "€",
-    "description": "Windows- ja Linux-asennukset, digituki, otsonointikäsittely, verkkosivut ja softapalvelut Porvoon alueella.",
+    "description": "IT-tuki, ATK-tuki, it-apu ja atk-apu Porvoossa. Windows- ja Linux-asennukset, digituki, verkkosivut ja softapalvelut Porvoon alueella.",
+    "keywords": [
+      "it-tuki porvoo",
+      "atk-tuki porvoo",
+      "it-apu porvoo",
+      "atk-apu porvoo",
+      "digituki porvoo",
+      "tietokoneapu porvoo"
+    ],
+    "serviceType": [
+      "IT-tuki",
+      "ATK-tuki",
+      "IT-apu",
+      "ATK-apu",
+      "Digituki",
+      "Tietokoneapu",
+      "Linux-asennus"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "IT- ja ATK-palvelut Porvoossa",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "IT-tuki Porvoo"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "ATK-tuki Porvoo"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "IT-apu Porvoo"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "ATK-apu Porvoo"
+          }
+        }
+      ]
+    },
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Tarmolankatu 5",
@@ -423,13 +484,24 @@
       "addressLocality": "Porvoo",
       "addressCountry": "FI"
     },
-    "areaServed": {
-      "@type": "City",
-      "name": "Porvoo"
-    },
+    "areaServed": [
+      {
+        "@type": "City",
+        "name": "Porvoo"
+      }
+    ],
     "sameAs": [
       "https://tarmola-code.fi/"
     ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://tarmola-code.fi/",
+    "name": "Tarmola Code Garage",
+    "inLanguage": "fi-FI"
   }
   </script>
   <link rel="stylesheet" href="shared-nav.css">
