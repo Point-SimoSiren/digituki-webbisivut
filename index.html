@@ -276,6 +276,43 @@
       line-height: 1.7;
     }
 
+    .service-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .service-photo {
+      margin: 0;
+      padding: 0.6rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(160, 190, 255, 0.24);
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+    }
+
+    .service-photo img {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      height: auto;
+    }
+
+    .service-photo figcaption {
+      margin-top: 0.55rem;
+      font-size: 0.92rem;
+      color: #f5fbff;
+      background: rgba(7, 11, 20, 0.78);
+      border: 1px solid rgba(160, 190, 255, 0.3);
+      border-radius: 999px;
+      padding: 0.28rem 0.58rem;
+      display: inline-block;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
     ul {
       margin: 0.65rem 0 0;
       padding-left: 1.2rem;
@@ -400,6 +437,15 @@
     @media (max-width: 700px) {
       .container {
         padding: 1.25rem 1rem 3rem;
+      }
+
+      .service-intro {
+        grid-template-columns: 1fr;
+      }
+
+      .service-photo {
+        max-width: 270px;
+        justify-self: center;
       }
     }
 
@@ -532,7 +578,13 @@
       <main>
         <section class="card">
           <h2>Rauhallista apua tietokoneen kanssa 40 € / tunti</h2>
-          <p>Tarvitsetko apua kotona tai etänä? Autan Porvoon alueella selkeästi ja ilman turhaa teknistä kieltä – kerrotaan ensin mitä tehdään, ja edetään vasta kun se tuntuu turvalliselta.</p>
+          <div class="service-intro">
+            <p>Tarvitsetko apua kotona tai etänä? Autan Porvoon alueella selkeästi ja ilman turhaa teknistä kieltä – kerrotaan ensin mitä tehdään, ja edetään vasta kun se tuntuu turvalliselta.</p>
+            <figure class="service-photo">
+              <img src="images/Simokuva.png" alt="Toiminimiyrittäjä Simo Sirén">
+              <figcaption>Toiminimiyrittäjä Simo Sirén</figcaption>
+            </figure>
+          </div>
           <ul>
             <li>Hidas tietokone, päivitykset ja ohjelmien asennukset</li>
             <li>Opastus ja neuvonta käyttöön ja tietoturvaan</li>
