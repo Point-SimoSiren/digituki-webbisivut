@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--
+  Muutokset 2026-02-22:
+  1) Päivitetty title + meta description paikalliseen hakuintenttiin (Porvoo, tietokoneapu, ATK-apu).
+  2) Muutettu brändiotsikko visuaaliseksi elementiksi ja lisätty yksi varsinainen SEO-H1.
+  3) Lisätty palvelut senioreille Porvoossa -kortti ja sisäinen ankkurilinkitys.
+  4) Lisätty FAQ-osio sekä FAQPage JSON-LD ongelmapohjaisiin hakuihin.
+  5) Laajennettu LocalBusiness-schemaa (contactPoint, areaServed, kotikäynti/etätuki tarjoukset).
+  6) Lisätty theme-color, päivitetty OG/Twitter-kuvat ja kuville SEO-/latausattribuutit.
+-->
 <html lang="fi">
 <head>
   <!-- Google tag (gtag.js) -->
@@ -16,10 +25,11 @@
   <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
   
-  <title>Tarmola Code Garage | digituki | asennukset | verkkosivut | ohjelmistot | Porvoossa</title>
-  <meta name="description" content="Tarmola Code Garage auttaa Porvoon alueella IT-tuessa ja ATK-avussa: it-tuki Porvoo, atk-tuki Porvoo, it-apu Porvoo ja atk-apu Porvoo kotona tai etänä. Lisäksi Linux-asennukset, digituki ja verkkosivupalvelut.">
+  <title>Tietokoneapu Porvoo | ATK-apu kotikäynti | Tarmola Code</title>
+  <meta name="description" content="Porvoon tietokoneapu ja ATK-apu kotikäynnillä tai etänä. Rauhallinen ja selkeä opastus senioreille ilman teknistä jargonia. Soita ja sovi apu.">
   <meta name="keywords" content="linux asennus porvoo, otsonointi porvoo, digituki porvoo, it-tuki porvoo, atk-tuki porvoo, it-apu porvoo, atk-apu porvoo, tietokoneapu porvoo, verkkosivut porvoo, koodari porvoo, pwa-kehitys">
   <meta name="author" content="Simo Sirén">
+  <meta name="theme-color" content="#070b14">
   <link rel="canonical" href="https://tarmola-code.fi/">
   <link rel="alternate" hreflang="fi-FI" href="https://tarmola-code.fi/">
   <link rel="alternate" hreflang="x-default" href="https://tarmola-code.fi/">
@@ -29,16 +39,17 @@
   <meta name="geo.placename" content="Porvoo">
   <meta name="geo.position" content="60.3923;25.6651">
   <meta name="ICBM" content="60.3923, 25.6651">
-  <meta property="og:title" content="Tarmola Code Garage | Verkkosivut, Linux-asennus ja digituki Porvoossa">
-  <meta property="og:description" content="IT-tuki, ATK-tuki, it-apu ja atk-apu Porvoossa. Lisäksi Linux-asennukset, digituki ja verkkosivupalvelut.">
+  <meta property="og:title" content="Tietokoneapu Porvoossa | Rauhallinen ATK-apu kotikäynnillä">
+  <meta property="og:description" content="Tietokoneapu Porvoossa senioreille: kotikäynnit ja etäapu, selkeä opastus ilman teknistä kieltä. IT-tuki, ATK-apu ja digituki Tarmolasta.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tarmola-code.fi/">
-  <meta property="og:image" content="https://tarmola-code.fi/icons/favicon.ico">
+  <meta property="og:image" content="https://tarmola-code.fi/images/Simokuva.png">
   <meta property="og:locale" content="fi_FI">
   <meta property="og:site_name" content="Tarmola Code Garage">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tarmola Code Garage | Linux-asennus ja digituki Porvoossa">
-  <meta name="twitter:description" content="IT-tuki, ATK-tuki, it-apu ja atk-apu Porvoossa. Lisäksi Linux-asennukset, digituki ja verkkosivupalvelut.">
+  <meta name="twitter:title" content="Tietokoneapu Porvoo | ATK-apu kotikäynnillä">
+  <meta name="twitter:description" content="Rauhallinen tietokoneapu Porvoossa: kotikäynti tai etäapu, selkeä opastus senioreille. IT-tuki, ATK-apu ja digituki.">
+  <meta name="twitter:image" content="https://tarmola-code.fi/images/Simokuva.png">
 
   <!-- PWA META pois käytöstä
   <meta name="theme-color" content="#081632">
@@ -97,18 +108,45 @@
       padding: clamp(1.25rem, 3vw, 2.6rem) 1.25rem 3.75rem;
     }
 
-    h1 {
+    .brand-hero {
       margin: 0;
-      padding-top: 0.25rem;
+      padding: 0.45rem 0.85rem;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
       flex-wrap: wrap;
-      color: #ffffff;
+      color: #f6f9ff;
       font-size: clamp(2.05rem, 5vw, 3.05rem);
       letter-spacing: 0.02em;
       text-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      border-radius: 14px;
+      background: rgba(7, 11, 20, 0.42);
+      border: 1px solid rgba(160, 190, 255, 0.2);
+    }
+
+    .brand-logo {
+      height: 2.5em;
+      width: auto;
+      max-width: none;
+      vertical-align: middle;
+      margin-right: 0.5em;
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+
+    .seo-h1 {
+      margin: 0 0 1.15rem;
+      color: #132238;
+      font-size: clamp(1.35rem, 3.5vw, 2rem);
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+      text-wrap: balance;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(160, 190, 255, 0.35);
+      border-radius: 14px;
+      padding: 0.65rem 0.85rem;
     }
 
     h2 {
@@ -272,7 +310,7 @@
     }
 
     .card p {
-      color: var(--muted);
+      color: #22324a;
       line-height: 1.7;
     }
 
@@ -316,7 +354,7 @@
     ul {
       margin: 0.65rem 0 0;
       padding-left: 1.2rem;
-      color: var(--muted);
+      color: #22324a;
       line-height: 1.7;
     }
 
@@ -356,7 +394,26 @@
     .note {
       margin: 0.8rem 0 0;
       font-size: 0.98rem;
-      color: rgba(234, 240, 255, 0.78);
+      color: #253853;
+    }
+
+    .faq-list details {
+      border: 1px solid rgba(160, 190, 255, 0.22);
+      border-radius: 12px;
+      background: rgba(7, 11, 20, 0.35);
+      padding: 0.7rem 0.85rem;
+      margin: 0.6rem 0;
+    }
+
+    .faq-list summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #132238;
+      list-style-position: outside;
+    }
+
+    .faq-list p {
+      margin: 0.65rem 0 0.15rem;
     }
 
     .cta-links {
@@ -468,12 +525,12 @@
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService", "ComputerRepair"],
     "name": "Tarmola Code Garage",
-    "image": "https://tarmola-code.fi/icons/favicon.ico",
+    "image": "https://tarmola-code.fi/images/Simokuva.png",
     "url": "https://tarmola-code.fi/",
     "telephone": "+358509109926",
     "email": "simosiren1@gmail.com",
     "priceRange": "€",
-    "description": "IT-tuki, ATK-tuki, it-apu ja atk-apu Porvoossa. Windows- ja Linux-asennukset, digituki, verkkosivut ja softapalvelut Porvoon alueella.",
+    "description": "Tietokoneapu Porvoossa: IT-tuki, ATK-apu, tietokonehuolto, digituki ja kotikäynnit senioreille. Myös etätuki ja laiteasennukset.",
     "keywords": [
       "it-tuki porvoo",
       "atk-tuki porvoo",
@@ -482,6 +539,34 @@
       "digituki porvoo",
       "tietokoneapu porvoo"
     ],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "telephone": "+358509109926",
+        "email": "simosiren1@gmail.com",
+        "areaServed": "FI",
+        "availableLanguage": [
+          "fi",
+          "en"
+        ]
+      }
+    ],
     "serviceType": [
       "IT-tuki",
       "ATK-tuki",
@@ -489,6 +574,9 @@
       "ATK-apu",
       "Digituki",
       "Tietokoneapu",
+      "Tietokonehuolto",
+      "Kotikäynti tietokoneapu",
+      "Etätuki",
       "Linux-asennus"
     ],
     "hasOfferCatalog": {
@@ -522,9 +610,39 @@
             "@type": "Service",
             "name": "ATK-apu Porvoo"
           }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Tietokoneapu kotikäynti Porvoo"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Etätuki Porvoo"
+          }
         }
       ]
     },
+    "makesOffer": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Tietokoneapu kotikäynnillä"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Digituki etänä"
+        }
+      }
+    ],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Tarmolankatu 5",
@@ -536,6 +654,18 @@
       {
         "@type": "City",
         "name": "Porvoo"
+      },
+      {
+        "@type": "City",
+        "name": "Askola"
+      },
+      {
+        "@type": "City",
+        "name": "Sipoo"
+      },
+      {
+        "@type": "City",
+        "name": "Loviisa"
       }
     ],
     "sameAs": [
@@ -552,18 +682,90 @@
     "inLanguage": "fi-FI"
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Teetkö kotikäyntejä Porvoossa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kyllä. Teen tietokoneapua kotikäynnillä Porvoon alueella ja tapaaminen sovitaan aina etukäteen."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Voitko auttaa tulostimen tai WiFin kanssa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kyllä. Ratkon yleisiä ongelmia kuten tulostin ei toimi, wifi ei toimi sekä yhteys- ja asetusongelmat."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mitä jos en osaa selittää vikaa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Se ei haittaa. Käydään tilanne rauhassa läpi yhdessä ja etsitään ongelma vaihe vaiheelta selkeällä kielellä."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Onko etäapu turvallista? Miten se toimii?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Etäapu tehdään vain luvallasi. Näytän mitä tehdään, ja näytän myös miten etäyhteys katkaistaan heti työn jälkeen."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Autatko verkkopankin käytössä turvallisesti?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kyllä, opastan verkkopankin käytössä turvallisesti. En koskaan pyydä verkkopankin tunnuksia tai salasanoja."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Paljonko maksaa? Onko minimiveloitus?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ATK- ja digitukikäynti on 40 euroa (sis. enintään 1 h), jonka jälkeen 10 euroa / 30 min. Matkakulut sisältyvät Porvoon alueella."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Voitko auttaa sähköpostin ja salasanojen kanssa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kyllä. Autan sähköpostin toiminnassa, tilien palautuksessa, Microsoft- tai Google-tiliongelmissa sekä salasanojen hallinnassa."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kuinka nopeasti pääset paikalle Porvoossa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Usein apu järjestyy nopeasti Porvoossa. Ota yhteyttä puhelimitse tai WhatsAppilla, niin sovitaan seuraava vapaa aika."
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="shared-nav.css">
   <link rel="stylesheet" href="site-refresh.css">
 </head>
 <body>
   <div class="overlay">
     <div class="container">
-      <h1>
-        <img src="images/TuxiC.png" alt="Logo" class="logo-anim" id="tux-logo" style="height:2.5em; vertical-align:middle; margin-right:0.5em;">
+      <div class="brand-hero" role="img" aria-label="Tarmola Code Garage">
+        <img src="images/TuxiC.png" alt="Tarmola Code Garage logo" class="logo-anim brand-logo" id="tux-logo">
         <span class="word-anim" id="word-linux">Tarmola</span>
         <span class="word-anim" id="word-service"> Code</span>
         <span class="word-anim" id="word-porvoo"> Garage</span>
-      </h1>
+      </div>
 
       <nav>
         <a href="index.html" class="nav-link-anim nav-link-active" id="nav-link-1" aria-current="page">Etusivu</a>
@@ -576,12 +778,14 @@
       </nav>
 
       <main>
+        <h1 class="seo-h1">Tietokoneapu Porvoossa - ATK-apu kotikäynnillä tai luonani Tarmolankadulla</h1>
+
         <section class="card">
           <h2>Rauhallista apua tietokoneen, sekä oheis- ja älylaitteiden kanssa 40 € / tunti</h2>
           <div class="service-intro">
-            <p>Tarvitsetko apua kotona tai etänä? Autan Porvoon alueella selkeästi ja ilman turhaa teknistä kieltä – kerrotaan ensin mitä tehdään, ja edetään vasta kun se tuntuu turvalliselta.</p>
+            <p>Tarvitsetko apua kotiisi? Autan Porvoon alueella selkeästi ja ilman turhaa teknistä kieltä. Tarmolan senioriystävällinen digituki etenee aina rauhassa, ja voit tutustua tarkemmin <a href="#palvelut-porvoo">palveluihin Porvoossa</a> ennen yhteydenottoa.</p>
             <figure class="service-photo">
-              <img src="images/Simokuva.png" alt="Toiminimiyrittäjä Simo Sirén">
+              <img src="images/Simokuva.png" alt="Toiminimiyrittäjä Simo Sirén Porvoossa" width="339" height="279" loading="lazy" decoding="async">
               <figcaption>Toiminimiyrittäjä Simo Sirén</figcaption>
             </figure>
           </div>
@@ -593,6 +797,7 @@
             <li>Tietoturva ja huijausviestit (miten tunnistaa huijaus)</li>
             <li>Windows- ja Linux-asennukset</li>
           </ul>
+          <p class="note">Selitän mitä tehdään ennen kuin tehdään enkä käsittele tai pyydä henkilötunnusta tai pankkitunnuksia.</p>
           <div class="cta-links" aria-label="Yhteydenotto">
             <a class="cta-link" href="tel:+358509109926">
               <span class="cta-text-mobile">Soita</span>
@@ -600,8 +805,27 @@
             </a>
             <a class="cta-link" href="https://wa.me/358509109926" target="_blank" rel="noopener noreferrer">WhatsApp</a>
             <a class="cta-link" href="mailto:simosiren1@gmail.com">Sähköposti</a>
+            <a class="cta-link" href="#palvelut-porvoo">Palvelut Porvoossa</a>
           </div>
           <p class="note">Sovithan tapaamisesta aina etukäteen. Matkakulut sisältyvät Porvoon alueella.</p>
+        </section>
+
+        <section class="card" id="palvelut-porvoo">
+          <h2>Palvelut senioreille Porvoossa</h2>
+          <p>Tarjoan seniorille rauhallista ja selkeää tietokoneapua Porvoossa ilman vaikeaa teknistä kieltä. Kotikäynti onnistuu Tarmolasta käsin nopeasti, ja etäapu tehdään vain kun se tuntuu sinusta turvalliselta.</p>
+          <p>Jos etsit tietokoneapua kotiin Porvoossa, saat kotikäyntinä ATK-apua ja IT-tukea Porvoossa yhdellä yhteydenotolla.</p>
+          <ul>
+            <li>Tulostin ei toimi: tarkistan yhteyden, asetukset ja ajurit kuntoon</li>
+            <li>WiFi ei toimi: selvitän yhteysongelmat ja parannan verkon toimivuutta</li>
+            <li>Sähköposti ei toimi: korjaan lähetys- ja vastaanotto-ongelmat</li>
+            <li>Verkkopankki ei aukea: autan turvallisessa käyttöönotossa, en koskaan pyydä tunnuksia</li>
+            <li>Microsoft- tai Google-tili ei aukea, salasana unohtunut: autan tilin palautuksessa</li>
+            <li>Windows ei käynnisty: tarkistan käynnistysongelman ja palautusvaihtoehdot</li>
+            <li>Päivitykset, virustarkistus, varmuuskopiointi ja tiedostojen siirto</li>
+            <li>Uuden tietokoneen, puhelimen tai tabletin käyttöönotto ja opastus</li>
+          </ul>
+          <p class="note">Teen tarvittaessa myös tietokonehuoltoa Porvoossa, kuten hitauden selvitystä ja ohjelmistojen siivousta.</p>
+          <p class="note">Digituki onnistuu kotikäynnillä tai etänä, ja opastus etenee aina sinun tahtiisi.</p>
         </section>
 
         <section class="card">
@@ -624,6 +848,41 @@
             <li>Käsittelen laitteella vain sovitut asiat, ja selitän mitä teen</li>
           </ul>
         
+        </section>
+
+        <section class="card" id="faq">
+          <h2>Usein kysyttyä tietokoneavusta Porvoossa</h2>
+          <div class="faq-list">
+            <details>
+              <summary>Teetkö kotikäyntejä Porvoossa?</summary>
+              <p>Kyllä. Teen tietokoneapua kotikäynnillä Porvoon alueella, ja käynti sovitaan aina etukäteen.</p>
+            </details>
+            <details>
+              <summary>Voitko auttaa tulostimen tai WiFin kanssa?</summary>
+              <p>Kyllä. Autan tilanteissa kuten tulostin ei toimi, wifi ei toimi tai yhteys pätkii.</p>
+            </details>
+            <details>
+              <summary>Mitä jos en osaa selittää vikaa?</summary>
+              <p>Ei haittaa. Käydään ongelma rauhassa läpi vaihe vaiheelta ilman teknistä jargonia.</p>
+            </details>
+           
+            <details>
+              <summary>Autatko verkkopankin käytössä turvallisesti?</summary>
+              <p>Kyllä, opastan turvallisesti. En koskaan pyydä verkkopankin tunnuksia tai salasanoja.</p>
+            </details>
+            <details>
+              <summary>Paljonko maksaa? Onko minimiveloitus?</summary>
+              <p>ATK- ja digitukikäynti on 40 € (sis. enintään 1 h), sen jälkeen 10 € / 30 min. Porvoon alueella matkakulut sisältyvät.</p>
+            </details>
+            <details>
+              <summary>Voitko auttaa sähköpostin ja salasanojen kanssa?</summary>
+              <p>Kyllä. Autan sähköpostin toimintaan, tilin palautukseen sekä salasanojen hallintaan käytännönläheisesti.</p>
+            </details>
+            <details>
+              <summary>Kuinka nopeasti pääset paikalle Porvoossa?</summary>
+              <p>Soita tai laita WhatsApp-viesti / sähköpostia, niin sovitaan seuraava vapaa aika.</p>
+            </details>
+          </div>
         </section>
 
         <section class="card">
@@ -746,10 +1005,4 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
 
