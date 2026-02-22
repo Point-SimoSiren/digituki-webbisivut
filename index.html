@@ -3,7 +3,7 @@
   Muutokset 2026-02-22:
   1) Päivitetty title + meta description paikalliseen hakuintenttiin (Porvoo, tietokoneapu, ATK-apu).
   2) Muutettu brändiotsikko visuaaliseksi elementiksi ja lisätty yksi varsinainen SEO-H1.
-  3) Lisätty palvelut senioreille Porvoossa -kortti ja sisäinen ankkurilinkitys.
+  3) Lisätty palvelut kotitalouksille Porvoossa -kortti ja sisäinen ankkurilinkitys.
   4) Lisätty FAQ-osio sekä FAQPage JSON-LD ongelmapohjaisiin hakuihin.
   5) Laajennettu LocalBusiness-schemaa (contactPoint, areaServed, kotikäynti/etätuki tarjoukset).
   6) Lisätty theme-color, päivitetty OG/Twitter-kuvat ja kuville SEO-/latausattribuutit.
@@ -26,7 +26,7 @@
   <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
   
   <title>Tietokoneapu Porvoo | ATK-apu kotikäynti | Tarmola Code</title>
-  <meta name="description" content="Porvoon tietokoneapu ja ATK-apu kotikäynnillä tai etänä. Rauhallinen ja selkeä opastus senioreille ilman teknistä jargonia. Soita ja sovi apu.">
+  <meta name="description" content="Porvoon tietokoneapu ja ATK-apu kotikäynnillä tai etänä. Rauhallinen ja selkeä opastus kotitalouksille ilman teknistä jargonia. Soita ja sovi apu.">
   <meta name="keywords" content="linux asennus porvoo, otsonointi porvoo, digituki porvoo, it-tuki porvoo, atk-tuki porvoo, it-apu porvoo, atk-apu porvoo, tietokoneapu porvoo, verkkosivut porvoo, koodari porvoo, pwa-kehitys">
   <meta name="author" content="Simo Sirén">
   <meta name="theme-color" content="#070b14">
@@ -40,7 +40,7 @@
   <meta name="geo.position" content="60.3923;25.6651">
   <meta name="ICBM" content="60.3923, 25.6651">
   <meta property="og:title" content="Tietokoneapu Porvoossa | Rauhallinen ATK-apu kotikäynnillä">
-  <meta property="og:description" content="Tietokoneapu Porvoossa senioreille: kotikäynnit ja etäapu, selkeä opastus ilman teknistä kieltä. IT-tuki, ATK-apu ja digituki Tarmolasta.">
+  <meta property="og:description" content="Tietokoneapu Porvoon kotitalouksille: kotikäynnit ja etäapu, selkeä opastus ilman teknistä kieltä. IT-tuki, ATK-apu ja digituki Tarmolasta.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tarmola-code.fi/">
   <meta property="og:image" content="https://tarmola-code.fi/images/Simokuva.png">
@@ -48,7 +48,7 @@
   <meta property="og:site_name" content="Tarmola Code Garage">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tietokoneapu Porvoo | ATK-apu kotikäynnillä">
-  <meta name="twitter:description" content="Rauhallinen tietokoneapu Porvoossa: kotikäynti tai etäapu, selkeä opastus senioreille. IT-tuki, ATK-apu ja digituki.">
+  <meta name="twitter:description" content="Rauhallinen tietokoneapu Porvoossa: kotikäynti tai etäapu, selkeä opastus kotitalouksille. IT-tuki, ATK-apu ja digituki.">
   <meta name="twitter:image" content="https://tarmola-code.fi/images/Simokuva.png">
 
   <!-- PWA META pois käytöstä
@@ -119,10 +119,42 @@
       color: #f6f9ff;
       font-size: clamp(2.05rem, 5vw, 3.05rem);
       letter-spacing: 0.02em;
-      text-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-      border-radius: 14px;
-      background: rgba(7, 11, 20, 0.42);
-      border: 1px solid rgba(160, 190, 255, 0.2);
+      text-shadow:
+        0 0 18px rgba(154, 214, 255, 0.36),
+        0 2px 6px rgba(8, 26, 50, 0.24);
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+    }
+
+    .brand-text {
+      position: relative;
+      isolation: isolate;
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .brand-text::before {
+      content: "";
+      position: absolute;
+      inset: 0.2rem -0.45rem;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(150, 216, 255, 0.50) 0%,
+        rgba(150, 216, 255, 0.28) 56%,
+        transparent 82%
+      );
+      filter: blur(8px);
+      opacity: 0;
+      transition: opacity 0.45s ease;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .brand-text.fog-visible::before {
+      opacity: 1;
     }
 
     .brand-logo {
@@ -515,6 +547,11 @@
         opacity: 1 !important;
       }
 
+      .brand-text::before {
+        opacity: 1;
+        transition: none !important;
+      }
+
       .anim-pulse {
         animation: none !important;
       }
@@ -530,7 +567,7 @@
     "telephone": "+358509109926",
     "email": "simosiren1@gmail.com",
     "priceRange": "€",
-    "description": "Tietokoneapu Porvoossa: IT-tuki, ATK-apu, tietokonehuolto, digituki ja kotikäynnit senioreille. Myös etätuki ja laiteasennukset.",
+    "description": "Tietokoneapu Porvoossa: IT-tuki, ATK-apu, tietokonehuolto, digituki ja kotikäynnit kotitalouksille. Myös etätuki ja laiteasennukset.",
     "keywords": [
       "it-tuki porvoo",
       "atk-tuki porvoo",
@@ -762,9 +799,11 @@
     <div class="container">
       <div class="brand-hero" role="img" aria-label="Tarmola Code Garage">
         <img src="images/TuxiC.png" alt="Tarmola Code Garage logo" class="logo-anim brand-logo" id="tux-logo">
-        <span class="word-anim" id="word-linux">Tarmola</span>
-        <span class="word-anim" id="word-service"> Code</span>
-        <span class="word-anim" id="word-porvoo"> Garage</span>
+        <span class="brand-text">
+          <span class="word-anim" id="word-linux">Tarmola</span>
+          <span class="word-anim" id="word-service"> Code</span>
+          <span class="word-anim" id="word-porvoo"> Garage</span>
+        </span>
       </div>
 
       <nav>
@@ -778,12 +817,12 @@
       </nav>
 
       <main>
-        <h1 class="seo-h1">Tietokoneapu Porvoossa - ATK-apu kotikäynnillä tai luonani Tarmolankadulla</h1>
+        <h1 class="seo-h1">Tietokoneapu Porvoossa - IT-apu asiakkaan luona tai Tarmolankadun toimipisteessä</h1>
 
         <section class="card">
-          <h2>Rauhallista apua tietokoneen, sekä oheis- ja älylaitteiden kanssa 40 € / tunti</h2>
+          <h2>Rauhallista apua tietokoneen, sekä muiden oheis- ja älylaitteiden kanssa 40 € / tunti</h2>
           <div class="service-intro">
-            <p>Tarvitsetko apua kotiisi? Autan Porvoon alueella selkeästi ja ilman turhaa teknistä kieltä. Tarmolan senioriystävällinen digituki etenee aina rauhassa, ja voit tutustua tarkemmin <a href="#palvelut-porvoo">palveluihin Porvoossa</a> ennen yhteydenottoa.</p>
+            <p>Tarvitsetko apua kotiisi? Autan Porvoon alueella selkeästi ja ilman turhaa teknistä kieltä. Tarmolan kotitalouksille suunnattu digituki etenee aina rauhassa, ja voit tutustua tarkemmin <a href="#palvelut-porvoo">palveluihin Porvoossa</a> ennen yhteydenottoa.</p>
             <figure class="service-photo">
               <img src="images/Simokuva.png" alt="Toiminimiyrittäjä Simo Sirén Porvoossa" width="339" height="279" loading="lazy" decoding="async">
               <figcaption>Toiminimiyrittäjä Simo Sirén</figcaption>
@@ -811,8 +850,8 @@
         </section>
 
         <section class="card" id="palvelut-porvoo">
-          <h2>Palvelut senioreille Porvoossa</h2>
-          <p>Tarjoan seniorille rauhallista ja selkeää tietokoneapua Porvoossa ilman vaikeaa teknistä kieltä. Kotikäynti onnistuu Tarmolasta käsin nopeasti, ja etäapu tehdään vain kun se tuntuu sinusta turvalliselta.</p>
+          <h2>Palvelut kotitalouksille Porvoossa</h2>
+          <p>Tarjoan kotitalouksille rauhallista ja selkeää tietokoneapua Porvoossa ilman vaikeaa teknistä kieltä. Kotikäynti onnistuu Tarmolasta käsin nopeasti, ja etäapu tehdään vain kun se tuntuu sinusta turvalliselta.</p>
           <p>Jos etsit tietokoneapua kotiin Porvoossa, saat kotikäyntinä ATK-apua ja IT-tukea Porvoossa yhdellä yhteydenotolla.</p>
           <ul>
             <li>Tulostin ei toimi: tarkistan yhteyden, asetukset ja ajurit kuntoon</li>
@@ -829,7 +868,7 @@
         </section>
 
         <section class="card">
-          <h2>Pienyrityksille: verkkosivut ja koodarikonsultointi</h2>
+          <h2>Pienyrityksille: ohjelmistoratkaisut, verkkosivut ja koodarikonsultointi</h2>
           <p>Kun tarvitset edullisesti toimivat ja tyylikkäät verkkosivut – tai pienen räätälöidyn ohjelmistoratkaisun – hoidetaan homma ketterästi ja läpinäkyvästi. Saat selkeän tarjouksen, ja ylläpidosta sovitaan erikseen.</p>
           <ul>
             <li>Uudet verkkosivut tai nykyisen sivuston päivitys</li>
@@ -940,12 +979,15 @@
   // Animaatiot
   window.addEventListener('DOMContentLoaded', function() {
     var logo = document.getElementById('tux-logo');
+    var brandText = document.querySelector('.brand-text');
     var word1 = document.getElementById('word-linux');
     var word2 = document.getElementById('word-service');
     var word3 = document.getElementById('word-porvoo');
     setTimeout(() => {
       logo.classList.add('visible');
-      setTimeout(() => { word1.classList.add('visible');
+      setTimeout(() => {
+        if (brandText) brandText.classList.add('fog-visible');
+        word1.classList.add('visible');
         setTimeout(() => { word3.classList.add('visible');
           setTimeout(() => { word2.classList.add('visible'); }, 600);
         }, 600);
@@ -1005,4 +1047,3 @@
   </script>
 </body>
 </html>
-
