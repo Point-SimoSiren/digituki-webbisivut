@@ -1,122 +1,122 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tarmola-code.fi/</loc>
-    <lastmod>2026-02-15</lastmod>
+    <loc>https://www.tarmola-code.fi/</loc>
+    <lastmod>2026-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/esittely.html</loc>
-    <lastmod>2026-02-12</lastmod>
+    <loc>https://www.tarmola-code.fi/esittely.html</loc>
+    <lastmod>2026-02-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/yritysohjelmistot.html</loc>
-    <lastmod>2026-02-12</lastmod>
+    <loc>https://www.tarmola-code.fi/yritysohjelmistot.html</loc>
+    <lastmod>2026-02-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/videot.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://www.tarmola-code.fi/videot.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/turvassa-huijauksilta.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://www.tarmola-code.fi/turvassa-huijauksilta.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/otsonointi.html</loc>
-    <lastmod>2026-02-12</lastmod>
+    <loc>https://www.tarmola-code.fi/otsonointi.html</loc>
+    <lastmod>2026-02-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/pelit.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://www.tarmola-code.fi/pelit.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/asentajan-poytakirja.html</loc>
-    <lastmod>2026-02-12</lastmod>
+    <loc>https://www.tarmola-code.fi/asentajan-poytakirja.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/laskutus.html</loc>
-    <lastmod>2026-02-12</lastmod>
+    <loc>https://www.tarmola-code.fi/laskutus.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/workcounter.html</loc>
-    <lastmod>2026-02-11</lastmod>
+    <loc>https://www.tarmola-code.fi/workcounter.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/huijausviesti-simulaattori.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://www.tarmola-code.fi/huijausviesti-simulaattori.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/bugijahti.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://www.tarmola-code.fi/bugijahti.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/maantietopeli.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://www.tarmola-code.fi/maantietopeli.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/onnenpyora.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://www.tarmola-code.fi/onnenpyora.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/porvoovisa.html</loc>
-    <lastmod>2026-02-13</lastmod>
+    <loc>https://www.tarmola-code.fi/porvoovisa.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/airhockey.html</loc>
-    <lastmod>2025-12-07</lastmod>
+    <loc>https://www.tarmola-code.fi/airhockey.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/erankavijan-shakki.html</loc>
-    <lastmod>2025-12-07</lastmod>
+    <loc>https://www.tarmola-code.fi/erankavijan-shakki.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/halloweengame.html</loc>
-    <lastmod>2025-12-07</lastmod>
+    <loc>https://www.tarmola-code.fi/halloweengame.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/labyrintti.html</loc>
-    <lastmod>2025-12-07</lastmod>
+    <loc>https://www.tarmola-code.fi/labyrintti.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://tarmola-code.fi/raamattuvisa.html</loc>
-    <lastmod>2025-12-07</lastmod>
+    <loc>https://www.tarmola-code.fi/raamattuvisa.html</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
