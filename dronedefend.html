@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+  <title>DroneDefend 3D | Tarmola Code Garage</title>
+  <style>
+    :root { color-scheme: dark; font-family: "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1rem 2rem;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(255, 140, 56, 0.14), transparent 30%),
+        linear-gradient(180deg, #050914, #09111e 45%, #03060d);
+      color: #eef4ff;
+    }
+    .back {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 20;
+      padding: 0.55rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(132, 173, 255, 0.3);
+      background: rgba(7, 13, 26, 0.84);
+      color: #eef4ff;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    header { width: min(980px, 100%); text-align: center; padding-top: 1.3rem; }
+    h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: 0.04em; }
+    header p {
+      margin: 0.65rem auto 0;
+      max-width: 820px;
+      line-height: 1.55;
+      color: rgba(232, 240, 255, 0.86);
+    }
+    #shell { width: min(1080px, 100%); display: flex; flex-direction: column; gap: 0.9rem; }
+    #hud {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 0.8rem 1rem;
+      border-radius: 18px;
+      background: rgba(7, 13, 26, 0.72);
+      border: 1px solid rgba(132, 173, 255, 0.24);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(12px);
+    }
+    #stats { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .chip {
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(18, 30, 54, 0.84);
+      border: 1px solid rgba(132, 173, 255, 0.18);
+      text-transform: uppercase;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    #msg { min-height: 1.2rem; font-weight: 600; color: rgba(234, 240, 255, 0.88); }
+    #sound {
+      border: 1px solid rgba(255, 196, 144, 0.35);
+      background: linear-gradient(180deg, rgba(34, 17, 10, 0.92), rgba(17, 10, 12, 0.92));
+      color: #ffd7bc;
+      padding: 0.7rem 0.95rem;
+      border-radius: 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      min-height: 320px;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 2px solid rgba(120, 166, 255, 0.2);
+      background:
+        radial-gradient(circle at 50% 24%, rgba(18, 40, 72, 0.84), rgba(5, 9, 18, 0.96) 72%),
+        linear-gradient(180deg, #0b1220, #04080f);
+      box-shadow: 0 28px 64px rgba(0, 0, 0, 0.48);
+      cursor: crosshair;
+      touch-action: none;
+    }
+    #stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    #cross {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      margin: -17px 0 0 -17px;
+      border: 2px solid rgba(255, 244, 228, 0.72);
+      border-radius: 50%;
+      pointer-events: none;
+      box-shadow: 0 0 18px rgba(255, 171, 110, 0.28);
+    }
+    #cross::before, #cross::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background: rgba(255, 244, 228, 0.8);
+      transform: translate(-50%, -50%);
+    }
+    #cross::before { width: 2px; height: 18px; }
+    #cross::after { width: 18px; height: 2px; }
+    #info {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.7rem;
+      pointer-events: none;
+    }
+    .panel {
+      max-width: 360px;
+      padding: 0.8rem 0.9rem;
+      border-radius: 16px;
+      background: rgba(6, 10, 18, 0.74);
+      border: 1px solid rgba(123, 170, 255, 0.16);
+      backdrop-filter: blur(10px);
+    }
+    .panel p { margin: 0; font-size: 0.87rem; line-height: 1.5; color: rgba(232, 239, 250, 0.84); }
+    #flash {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(circle at 50% 55%, rgba(255, 92, 40, 0.36), transparent 48%);
+      transition: opacity 0.16s ease;
+    }
+    #flash.on { opacity: 1; }
+    @media (max-width: 760px) {
+      body { padding-top: 4.1rem; }
+      header { padding-top: 0; }
+      #info { flex-direction: column; }
+      .panel { max-width: none; }
+      #cross { width: 30px; height: 30px; margin: -15px 0 0 -15px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="back" href="pelit.html">Takaisin peleihin</a>
+  <header>
+    <h1>DroneDefend 3D</h1>
+    <p>
+      Ammu konekivaarilla edesta hyokkaavia drooneja. Luodit rajahtavat osumasta, ja tuhottu drooni
+      repeaa omasta rajahtelatauksestaan. Jos yksikin drooni paasee pelaajan linjalle, asema tuhoutuu ja peli alkaa alusta.
+    </p>
+  </header>
+  <main id="shell">
+    <section id="hud">
+      <div id="stats">
+        <span class="chip">Pisteet: <strong id="score">0</strong></span>
+        <span class="chip">Ennatys: <strong id="best">0</strong></span>
+        <span class="chip">Ilmassa: <strong id="live">0</strong></span>
+      </div>
+      <div id="msg">Liikuta tahtainta ja pida painallus pohjassa ampuaksesi.</div>
+      <button id="sound" type="button">Aanet: paalla</button>
+    </section>
+    <section id="stage" aria-label="3D peli">
+      <div id="cross" aria-hidden="true"></div>
+      <div id="info">
+        <div class="panel"><p>Hiiri tai sormi liikuttaa tahtainta. Pidettu painallus ampuu konekivaaria jatkuvana tulena.</p></div>
+        <div class="panel"><p>Rajahtavat osumat voivat laukaista ketjureaktioita, jos droonit lentavat liian lahella toisiaan.</p></div>
+      </div>
+      <div id="flash" aria-hidden="true"></div>
+    </section>
+  </main>
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+    const stage = document.getElementById("stage");
+    const cross = document.getElementById("cross");
+    const scoreEl = document.getElementById("score");
+    const bestEl = document.getElementById("best");
+    const liveEl = document.getElementById("live");
+    const msgEl = document.getElementById("msg");
+    const soundBtn = document.getElementById("sound");
+    const flashEl = document.getElementById("flash");
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x050914, 22, 150);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    stage.appendChild(renderer.domElement);
+
+    const camera = new THREE.PerspectiveCamera(60, 16 / 9, 0.1, 220);
+    camera.position.set(0, 4.8, 13.5);
+    camera.lookAt(0, 3.6, -36);
+
+    scene.add(new THREE.HemisphereLight(0xa6c9ff, 0x0a1020, 1.1));
+    const sun = new THREE.DirectionalLight(0xf4f7ff, 1.1);
+    sun.position.set(8, 18, 8);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    scene.add(sun);
+    const warm = new THREE.PointLight(0xff9356, 0.8, 22, 2);
+    warm.position.set(0, 2, 9);
+    scene.add(warm);
+
+    const floorCv = document.createElement("canvas");
+    floorCv.width = 192;
+    floorCv.height = 768;
+    const floorCx = floorCv.getContext("2d");
+    floorCx.fillStyle = "#08101d";
+    floorCx.fillRect(0, 0, floorCv.width, floorCv.height);
+    floorCx.fillStyle = "#10203a";
+    floorCx.fillRect(52, 0, 88, floorCv.height);
+    floorCx.strokeStyle = "rgba(255,162,93,0.35)";
+    floorCx.lineWidth = 4;
+    for (let y = 18; y < floorCv.height; y += 64) {
+      floorCx.beginPath();
+      floorCx.moveTo(96, y);
+      floorCx.lineTo(96, y + 28);
+      floorCx.stroke();
+    }
+    const floorTx = new THREE.CanvasTexture(floorCv);
+    floorTx.wrapT = THREE.RepeatWrapping;
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(28, 150),
+      new THREE.MeshStandardMaterial({ map: floorTx, color: 0x15233f, roughness: 0.72, metalness: 0.12 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.set(0, 0, -54);
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const railMat = new THREE.MeshStandardMaterial({ color: 0x10213c, emissive: 0x06101d, emissiveIntensity: 0.35 });
+    for (const x of [-13.5, 13.5]) {
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(1, 1.2, 140), railMat);
+      rail.position.set(x, 0.6, -54);
+      rail.castShadow = true;
+      rail.receiveShadow = true;
+      scene.add(rail);
+    }
+
+    const starPos = new Float32Array(320 * 3);
+    for (let i = 0; i < 320; i += 1) {
+      const s = i * 3;
+      starPos[s] = (Math.random() - 0.5) * 160;
+      starPos[s + 1] = 16 + Math.random() * 38;
+      starPos[s + 2] = -20 - Math.random() * 130;
+    }
+    const stars = new THREE.Points(
+      new THREE.BufferGeometry(),
+      new THREE.PointsMaterial({ color: 0xc9deff, size: 0.2, transparent: true, opacity: 0.72, depthWrite: false })
+    );
+    stars.geometry.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+    scene.add(stars);
+
+    const base = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.7, 2.2, 1.5, 18),
+      new THREE.MeshStandardMaterial({ color: 0x31394d, roughness: 0.62, metalness: 0.2 })
+    );
+    base.position.set(0, 0.75, 9.5);
+    base.castShadow = true;
+    base.receiveShadow = true;
+    scene.add(base);
+
+    const gun = new THREE.Group();
+    gun.position.set(0, 1.6, 9.1);
+    const pivot = new THREE.Group();
+    gun.add(pivot);
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(1.2, 0.7, 1.8),
+      new THREE.MeshStandardMaterial({ color: 0x4a566e, roughness: 0.38, metalness: 0.55 })
+    );
+    body.castShadow = true;
+    pivot.add(body);
+    const barrel = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.34, 0.34, 2.4, 18, 1, true),
+      new THREE.MeshStandardMaterial({ color: 0x2d3748, roughness: 0.3, metalness: 0.72, side: THREE.DoubleSide })
+    );
+    barrel.rotation.x = Math.PI / 2;
+    barrel.position.z = -1.25;
+    barrel.castShadow = true;
+    pivot.add(barrel);
+    const muzzle = new THREE.Object3D();
+    muzzle.position.set(0, 0, -2.45);
+    pivot.add(muzzle);
+    const muzzleFlash = new THREE.Mesh(
+      new THREE.SphereGeometry(0.4, 14, 14),
+      new THREE.MeshBasicMaterial({ color: 0xffb35f, transparent: true, opacity: 0, blending: THREE.AdditiveBlending })
+    );
+    muzzleFlash.position.set(0, 0, -2.55);
+    muzzleFlash.scale.setScalar(0.2);
+    pivot.add(muzzleFlash);
+    const muzzleLight = new THREE.PointLight(0xff9d58, 0, 9, 2);
+    muzzleLight.position.set(0, 0, -2.5);
+    pivot.add(muzzleLight);
+    scene.add(gun);
+
+    const clock = new THREE.Clock();
+    const tmp = new THREE.Vector3();
+    const aim = { x: 0, y: 0 };
+    const pointer = { x: 0.5, y: 0.56 };
+    const bullets = [];
+    const drones = [];
+    const blasts = [];
+    const bulletGeo = new THREE.SphereGeometry(0.14, 10, 10);
+    const bulletMat = new THREE.MeshStandardMaterial({ color: 0xffc06c, emissive: 0xff5c20, emissiveIntensity: 1.1 });
+    const droneCoreGeo = new THREE.SphereGeometry(0.56, 16, 16);
+    const droneRingGeo = new THREE.TorusGeometry(0.34, 0.05, 8, 18);
+    const droneBladeGeo = new THREE.BoxGeometry(0.58, 0.03, 0.08);
+    const droneArmGeo = new THREE.BoxGeometry(0.1, 0.1, 1.05);
+    const droneChargeGeo = new THREE.CylinderGeometry(0.23, 0.23, 0.58, 14);
+    const sparkGeo = new THREE.SphereGeometry(0.08, 8, 8);
+    const waveGeo = new THREE.SphereGeometry(1, 16, 16);
+    const droneCoreMat = new THREE.MeshStandardMaterial({
+      color: 0x455f81, emissive: 0x10203a, emissiveIntensity: 0.45, metalness: 0.55, roughness: 0.38
+    });
+    const droneChargeMat = new THREE.MeshStandardMaterial({ color: 0x6d1208, emissive: 0xff4a20, emissiveIntensity: 1.15 });
+    const droneArmMat = new THREE.MeshStandardMaterial({ color: 0x8faefe, emissive: 0x243f67, emissiveIntensity: 0.65 });
+    const droneRingMat = new THREE.MeshStandardMaterial({ color: 0xa1bcff, metalness: 0.2, roughness: 0.28 });
+    const droneBladeMat = new THREE.MeshStandardMaterial({ color: 0xeef5ff, roughness: 0.4 });
+
+    let score = 0;
+    let best = Number.parseInt(localStorage.getItem("dronedefend-best") || "0", 10);
+    let running = true;
+    let firing = false;
+    let fireCd = 0.25;
+    let spawnCd = 0.9;
+    let aliveTime = 0;
+    let restartAt = 0;
+    let recoil = 0;
+    let flash = 0;
+    let flashTimer = 0;
+    let soundOn = true;
+    let audio = null;
+    let master = null;
+    let noise = null;
+
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const hud = () => {
+      scoreEl.textContent = String(score);
+      bestEl.textContent = String(best);
+      liveEl.textContent = String(drones.length);
+    };
+    const setCross = () => {
+      cross.style.left = `${pointer.x * 100}%`;
+      cross.style.top = `${pointer.y * 100}%`;
+    };
+    function pointAt(x, y) {
+      const r = stage.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      pointer.x = clamp((x - r.left) / r.width, 0.08, 0.92);
+      pointer.y = clamp((y - r.top) / r.height, 0.14, 0.92);
+      aim.x = (pointer.x - 0.5) * 1.34;
+      aim.y = (0.56 - pointer.y) * 1.12;
+      setCross();
+    }
+    function resize() {
+      const w = stage.clientWidth;
+      const h = stage.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    function bestSave() {
+      if (score > best) {
+        best = score;
+        localStorage.setItem("dronedefend-best", String(best));
+      }
+    }
+    function hitFlash() {
+      flashEl.classList.add("on");
+      clearTimeout(flashTimer);
+      flashTimer = setTimeout(() => flashEl.classList.remove("on"), 160);
+    }
+    async function audioOn() {
+      if (!soundOn) return;
+      if (!audio) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) {
+          soundOn = false;
+          soundBtn.disabled = true;
+          soundBtn.textContent = "Aanet: ei tuettu";
+          return;
+        }
+        audio = new Ctx();
+        master = audio.createGain();
+        master.gain.value = 0.34;
+        master.connect(audio.destination);
+        const len = audio.sampleRate * 0.5;
+        noise = audio.createBuffer(1, len, audio.sampleRate);
+        const ch = noise.getChannelData(0);
+        for (let i = 0; i < len; i += 1) ch[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      }
+      if (audio.state === "suspended") await audio.resume();
+    }
+    function pew() {
+      if (!soundOn || !audio || !master) return;
+      const t = audio.currentTime;
+      const o = audio.createOscillator();
+      const g = audio.createGain();
+      o.type = "square";
+      o.frequency.setValueAtTime(220, t);
+      o.frequency.exponentialRampToValueAtTime(92, t + 0.06);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.055, t + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+      o.connect(g);
+      g.connect(master);
+      o.start(t);
+      o.stop(t + 0.075);
+    }
+    function boom(vol = 1) {
+      if (!soundOn || !audio || !master || !noise) return;
+      const t = audio.currentTime;
+      const s = audio.createBufferSource();
+      const f = audio.createBiquadFilter();
+      const g = audio.createGain();
+      s.buffer = noise;
+      f.type = "lowpass";
+      f.frequency.setValueAtTime(1700, t);
+      f.frequency.exponentialRampToValueAtTime(220, t + 0.42);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.1 * vol, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.44);
+      s.connect(f);
+      f.connect(g);
+      g.connect(master);
+      s.start(t);
+      s.stop(t + 0.45);
+    }
+    function failTone() {
+      if (!soundOn || !audio || !master) return;
+      const t = audio.currentTime;
+      const o = audio.createOscillator();
+      const g = audio.createGain();
+      o.type = "sawtooth";
+      o.frequency.setValueAtTime(210, t);
+      o.frequency.exponentialRampToValueAtTime(70, t + 0.55);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.085, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+      o.connect(g);
+      g.connect(master);
+      o.start(t);
+      o.stop(t + 0.62);
+    }
+
+    function dropBullet(i) {
+      scene.remove(bullets[i].m);
+      bullets.splice(i, 1);
+    }
+    function dropDrone(d) {
+      const i = drones.indexOf(d);
+      if (i >= 0) drones.splice(i, 1);
+      scene.remove(d.g);
+      hud();
+    }
+    function dropBlast(i) {
+      const b = blasts[i];
+      for (const s of b.s) s.m.material.dispose();
+      b.core.material.dispose();
+      scene.remove(b.g);
+      scene.remove(b.l);
+      blasts.splice(i, 1);
+    }
+
+    function blastAt(pos, opt = {}) {
+      const cfg = { r: 0, scale: 3, life: 0.4, color: 0xffb05d, n: 8, light: 1.1, ...opt };
+      const g = new THREE.Group();
+      g.position.copy(pos);
+      const mat = new THREE.MeshBasicMaterial({
+        color: cfg.color, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending, depthWrite: false
+      });
+      const core = new THREE.Mesh(waveGeo, mat);
+      core.scale.setScalar(0.22);
+      g.add(core);
+      const s = [];
+      for (let i = 0; i < cfg.n; i += 1) {
+        const sm = new THREE.MeshBasicMaterial({
+          color: i % 3 ? 0xff8f4c : 0xfff1d2, transparent: true, opacity: 0.94, depthWrite: false
+        });
+        const m = new THREE.Mesh(sparkGeo, sm);
+        m.scale.setScalar(0.45 + Math.random() * 0.55);
+        g.add(m);
+        s.push({
+          m,
+          v: new THREE.Vector3((Math.random() - 0.5) * 14, Math.random() * 11 - 3, (Math.random() - 0.5) * 14)
+        });
+      }
+      const l = new THREE.PointLight(cfg.color, cfg.light, 16, 2.2);
+      l.position.copy(pos);
+      scene.add(g);
+      scene.add(l);
+      blasts.push({ g, core, s, l, age: 0, life: cfg.life, scale: cfg.scale, light: cfg.light });
+      if (cfg.r > 0) {
+        for (const d of [...drones]) {
+          if (d.dead) continue;
+          if (d.g.position.distanceTo(pos) <= cfg.r + 0.35) killDrone(d);
+        }
+      }
+    }
+
+    function makeDrone() {
+      const g = new THREE.Group();
+      g.position.set((Math.random() - 0.5) * 16, 2.6 + Math.random() * 5.8, -82 - Math.random() * 24);
+      const core = new THREE.Mesh(droneCoreGeo, droneCoreMat);
+      core.castShadow = true;
+      g.add(core);
+      const charge = new THREE.Mesh(droneChargeGeo, droneChargeMat);
+      charge.rotation.z = Math.PI / 2;
+      charge.position.set(0, -0.42, -0.04);
+      g.add(charge);
+      const rot = [];
+      for (const o of [[-0.8, -0.8], [0.8, -0.8], [-0.8, 0.8], [0.8, 0.8]]) {
+        const arm = new THREE.Mesh(droneArmGeo, droneArmMat);
+        arm.position.set(o[0] * 0.47, 0.02, o[1] * 0.47);
+        arm.lookAt(o[0], 0, o[1]);
+        g.add(arm);
+        const h = new THREE.Group();
+        h.position.set(o[0], 0.15, o[1]);
+        const ring = new THREE.Mesh(droneRingGeo, droneRingMat);
+        ring.rotation.x = Math.PI / 2;
+        const b1 = new THREE.Mesh(droneBladeGeo, droneBladeMat);
+        const b2 = b1.clone();
+        b2.rotation.y = Math.PI / 2;
+        b1.position.y = 0.05;
+        b2.position.y = 0.05;
+        h.add(ring, b1, b2);
+        g.add(h);
+        rot.push(h);
+      }
+      scene.add(g);
+      drones.push({
+        g, rot, dead: false, r: 1.05,
+        sp: 9.2 + Math.min(8, aliveTime * 0.22) + Math.random() * 2.6,
+        sw: 0.8 + Math.random() * 1.2,
+        bob: 0.55 + Math.random() * 0.6,
+        ph: Math.random() * Math.PI * 2
+      });
+      hud();
+    }
+
+    function killDrone(d) {
+      if (!d || d.dead) return;
+      d.dead = true;
+      score += 1;
+      bestSave();
+      const p = d.g.position.clone();
+      dropDrone(d);
+      blastAt(p, { r: 4.2, scale: 4.4, life: 0.68, color: 0xff7932, n: 16, light: 2.3 });
+      boom(1.05);
+      hud();
+    }
+    function impact(i, big) {
+      const p = bullets[i].m.position.clone();
+      dropBullet(i);
+      blastAt(p, {
+        r: big ? 3.3 : 2.6,
+        scale: big ? 3 : 2.4,
+        life: big ? 0.42 : 0.32,
+        color: big ? 0xffcb7f : 0xffb65e,
+        n: big ? 9 : 6,
+        light: big ? 1 : 0.7
+      });
+      boom(big ? 0.42 : 0.24);
+    }
+
+    function shoot() {
+      if (!running) return;
+      muzzle.getWorldPosition(tmp);
+      const m = new THREE.Mesh(bulletGeo, bulletMat);
+      m.position.copy(tmp);
+      const dir = new THREE.Vector3(aim.x, aim.y, 0.25).unproject(camera).sub(camera.position).normalize();
+      if (dir.z > -0.08) {
+        dir.z = -0.08;
+        dir.normalize();
+      }
+      bullets.push({ m, v: dir.multiplyScalar(92), a: 0, max: 1.35 });
+      scene.add(m);
+      recoil = 1;
+      flash = 1;
+      fireCd = 0.082;
+      pew();
+    }
+
+    function crash(pos) {
+      if (!running) return;
+      running = false;
+      firing = false;
+      bestSave();
+      msgEl.textContent = "Drooni osui. Kierros kaynnistyy uudelleen...";
+      hitFlash();
+      blastAt(pos, { scale: 6.2, life: 0.9, color: 0xff4827, n: 24, light: 2.8 });
+      failTone();
+      boom(1.3);
+      restartAt = performance.now() + 2000;
+    }
+
+    function reset() {
+      for (let i = bullets.length - 1; i >= 0; i -= 1) scene.remove(bullets[i].m);
+      bullets.length = 0;
+      for (let i = drones.length - 1; i >= 0; i -= 1) scene.remove(drones[i].g);
+      drones.length = 0;
+      for (let i = blasts.length - 1; i >= 0; i -= 1) dropBlast(i);
+      score = 0;
+      running = true;
+      firing = false;
+      fireCd = 0.25;
+      spawnCd = 0.9;
+      aliveTime = 0;
+      restartAt = 0;
+      recoil = 0;
+      flash = 0;
+      msgEl.textContent = "Liikuta tahtainta ja pida painallus pohjassa ampuaksesi.";
+      hud();
+    }
+
+    function tickBullets(dt) {
+      for (let i = bullets.length - 1; i >= 0; i -= 1) {
+        const b = bullets[i];
+        b.a += dt;
+        b.m.position.addScaledVector(b.v, dt);
+        let hit = false;
+        for (const d of drones) {
+          if (d.dead) continue;
+          if (b.m.position.distanceToSquared(d.g.position) <= 1.45) {
+            hit = true;
+            break;
+          }
+        }
+        if (hit) {
+          impact(i, true);
+          continue;
+        }
+        if (b.a >= b.max || b.m.position.z < -150 || Math.abs(b.m.position.x) > 34 || b.m.position.y < -1 || b.m.position.y > 24) {
+          impact(i, false);
+        }
+      }
+    }
+
+    function tickDrones(dt, t) {
+      for (let i = drones.length - 1; i >= 0; i -= 1) {
+        const d = drones[i];
+        if (d.dead) continue;
+        d.g.position.z += d.sp * dt;
+        d.g.position.x += Math.sin(t * d.sw + d.ph) * dt * 1.35;
+        d.g.position.y += Math.cos(t * 1.9 + d.ph) * dt * d.bob;
+        d.g.position.x = clamp(d.g.position.x, -11.5, 11.5);
+        d.g.position.y = clamp(d.g.position.y, 1.8, 9.7);
+        d.g.lookAt(0, 2.8, 14);
+        for (let r = 0; r < d.rot.length; r += 1) d.rot[r].rotation.y += dt * (14 + r);
+        if (d.g.position.z >= 8.6) {
+          crash(d.g.position.clone());
+          return;
+        }
+      }
+    }
+
+    function tickBlasts(dt) {
+      for (let i = blasts.length - 1; i >= 0; i -= 1) {
+        const b = blasts[i];
+        b.age += dt;
+        const p = b.age / b.life;
+        b.core.scale.setScalar(0.22 + b.scale * p);
+        b.core.material.opacity = Math.max(0, (1 - p) * 0.82);
+        b.l.intensity = Math.max(0, b.light * (1 - p) * (1 - p));
+        for (const s of b.s) {
+          s.m.position.addScaledVector(s.v, dt);
+          s.v.multiplyScalar(0.93);
+          s.m.material.opacity = Math.max(0, (1 - p) * 0.9);
+          s.m.scale.multiplyScalar(0.985);
+        }
+        if (p >= 1) dropBlast(i);
+      }
+    }
+
+    function tickGun(dt) {
+      recoil = Math.max(0, recoil - dt * 7.4);
+      flash = Math.max(0, flash - dt * 12);
+      pivot.rotation.y = THREE.MathUtils.lerp(pivot.rotation.y, aim.x * 0.62, 0.12);
+      pivot.rotation.x = THREE.MathUtils.lerp(pivot.rotation.x, aim.y * 0.28 - recoil * 0.08, 0.14);
+      gun.position.y = 1.6 - recoil * 0.12;
+      muzzleFlash.scale.setScalar(0.2 + flash * 1.35);
+      muzzleFlash.material.opacity = flash * 0.65;
+      muzzleLight.intensity = flash * 3;
+    }
+
+    function frame() {
+      requestAnimationFrame(frame);
+      const dt = Math.min(clock.getDelta(), 0.033);
+      const t = clock.elapsedTime;
+      if (running) {
+        aliveTime += dt;
+        fireCd = Math.max(0, fireCd - dt);
+        spawnCd -= dt;
+        if (firing && fireCd <= 0) shoot();
+        if (spawnCd <= 0) {
+          makeDrone();
+          spawnCd = Math.max(0.28, 1.25 - Math.min(0.78, aliveTime * 0.0135) + Math.random() * 0.24);
+        }
+        tickBullets(dt);
+        tickDrones(dt, t);
+      } else if (restartAt && performance.now() >= restartAt) {
+        reset();
+      }
+      tickBlasts(dt);
+      tickGun(dt);
+      stars.rotation.y += dt * 0.006;
+      floorTx.offset.y = (floorTx.offset.y - dt * 0.35) % 1;
+      warm.intensity = 0.62 + Math.sin(t * 2.4) * 0.12;
+      renderer.render(scene, camera);
+    }
+
+    stage.addEventListener("pointermove", (e) => pointAt(e.clientX, e.clientY));
+    stage.addEventListener("pointerdown", async (e) => {
+      pointAt(e.clientX, e.clientY);
+      firing = true;
+      await audioOn();
+    });
+    stage.addEventListener("pointerleave", () => { firing = false; });
+    stage.addEventListener("pointercancel", () => { firing = false; });
+    window.addEventListener("pointerup", () => { firing = false; });
+    soundBtn.addEventListener("click", async () => {
+      soundOn = !soundOn;
+      if (soundOn) await audioOn();
+      soundBtn.textContent = soundOn ? "Aanet: paalla" : "Aanet: pois";
+    });
+    const ro = new ResizeObserver(resize);
+    ro.observe(stage);
+    window.addEventListener("resize", resize);
+
+    hud();
+    setCross();
+    resize();
+    clock.start();
+    frame();
+  </script>
+</body>
+</html>
