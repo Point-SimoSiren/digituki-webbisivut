@@ -379,6 +379,46 @@
         scene.add(tree);
       }
     }
+    const signCv = document.createElement("canvas");
+    signCv.width = 512;
+    signCv.height = 256;
+    const signCx = signCv.getContext("2d");
+    signCx.fillStyle = "#b31818";
+    signCx.fillRect(0, 0, signCv.width, signCv.height);
+    signCx.strokeStyle = "#f2cb22";
+    signCx.lineWidth = 20;
+    signCx.strokeRect(18, 18, signCv.width - 36, signCv.height - 36);
+    signCx.fillStyle = "#f2cb22";
+    signCx.font = "bold 88px Arial";
+    signCx.textAlign = "center";
+    signCx.textBaseline = "middle";
+    signCx.fillText("Bryggdags", signCv.width / 2, signCv.height / 2 + 4);
+    const signTx = new THREE.CanvasTexture(signCv);
+    const sign = new THREE.Group();
+    const signBoard = new THREE.Mesh(
+      new THREE.PlaneGeometry(8.2, 4.1),
+      new THREE.MeshStandardMaterial({
+        map: signTx,
+        color: 0xffffff,
+        emissive: 0x351000,
+        emissiveIntensity: 0.25,
+        side: THREE.DoubleSide
+      })
+    );
+    signBoard.position.y = 4.4;
+    signBoard.castShadow = true;
+    sign.add(signBoard);
+    const signPostMat = new THREE.MeshStandardMaterial({ color: 0x5e4b36, roughness: 0.84 });
+    for (const x of [-2.3, 2.3]) {
+      const post = new THREE.Mesh(new THREE.BoxGeometry(0.28, 4.6, 0.28), signPostMat);
+      post.position.set(x, 2.2, 0);
+      post.castShadow = true;
+      post.receiveShadow = true;
+      sign.add(post);
+    }
+    sign.position.set(-25.8, 0, -30);
+    sign.rotation.y = 0.42;
+    scene.add(sign);
 
     const starPos = new Float32Array(320 * 3);
     for (let i = 0; i < 320; i += 1) {
@@ -444,11 +484,16 @@
     const aim = { x: 0, y: 0 };
     const pointer = { x: 0.5, y: 0.56 };
     const bullets = [];
+    const tankShots = [];
     const drones = [];
     const tanks = [];
     const blasts = [];
     const bulletGeo = new THREE.BoxGeometry(0.05, 0.05, 1.4);
     const bulletMat = new THREE.MeshBasicMaterial({ color: 0xffd38a });
+    const tankShotGeo = new THREE.SphereGeometry(0.18, 10, 10);
+    const tankShotMat = new THREE.MeshBasicMaterial({
+      color: 0xffb86f, transparent: true, opacity: 0.94, blending: THREE.AdditiveBlending, depthWrite: false
+    });
     const droneCoreGeo = new THREE.SphereGeometry(0.56, 16, 16);
     const droneRingGeo = new THREE.TorusGeometry(0.34, 0.05, 8, 18);
     const droneBladeGeo = new THREE.BoxGeometry(0.58, 0.03, 0.08);
@@ -693,6 +738,10 @@
       scene.remove(bullets[i].m);
       bullets.splice(i, 1);
     }
+    function dropTankShot(i) {
+      scene.remove(tankShots[i].m);
+      tankShots.splice(i, 1);
+    }
     function dropDrone(d) {
       const i = drones.indexOf(d);
       if (i >= 0) drones.splice(i, 1);
@@ -722,7 +771,7 @@
     }
 
     function blastAt(pos, opt = {}) {
-      const cfg = { r: 0, scale: 3, life: 0.4, color: 0xffb05d, n: 8, light: 1.1, range: 16, ...opt };
+      const cfg = { r: 0, scale: 3, life: 0.4, color: 0xffb05d, n: 8, light: 1.1, range: 16, killTanks: false, ...opt };
       const g = new THREE.Group();
       g.position.copy(pos);
       const mat = new THREE.MeshBasicMaterial({
@@ -753,6 +802,12 @@
         for (const d of [...drones]) {
           if (d.dead) continue;
           if (d.g.position.distanceTo(pos) <= cfg.r + 0.35) killDrone(d);
+        }
+        if (cfg.killTanks) {
+          for (const tank of [...tanks]) {
+            if (tank.dead) continue;
+            if (tank.g.position.distanceTo(pos) <= cfg.r + tank.r * 0.45) killTank(tank);
+          }
         }
       }
     }
@@ -788,17 +843,22 @@
       barrelMesh.position.set(0, 0, 2.2);
       barrelMesh.castShadow = true;
       turret.add(barrelMesh);
+      const muzzle = new THREE.Object3D();
+      muzzle.position.set(0, 0, 3.85);
+      turret.add(muzzle);
       g.add(turret);
       scene.add(g);
       tanks.push({
         g,
         turret,
+        muzzle,
         dead: false,
         hp: 15,
         r: 3.95,
         sp: 2.9 + Math.min(1.9, aliveTime * 0.03) + Math.random() * 0.6,
         ph: Math.random() * Math.PI * 2,
         age: 0,
+        shotCd: 1.8 + Math.random() * 1.6,
         burn: 0,
         flameCd: 0,
         turretVel: null,
@@ -917,7 +977,7 @@
           scene.remove(raid.bomb);
           raid.bomb = null;
           raid.bombVel = null;
-          blastAt(raid.target, { r: 24, scale: 16, life: 1.25, color: 0xffcf82, n: 32, light: 6.3, range: 34 });
+          blastAt(raid.target, { r: 24, scale: 16, life: 1.25, color: 0xffcf82, n: 32, light: 6.3, range: 34, killTanks: true });
           const upperBlast = raid.target.clone();
           upperBlast.y = 7.5;
           blastAt(upperBlast, { r: 48, scale: 34, life: 2.1, color: 0xffe5b4, n: 72, light: 12.5, range: 58 });
@@ -1000,6 +1060,22 @@
       dropBullet(i);
       damageTank(tank, p);
     }
+    function fireTank(tank) {
+      if (!running || !tank || tank.dead) return;
+      tank.muzzle.getWorldPosition(tmp);
+      const m = new THREE.Mesh(tankShotGeo, tankShotMat);
+      m.position.copy(tmp);
+      const target = new THREE.Vector3(
+        playerHitPos.x + (Math.random() - 0.5) * 3.6,
+        playerHitPos.y + (Math.random() - 0.5) * 1.1,
+        playerHitPos.z + (Math.random() - 0.5) * 1.4
+      );
+      const dir = target.sub(m.position).normalize();
+      tankShots.push({ m, v: dir.multiplyScalar(28 + Math.random() * 3.5), a: 0, max: 4.2 });
+      scene.add(m);
+      blastAt(tmp.clone(), { scale: 1.2, life: 0.18, color: 0xffc37d, n: 4, light: 0.35, range: 8 });
+      boom(0.12);
+    }
 
     function shoot() {
       if (!running) return;
@@ -1027,7 +1103,7 @@
       hideAirCall();
       clearAirstrike();
       bestSave();
-      msgEl.textContent = "Drooni osui. Kierros käynnistyy uudelleen...";
+      msgEl.textContent = "Puolustusasema tuhoutui. Kierros käynnistyy uudelleen...";
       hitFlash();
       blastAt(pos, { scale: 6.2, life: 0.9, color: 0xff4827, n: 24, light: 2.8 });
       failTone();
@@ -1038,6 +1114,8 @@
     function reset() {
       for (let i = bullets.length - 1; i >= 0; i -= 1) scene.remove(bullets[i].m);
       bullets.length = 0;
+      for (let i = tankShots.length - 1; i >= 0; i -= 1) scene.remove(tankShots[i].m);
+      tankShots.length = 0;
       for (let i = drones.length - 1; i >= 0; i -= 1) scene.remove(drones[i].g);
       drones.length = 0;
       for (let i = tanks.length - 1; i >= 0; i -= 1) dropTank(tanks[i]);
@@ -1094,6 +1172,32 @@
         }
       }
     }
+    function tickTankShots(dt) {
+      for (let i = tankShots.length - 1; i >= 0; i -= 1) {
+        const shot = tankShots[i];
+        shot.a += dt;
+        shot.v.y -= dt * 2.8;
+        shot.m.position.addScaledVector(shot.v, dt);
+        const hitRadius = playerHitRadius + 0.35;
+        if (shot.m.position.distanceToSquared(playerHitPos) <= hitRadius * hitRadius) {
+          const hitPos = shot.m.position.clone();
+          dropTankShot(i);
+          blastAt(hitPos, { scale: 3.8, life: 0.42, color: 0xff944f, n: 10, light: 1.7, range: 16 });
+          crash(hitPos);
+          return;
+        }
+        if (
+          shot.a >= shot.max ||
+          shot.m.position.z > 18 ||
+          Math.abs(shot.m.position.x) > 32 ||
+          shot.m.position.y < -1.2
+        ) {
+          const missPos = shot.m.position.clone();
+          dropTankShot(i);
+          blastAt(missPos, { scale: 2.3, life: 0.22, color: 0xffa45f, n: 6, light: 0.6, range: 10 });
+        }
+      }
+    }
 
     function tickDrones(dt, t) {
       for (let i = drones.length - 1; i >= 0; i -= 1) {
@@ -1123,10 +1227,20 @@
         const tank = tanks[i];
         if (!tank.dead) {
           tank.age += dt;
+          tank.shotCd -= dt;
           tank.g.position.z += tank.sp * dt;
           tank.g.position.x += Math.sin(tank.age * 1.3 + tank.ph) * dt * 0.12;
           tank.g.position.x = clamp(tank.g.position.x, -7.2, 7.2);
-          tank.turret.rotation.y = Math.sin(t * 0.8 + tank.ph) * 0.1;
+          const desiredYaw = Math.atan2(playerHitPos.x - tank.g.position.x, playerHitPos.z - tank.g.position.z);
+          tank.turret.rotation.y = THREE.MathUtils.lerp(
+            tank.turret.rotation.y,
+            desiredYaw + Math.sin(t * 0.8 + tank.ph) * 0.04,
+            0.06
+          );
+          if (tank.g.position.z > -56 && tank.shotCd <= 0) {
+            fireTank(tank);
+            tank.shotCd = 3.1 + Math.random() * 2.2;
+          }
           if (tank.g.position.z >= 10.5) {
             dropTank(tank);
             continue;
@@ -1220,10 +1334,13 @@
         }
         tickAirstrike(dt);
         tickBullets(dt);
+        tickTankShots(dt);
         tickDrones(dt, t);
         tickTanks(dt, t);
       } else if (restartAt && performance.now() >= restartAt) {
         reset();
+      } else {
+        tickTankShots(dt);
       }
       tickBlasts(dt);
       tickGun(dt);
