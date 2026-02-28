@@ -71,7 +71,8 @@
       letter-spacing: 0.05em;
     }
     #msg { min-height: 1.2rem; font-weight: 600; color: rgba(234, 240, 255, 0.88); }
-    #sound {
+    #controls { display: flex; gap: 0.55rem; flex-wrap: wrap; }
+    #sound, #clear-best {
       border: 1px solid rgba(255, 196, 144, 0.35);
       background: linear-gradient(180deg, rgba(34, 17, 10, 0.92), rgba(17, 10, 12, 0.92));
       color: #ffd7bc;
@@ -80,6 +81,11 @@
       font: inherit;
       font-weight: 700;
       cursor: pointer;
+    }
+    #clear-best {
+      border-color: rgba(176, 205, 255, 0.3);
+      background: linear-gradient(180deg, rgba(10, 21, 38, 0.92), rgba(9, 14, 24, 0.92));
+      color: #d9e8ff;
     }
     #stage {
       position: relative;
@@ -117,6 +123,83 @@
     }
     #cross::before { width: 2px; height: 18px; }
     #cross::after { width: 18px; height: 2px; }
+    #aircall {
+      position: absolute;
+      left: 50%;
+      top: 15%;
+      transform: translate(-50%, -18px) scale(0.92);
+      width: min(92%, 820px);
+      text-align: center;
+      font-size: clamp(2.1rem, 5.8vw, 4.8rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 229, 187, 0.68);
+      text-shadow: 0 0 28px rgba(255, 156, 73, 0.34), 0 0 56px rgba(255, 101, 45, 0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.24s ease, transform 0.24s ease;
+      z-index: 4;
+    }
+    #aircall.on {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+    #loadveil {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 1.2rem;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(239, 246, 255, 0.38), rgba(220, 232, 247, 0.2) 32%, rgba(187, 205, 226, 0.09) 58%, transparent 78%),
+        linear-gradient(180deg, rgba(228, 236, 247, 0.2), rgba(170, 186, 206, 0.08) 52%, transparent 84%);
+      backdrop-filter: blur(12px);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 1.15s ease, visibility 1.15s ease;
+      pointer-events: none;
+      z-index: 6;
+    }
+    #loadveil.off {
+      opacity: 0;
+      visibility: hidden;
+    }
+    #briefing {
+      width: min(92%, 760px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+      color: rgba(215, 231, 255, 0.92);
+      text-shadow: 0 0 22px rgba(148, 184, 235, 0.22);
+      font-family: "Arial Narrow", "Trebuchet MS", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+    #briefing p {
+      margin: 0;
+      font-size: clamp(0.72rem, 1.55vw, 0.98rem);
+      line-height: 1.5;
+      color: rgba(205, 223, 247, 0.84);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    #briefing p.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #briefing .lead {
+      color: rgba(232, 241, 255, 0.95);
+      font-size: clamp(0.82rem, 1.85vw, 1.15rem);
+      letter-spacing: 0.2em;
+    }
+    #briefing .alert {
+      color: rgba(238, 245, 255, 0.98);
+      font-size: clamp(0.86rem, 2vw, 1.2rem);
+      letter-spacing: 0.22em;
+    }
     #info {
       position: absolute;
       left: 16px;
@@ -171,10 +254,23 @@
         <span class="chip">Ilmassa: <strong id="live">0</strong></span>
       </div>
       <div id="msg">Liikuta tahtainta ja pida painallus pohjassa ampuaksesi.</div>
-      <button id="sound" type="button">Aanet: paalla</button>
+      <div id="controls">
+        <button id="clear-best" type="button">Tyhjenna ennatys</button>
+        <button id="sound" type="button">Aanet: paalla</button>
+      </div>
     </section>
     <section id="stage" aria-label="3D peli">
       <div id="cross" aria-hidden="true"></div>
+      <div id="aircall" aria-hidden="true">Ilmavoimien tulituki saapuu</div>
+      <div id="loadveil" aria-hidden="true">
+        <div id="briefing">
+          <p class="lead">Skarpens klo 03:15</p>
+          <p>Yksi Skarppi pidattelee yllatyshyokkaysta.</p>
+          <p>Ilmavoimat kiirehtivat tukemaan.</p>
+          <p class="alert">Skarppi: tuli on vapaa!</p>
+          <p>Esta vihollisen paasy Tarmolan tasalle.</p>
+        </div>
+      </div>
       <div id="info">
         <div class="panel"><p>Hiiri tai sormi liikuttaa tahtainta. Pidettu painallus ampuu konekivaaria jatkuvana tulena.</p></div>
         <div class="panel"><p>Rajahtavat osumat voivat laukaista ketjureaktioita, jos droonit lentavat liian lahella toisiaan.</p></div>
@@ -191,6 +287,9 @@
     const liveEl = document.getElementById("live");
     const msgEl = document.getElementById("msg");
     const soundBtn = document.getElementById("sound");
+    const clearBestBtn = document.getElementById("clear-best");
+    const airCallEl = document.getElementById("aircall");
+    const loadVeilEl = document.getElementById("loadveil");
     const flashEl = document.getElementById("flash");
 
     const scene = new THREE.Scene();
@@ -203,8 +302,10 @@
     stage.appendChild(renderer.domElement);
 
     const camera = new THREE.PerspectiveCamera(60, 16 / 9, 0.1, 220);
-    camera.position.set(0, 4.8, 13.5);
-    camera.lookAt(0, 3.6, -36);
+    const cameraBasePos = new THREE.Vector3(0, 4.8, 13.5);
+    const cameraBaseLook = new THREE.Vector3(0, 3.6, -36);
+    camera.position.copy(cameraBasePos);
+    camera.lookAt(cameraBaseLook);
 
     scene.add(new THREE.HemisphereLight(0xa6c9ff, 0x0a1020, 1.1));
     const sun = new THREE.DirectionalLight(0xf4f7ff, 1.1);
@@ -220,36 +321,56 @@
     floorCv.width = 192;
     floorCv.height = 768;
     const floorCx = floorCv.getContext("2d");
-    floorCx.fillStyle = "#08101d";
+    floorCx.fillStyle = "#24282d";
     floorCx.fillRect(0, 0, floorCv.width, floorCv.height);
-    floorCx.fillStyle = "#10203a";
-    floorCx.fillRect(52, 0, 88, floorCv.height);
-    floorCx.strokeStyle = "rgba(255,162,93,0.35)";
-    floorCx.lineWidth = 4;
-    for (let y = 18; y < floorCv.height; y += 64) {
+    floorCx.fillStyle = "#666c74";
+    floorCx.fillRect(30, 0, 132, floorCv.height);
+    floorCx.fillStyle = "rgba(255,255,255,0.16)";
+    floorCx.fillRect(34, 0, 3, floorCv.height);
+    floorCx.fillRect(155, 0, 3, floorCv.height);
+    floorCx.strokeStyle = "rgba(245,245,245,0.24)";
+    floorCx.lineWidth = 3;
+    for (let y = 14; y < floorCv.height; y += 72) {
       floorCx.beginPath();
       floorCx.moveTo(96, y);
-      floorCx.lineTo(96, y + 28);
+      floorCx.lineTo(96, y + 34);
       floorCx.stroke();
     }
     const floorTx = new THREE.CanvasTexture(floorCv);
     floorTx.wrapT = THREE.RepeatWrapping;
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(28, 150),
-      new THREE.MeshStandardMaterial({ map: floorTx, color: 0x15233f, roughness: 0.72, metalness: 0.12 })
+      new THREE.PlaneGeometry(40, 150),
+      new THREE.MeshStandardMaterial({ map: floorTx, color: 0x72777e, roughness: 0.9, metalness: 0.06 })
     );
     floor.rotation.x = -Math.PI / 2;
     floor.position.set(0, 0, -54);
     floor.receiveShadow = true;
     scene.add(floor);
 
-    const railMat = new THREE.MeshStandardMaterial({ color: 0x10213c, emissive: 0x06101d, emissiveIntensity: 0.35 });
-    for (const x of [-13.5, 13.5]) {
-      const rail = new THREE.Mesh(new THREE.BoxGeometry(1, 1.2, 140), railMat);
+    const railMat = new THREE.MeshStandardMaterial({ color: 0x34393f, emissive: 0x15181b, emissiveIntensity: 0.26 });
+    for (const x of [-19.5, 19.5]) {
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 140), railMat);
       rail.position.set(x, 0.6, -54);
       rail.castShadow = true;
       rail.receiveShadow = true;
       scene.add(rail);
+    }
+    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x503d2c, roughness: 0.92 });
+    const leafMat = new THREE.MeshStandardMaterial({ color: 0x435d3d, roughness: 0.88 });
+    for (const side of [-1, 1]) {
+      for (let i = 0; i < 16; i += 1) {
+        const tree = new THREE.Group();
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.28, 2.6, 8), trunkMat);
+        trunk.position.y = 1.3;
+        trunk.castShadow = true;
+        tree.add(trunk);
+        const crown = new THREE.Mesh(new THREE.ConeGeometry(1.25 + Math.random() * 0.45, 3.3 + Math.random() * 1.1, 10), leafMat);
+        crown.position.y = 3.5 + Math.random() * 0.25;
+        crown.castShadow = true;
+        tree.add(crown);
+        tree.position.set(side * (24 + Math.random() * 4.5), 0, -106 + i * 8.2 + Math.random() * 4.5);
+        scene.add(tree);
+      }
     }
 
     const starPos = new Float32Array(320 * 3);
@@ -310,13 +431,17 @@
 
     const clock = new THREE.Clock();
     const tmp = new THREE.Vector3();
+    const bulletAxis = new THREE.Vector3(0, 0, 1);
+    const playerHitPos = new THREE.Vector3(0, 1.35, 9.3);
+    const playerHitRadius = 1.45;
     const aim = { x: 0, y: 0 };
     const pointer = { x: 0.5, y: 0.56 };
     const bullets = [];
     const drones = [];
+    const tanks = [];
     const blasts = [];
-    const bulletGeo = new THREE.SphereGeometry(0.14, 10, 10);
-    const bulletMat = new THREE.MeshStandardMaterial({ color: 0xffc06c, emissive: 0xff5c20, emissiveIntensity: 1.1 });
+    const bulletGeo = new THREE.BoxGeometry(0.05, 0.05, 1.4);
+    const bulletMat = new THREE.MeshBasicMaterial({ color: 0xffd38a });
     const droneCoreGeo = new THREE.SphereGeometry(0.56, 16, 16);
     const droneRingGeo = new THREE.TorusGeometry(0.34, 0.05, 8, 18);
     const droneBladeGeo = new THREE.BoxGeometry(0.58, 0.03, 0.08);
@@ -324,6 +449,18 @@
     const droneChargeGeo = new THREE.CylinderGeometry(0.23, 0.23, 0.58, 14);
     const sparkGeo = new THREE.SphereGeometry(0.08, 8, 8);
     const waveGeo = new THREE.SphereGeometry(1, 16, 16);
+    const jetHullGeo = new THREE.BoxGeometry(3.2, 0.38, 0.42);
+    const jetWingGeo = new THREE.BoxGeometry(1.1, 0.08, 2.8);
+    const jetTailGeo = new THREE.BoxGeometry(0.7, 0.28, 0.76);
+    const jetNoseGeo = new THREE.ConeGeometry(0.22, 0.7, 10);
+    jetNoseGeo.rotateZ(-Math.PI / 2);
+    const bombGeo = new THREE.SphereGeometry(0.46, 12, 12);
+    const tankHullGeo = new THREE.BoxGeometry(4.15, 1.16, 6.2);
+    const tankCabGeo = new THREE.BoxGeometry(2.35, 0.9, 2.9);
+    const tankTurretGeo = new THREE.CylinderGeometry(1.12, 1.28, 0.84, 16);
+    const tankBarrelGeo = new THREE.CylinderGeometry(0.18, 0.26, 3.35, 12);
+    tankBarrelGeo.rotateX(Math.PI / 2);
+    const tankTrackGeo = new THREE.BoxGeometry(0.88, 0.8, 5.45);
     const droneCoreMat = new THREE.MeshStandardMaterial({
       color: 0x455f81, emissive: 0x10203a, emissiveIntensity: 0.45, metalness: 0.55, roughness: 0.38
     });
@@ -331,13 +468,28 @@
     const droneArmMat = new THREE.MeshStandardMaterial({ color: 0x8faefe, emissive: 0x243f67, emissiveIntensity: 0.65 });
     const droneRingMat = new THREE.MeshStandardMaterial({ color: 0xa1bcff, metalness: 0.2, roughness: 0.28 });
     const droneBladeMat = new THREE.MeshStandardMaterial({ color: 0xeef5ff, roughness: 0.4 });
+    const jetHullMat = new THREE.MeshStandardMaterial({
+      color: 0xdfe9ff, metalness: 0.72, roughness: 0.24, emissive: 0x23344f, emissiveIntensity: 0.28
+    });
+    const jetWingMat = new THREE.MeshStandardMaterial({ color: 0x7a90b8, metalness: 0.4, roughness: 0.36 });
+    const bombMat = new THREE.MeshStandardMaterial({
+      color: 0x3f4f68, metalness: 0.34, roughness: 0.38, emissive: 0xff8b36, emissiveIntensity: 0.18
+    });
+    const tankHullMat = new THREE.MeshStandardMaterial({
+      color: 0x55674b, metalness: 0.28, roughness: 0.68, emissive: 0x121a10, emissiveIntensity: 0.24
+    });
+    const tankTurretMat = new THREE.MeshStandardMaterial({
+      color: 0x697c5c, metalness: 0.24, roughness: 0.58, emissive: 0x151d12, emissiveIntensity: 0.2
+    });
+    const tankTrackMat = new THREE.MeshStandardMaterial({ color: 0x252729, metalness: 0.3, roughness: 0.82 });
 
     let score = 0;
     let best = Number.parseInt(localStorage.getItem("dronedefend-best") || "0", 10);
     let running = true;
     let firing = false;
     let fireCd = 0.25;
-    let spawnCd = 0.9;
+    let spawnCd = 1.2;
+    let tankSpawnCd = 5.8;
     let aliveTime = 0;
     let restartAt = 0;
     let recoil = 0;
@@ -347,8 +499,17 @@
     let audio = null;
     let master = null;
     let noise = null;
+    let airstrike = null;
+    let nextAirstrikeAt = 15 + Math.random() * 3;
+    let quake = 0;
+    let airCallTimer = 0;
+    let introTimer = 0;
+    let introLineTimers = [];
 
     const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const fireCooldown = 0.082 / 1.3;
+    const nextAirstrikeDelay = () => 15 + Math.random() * 3;
+    const tankLanes = [-6.4, -2.25, 2.25, 6.4];
     const hud = () => {
       scoreEl.textContent = String(score);
       bestEl.textContent = String(best);
@@ -361,10 +522,10 @@
     function pointAt(x, y) {
       const r = stage.getBoundingClientRect();
       if (!r.width || !r.height) return;
-      pointer.x = clamp((x - r.left) / r.width, 0.08, 0.92);
-      pointer.y = clamp((y - r.top) / r.height, 0.14, 0.92);
-      aim.x = (pointer.x - 0.5) * 1.34;
-      aim.y = (0.56 - pointer.y) * 1.12;
+      pointer.x = clamp((x - r.left) / r.width, 0.03, 0.97);
+      pointer.y = clamp((y - r.top) / r.height, 0.08, 0.96);
+      aim.x = (pointer.x - 0.5) * 1.82;
+      aim.y = (0.56 - pointer.y) * 1.42;
       setCross();
     }
     function resize() {
@@ -380,10 +541,42 @@
         localStorage.setItem("dronedefend-best", String(best));
       }
     }
+    function clearBest() {
+      best = 0;
+      localStorage.removeItem("dronedefend-best");
+      hud();
+    }
     function hitFlash() {
       flashEl.classList.add("on");
       clearTimeout(flashTimer);
       flashTimer = setTimeout(() => flashEl.classList.remove("on"), 160);
+    }
+    function hideLoadVeil() {
+      clearTimeout(introTimer);
+      for (const timer of introLineTimers) clearTimeout(timer);
+      introLineTimers = [];
+      loadVeilEl.classList.add("off");
+    }
+    function startIntro() {
+      loadVeilEl.classList.remove("off");
+      for (const timer of introLineTimers) clearTimeout(timer);
+      introLineTimers = [];
+      const lines = Array.from(loadVeilEl.querySelectorAll("#briefing p"));
+      lines.forEach((line) => line.classList.remove("show"));
+      lines.forEach((line, i) => {
+        introLineTimers.push(setTimeout(() => line.classList.add("show"), 400 + i * 900));
+      });
+      clearTimeout(introTimer);
+      introTimer = setTimeout(hideLoadVeil, 6200);
+    }
+    function showAirCall() {
+      airCallEl.classList.add("on");
+      clearTimeout(airCallTimer);
+      airCallTimer = setTimeout(() => airCallEl.classList.remove("on"), 1700);
+    }
+    function hideAirCall() {
+      clearTimeout(airCallTimer);
+      airCallEl.classList.remove("on");
     }
     async function audioOn() {
       if (!soundOn) return;
@@ -441,6 +634,37 @@
       s.start(t);
       s.stop(t + 0.45);
     }
+    function tankBoom(vol = 1) {
+      if (!soundOn || !audio || !master || !noise) return;
+      const t = audio.currentTime;
+      const rumble = audio.createBufferSource();
+      const rumbleFilter = audio.createBiquadFilter();
+      const rumbleGain = audio.createGain();
+      const sub = audio.createOscillator();
+      const subGain = audio.createGain();
+      rumble.buffer = noise;
+      rumbleFilter.type = "lowpass";
+      rumbleFilter.frequency.setValueAtTime(360, t);
+      rumbleFilter.frequency.exponentialRampToValueAtTime(70, t + 0.72);
+      rumbleGain.gain.setValueAtTime(0.0001, t);
+      rumbleGain.gain.exponentialRampToValueAtTime(0.11 * vol, t + 0.03);
+      rumbleGain.gain.exponentialRampToValueAtTime(0.001, t + 0.76);
+      sub.type = "triangle";
+      sub.frequency.setValueAtTime(58, t);
+      sub.frequency.exponentialRampToValueAtTime(34, t + 0.6);
+      subGain.gain.setValueAtTime(0.0001, t);
+      subGain.gain.exponentialRampToValueAtTime(0.075 * vol, t + 0.035);
+      subGain.gain.exponentialRampToValueAtTime(0.001, t + 0.68);
+      rumble.connect(rumbleFilter);
+      rumbleFilter.connect(rumbleGain);
+      rumbleGain.connect(master);
+      sub.connect(subGain);
+      subGain.connect(master);
+      rumble.start(t);
+      rumble.stop(t + 0.78);
+      sub.start(t);
+      sub.stop(t + 0.7);
+    }
     function failTone() {
       if (!soundOn || !audio || !master) return;
       const t = audio.currentTime;
@@ -468,6 +692,13 @@
       scene.remove(d.g);
       hud();
     }
+    function dropTank(t) {
+      const i = tanks.indexOf(t);
+      if (i >= 0) tanks.splice(i, 1);
+      if (t.wreckLight) scene.remove(t.wreckLight);
+      if (t.turret && t.turret.parent === scene) scene.remove(t.turret);
+      scene.remove(t.g);
+    }
     function dropBlast(i) {
       const b = blasts[i];
       for (const s of b.s) s.m.material.dispose();
@@ -476,9 +707,15 @@
       scene.remove(b.l);
       blasts.splice(i, 1);
     }
+    function clearAirstrike() {
+      if (!airstrike) return;
+      if (airstrike.jet && !airstrike.jetGone) scene.remove(airstrike.jet);
+      if (airstrike.bomb) scene.remove(airstrike.bomb);
+      airstrike = null;
+    }
 
     function blastAt(pos, opt = {}) {
-      const cfg = { r: 0, scale: 3, life: 0.4, color: 0xffb05d, n: 8, light: 1.1, ...opt };
+      const cfg = { r: 0, scale: 3, life: 0.4, color: 0xffb05d, n: 8, light: 1.1, range: 16, ...opt };
       const g = new THREE.Group();
       g.position.copy(pos);
       const mat = new THREE.MeshBasicMaterial({
@@ -500,7 +737,7 @@
           v: new THREE.Vector3((Math.random() - 0.5) * 14, Math.random() * 11 - 3, (Math.random() - 0.5) * 14)
         });
       }
-      const l = new THREE.PointLight(cfg.color, cfg.light, 16, 2.2);
+      const l = new THREE.PointLight(cfg.color, cfg.light, cfg.range, 2.2);
       l.position.copy(pos);
       scene.add(g);
       scene.add(l);
@@ -511,6 +748,180 @@
           if (d.g.position.distanceTo(pos) <= cfg.r + 0.35) killDrone(d);
         }
       }
+    }
+
+    function makeTank() {
+      const g = new THREE.Group();
+      g.position.set(
+        tankLanes[Math.floor(Math.random() * tankLanes.length)] + (Math.random() - 0.5) * 0.28,
+        0.58,
+        -98 - Math.random() * 22
+      );
+      const hull = new THREE.Mesh(tankHullGeo, tankHullMat);
+      hull.castShadow = true;
+      hull.receiveShadow = true;
+      g.add(hull);
+      const cab = new THREE.Mesh(tankCabGeo, tankHullMat);
+      cab.position.set(0, 0.78, -0.36);
+      cab.castShadow = true;
+      g.add(cab);
+      for (const x of [-1.7, 1.7]) {
+        const track = new THREE.Mesh(tankTrackGeo, tankTrackMat);
+        track.position.set(x, -0.02, 0);
+        track.castShadow = true;
+        track.receiveShadow = true;
+        g.add(track);
+      }
+      const turret = new THREE.Group();
+      turret.position.set(0, 1.18, -0.42);
+      const turretBody = new THREE.Mesh(tankTurretGeo, tankTurretMat);
+      turretBody.castShadow = true;
+      turret.add(turretBody);
+      const barrelMesh = new THREE.Mesh(tankBarrelGeo, tankTurretMat);
+      barrelMesh.position.set(0, 0, 2.2);
+      barrelMesh.castShadow = true;
+      turret.add(barrelMesh);
+      g.add(turret);
+      scene.add(g);
+      tanks.push({
+        g,
+        turret,
+        dead: false,
+        hp: 15,
+        r: 3.95,
+        sp: 2.9 + Math.min(1.9, aliveTime * 0.03) + Math.random() * 0.6,
+        ph: Math.random() * Math.PI * 2,
+        age: 0,
+        burn: 0,
+        flameCd: 0,
+        turretVel: null,
+        wreckSpin: null,
+        wreckLight: null
+      });
+    }
+    function killTank(t) {
+      if (!t || t.dead) return;
+      t.dead = true;
+      score += 4;
+      bestSave();
+      t.burn = 3.8;
+      t.flameCd = 0.05;
+      scene.attach(t.turret);
+      t.turretVel = new THREE.Vector3((Math.random() - 0.5) * 7.8, 9.5 + Math.random() * 3.2, 5.2 + Math.random() * 2.6);
+      t.wreckSpin = new THREE.Vector3(
+        (Math.random() - 0.5) * 9.5,
+        (Math.random() - 0.5) * 12.5,
+        (Math.random() - 0.5) * 9.5
+      );
+      t.wreckLight = new THREE.PointLight(0xff7a2a, 3.3, 28, 2.1);
+      t.wreckLight.position.copy(t.g.position).add(new THREE.Vector3(0, 1.2, 0));
+      scene.add(t.wreckLight);
+      blastAt(t.g.position.clone().add(new THREE.Vector3(0, 1.1, 0.15)), {
+        r: 5.4, scale: 8.4, life: 1.08, color: 0xff7e38, n: 28, light: 3.8, range: 28
+      });
+      quake = Math.max(quake, 0.75);
+      tankBoom(2.2);
+      hud();
+    }
+    function damageTank(t, pos) {
+      if (!t || t.dead) return;
+      t.hp -= 1;
+      blastAt(pos, {
+        scale: 1.9, life: 0.24, color: 0xffb96a, n: 5, light: 0.45, range: 10
+      });
+      boom(0.16);
+      if (t.hp <= 0) killTank(t);
+    }
+
+    function launchAirstrike() {
+      if (airstrike) return;
+      let targetDrone = null;
+      for (const d of drones) {
+        if (d.dead) continue;
+        if (!targetDrone || d.g.position.z > targetDrone.g.position.z) targetDrone = d;
+      }
+      const target = targetDrone
+        ? targetDrone.g.position.clone()
+        : new THREE.Vector3((Math.random() - 0.5) * 9, 0.85, -38 - Math.random() * 20);
+      target.x = clamp(target.x, -8.5, 8.5);
+      target.y = 0.85;
+      target.z = clamp(target.z - (6 + Math.random() * 6), -74, -20);
+      showAirCall();
+
+      const jet = new THREE.Group();
+      const hull = new THREE.Mesh(jetHullGeo, jetHullMat);
+      hull.castShadow = true;
+      jet.add(hull);
+      const nose = new THREE.Mesh(jetNoseGeo, jetHullMat);
+      nose.position.x = 1.9;
+      nose.castShadow = true;
+      jet.add(nose);
+      const wings = new THREE.Mesh(jetWingGeo, jetWingMat);
+      wings.position.x = -0.1;
+      wings.castShadow = true;
+      jet.add(wings);
+      const tail = new THREE.Mesh(jetTailGeo, jetWingMat);
+      tail.position.x = -1.15;
+      tail.position.y = 0.18;
+      tail.castShadow = true;
+      jet.add(tail);
+
+      jet.position.set(-30, 12.4 + Math.random() * 1.6, target.z + 5.5 + Math.random() * 4);
+      scene.add(jet);
+      airstrike = {
+        jet,
+        jetGone: false,
+        bomb: null,
+        bombVel: null,
+        target,
+        speed: 31 + Math.random() * 4,
+        dropX: target.x - 1.1,
+        released: false
+      };
+    }
+
+    function tickAirstrike(dt) {
+      if (!airstrike) return;
+      const raid = airstrike;
+      if (!raid.jetGone) {
+        raid.jet.position.x += raid.speed * dt;
+        raid.jet.position.z += dt * 2.4;
+        if (!raid.released && raid.jet.position.x >= raid.dropX) {
+          raid.released = true;
+          raid.bomb = new THREE.Mesh(bombGeo, bombMat);
+          raid.bomb.position.copy(raid.jet.position);
+          raid.bomb.castShadow = true;
+          raid.bombVel = new THREE.Vector3(0, -11.5, 6.4);
+          scene.add(raid.bomb);
+        }
+        if (raid.jet.position.x > 34) {
+          scene.remove(raid.jet);
+          raid.jetGone = true;
+        }
+      }
+      if (raid.bomb) {
+        raid.bombVel.y -= dt * 20;
+        raid.bomb.position.addScaledVector(raid.bombVel, dt);
+        raid.bomb.position.x = THREE.MathUtils.lerp(raid.bomb.position.x, raid.target.x, 0.065);
+        raid.bomb.position.z = THREE.MathUtils.lerp(raid.bomb.position.z, raid.target.z, 0.12);
+        raid.bomb.rotation.x += dt * 7;
+        raid.bomb.rotation.z += dt * 4;
+        if (raid.bomb.position.y <= raid.target.y) {
+          scene.remove(raid.bomb);
+          raid.bomb = null;
+          raid.bombVel = null;
+          blastAt(raid.target, { r: 24, scale: 16, life: 1.25, color: 0xffcf82, n: 32, light: 6.3, range: 34 });
+          const upperBlast = raid.target.clone();
+          upperBlast.y = 7.5;
+          blastAt(upperBlast, { r: 48, scale: 34, life: 2.1, color: 0xffe5b4, n: 72, light: 12.5, range: 58 });
+          const canopyBlast = raid.target.clone();
+          canopyBlast.y = 11.5;
+          blastAt(canopyBlast, { r: 54, scale: 38, life: 2.25, color: 0xfff0cc, n: 84, light: 14, range: 68 });
+          quake = Math.max(quake, 1.9);
+          boom(3.1);
+        }
+      }
+      if (raid.jetGone && !raid.bomb) airstrike = null;
     }
 
     function makeDrone() {
@@ -544,7 +955,7 @@
       }
       scene.add(g);
       drones.push({
-        g, rot, dead: false, r: 1.05,
+        g, rot, dead: false, r: 1.28,
         sp: 9.2 + Math.min(8, aliveTime * 0.22) + Math.random() * 2.6,
         sw: 0.8 + Math.random() * 1.2,
         bob: 0.55 + Math.random() * 0.6,
@@ -577,6 +988,11 @@
       });
       boom(big ? 0.42 : 0.24);
     }
+    function tankImpact(i, tank) {
+      const p = bullets[i].m.position.clone();
+      dropBullet(i);
+      damageTank(tank, p);
+    }
 
     function shoot() {
       if (!running) return;
@@ -588,11 +1004,12 @@
         dir.z = -0.08;
         dir.normalize();
       }
-      bullets.push({ m, v: dir.multiplyScalar(92), a: 0, max: 1.35 });
+      m.quaternion.setFromUnitVectors(bulletAxis, dir);
+      bullets.push({ m, v: dir.multiplyScalar(185), a: 0, max: 0.95 });
       scene.add(m);
       recoil = 1;
       flash = 1;
-      fireCd = 0.082;
+      fireCd = fireCooldown;
       pew();
     }
 
@@ -600,6 +1017,8 @@
       if (!running) return;
       running = false;
       firing = false;
+      hideAirCall();
+      clearAirstrike();
       bestSave();
       msgEl.textContent = "Drooni osui. Kierros kaynnistyy uudelleen...";
       hitFlash();
@@ -614,15 +1033,21 @@
       bullets.length = 0;
       for (let i = drones.length - 1; i >= 0; i -= 1) scene.remove(drones[i].g);
       drones.length = 0;
+      for (let i = tanks.length - 1; i >= 0; i -= 1) dropTank(tanks[i]);
       for (let i = blasts.length - 1; i >= 0; i -= 1) dropBlast(i);
+      hideAirCall();
+      clearAirstrike();
       score = 0;
       running = true;
       firing = false;
       fireCd = 0.25;
-      spawnCd = 0.9;
+      spawnCd = 1.2;
+      tankSpawnCd = 5.8;
       aliveTime = 0;
+      nextAirstrikeAt = nextAirstrikeDelay();
       restartAt = 0;
       recoil = 0;
+      quake = 0;
       flash = 0;
       msgEl.textContent = "Liikuta tahtainta ja pida painallus pohjassa ampuaksesi.";
       hud();
@@ -636,13 +1061,25 @@
         let hit = false;
         for (const d of drones) {
           if (d.dead) continue;
-          if (b.m.position.distanceToSquared(d.g.position) <= 1.45) {
+          if (b.m.position.distanceToSquared(d.g.position) <= d.r * d.r) {
             hit = true;
             break;
           }
         }
         if (hit) {
           impact(i, true);
+          continue;
+        }
+        let tankHitTarget = null;
+        for (const tank of tanks) {
+          if (tank.dead) continue;
+          if (b.m.position.distanceToSquared(tank.g.position) <= tank.r * tank.r) {
+            tankHitTarget = tank;
+            break;
+          }
+        }
+        if (tankHitTarget) {
+          tankImpact(i, tankHitTarget);
           continue;
         }
         if (b.a >= b.max || b.m.position.z < -150 || Math.abs(b.m.position.x) > 34 || b.m.position.y < -1 || b.m.position.y > 24) {
@@ -663,9 +1100,63 @@
         d.g.lookAt(0, 2.8, 14);
         for (let r = 0; r < d.rot.length; r += 1) d.rot[r].rotation.y += dt * (14 + r);
         if (d.g.position.z >= 8.6) {
-          crash(d.g.position.clone());
-          return;
+          const hitRadius = d.r + playerHitRadius;
+          if (d.g.position.distanceToSquared(playerHitPos) <= hitRadius * hitRadius) {
+            crash(d.g.position.clone());
+            return;
+          }
+          dropDrone(d);
+          continue;
         }
+      }
+    }
+
+    function tickTanks(dt, t) {
+      for (let i = tanks.length - 1; i >= 0; i -= 1) {
+        const tank = tanks[i];
+        if (!tank.dead) {
+          tank.age += dt;
+          tank.g.position.z += tank.sp * dt;
+          tank.g.position.x += Math.sin(tank.age * 1.3 + tank.ph) * dt * 0.12;
+          tank.g.position.x = clamp(tank.g.position.x, -7.2, 7.2);
+          tank.turret.rotation.y = Math.sin(t * 0.8 + tank.ph) * 0.1;
+          if (tank.g.position.z >= 10.5) {
+            dropTank(tank);
+            continue;
+          }
+          continue;
+        }
+        tank.burn -= dt;
+        tank.flameCd -= dt;
+        if (tank.turretVel) {
+          tank.turretVel.y -= dt * 10.5;
+          tank.turret.position.addScaledVector(tank.turretVel, dt);
+          tank.turret.rotation.x += dt * tank.wreckSpin.x;
+          tank.turret.rotation.y += dt * tank.wreckSpin.y;
+          tank.turret.rotation.z += dt * tank.wreckSpin.z;
+          if (tank.turret.position.y <= 0.35) {
+            tank.turret.position.y = 0.35;
+            tank.turretVel.x *= 0.72;
+            tank.turretVel.z *= 0.72;
+            tank.turretVel.y = Math.abs(tank.turretVel.y) * 0.18;
+          }
+        }
+        if (tank.wreckLight) {
+          tank.wreckLight.position.copy(tank.g.position).add(new THREE.Vector3(0, 1.2, 0));
+          tank.wreckLight.intensity = 0.8 + Math.random() * 0.7;
+        }
+        if (tank.flameCd <= 0) {
+          tank.flameCd = 0.13 + Math.random() * 0.08;
+          blastAt(
+            tank.g.position.clone().add(new THREE.Vector3(
+              (Math.random() - 0.5) * 0.7,
+              0.45 + Math.random() * 0.75,
+              (Math.random() - 0.5) * 0.7
+            )),
+            { scale: 2.8, life: 0.42, color: 0xff7e38, n: 8, light: 0.8, range: 12 }
+          );
+        }
+        if (tank.burn <= 0) dropTank(tank);
       }
     }
 
@@ -690,8 +1181,8 @@
     function tickGun(dt) {
       recoil = Math.max(0, recoil - dt * 7.4);
       flash = Math.max(0, flash - dt * 12);
-      pivot.rotation.y = THREE.MathUtils.lerp(pivot.rotation.y, aim.x * 0.62, 0.12);
-      pivot.rotation.x = THREE.MathUtils.lerp(pivot.rotation.x, aim.y * 0.28 - recoil * 0.08, 0.14);
+      pivot.rotation.y = THREE.MathUtils.lerp(pivot.rotation.y, aim.x * 0.82, 0.12);
+      pivot.rotation.x = THREE.MathUtils.lerp(pivot.rotation.x, aim.y * 0.38 - recoil * 0.08, 0.14);
       gun.position.y = 1.6 - recoil * 0.12;
       muzzleFlash.scale.setScalar(0.2 + flash * 1.35);
       muzzleFlash.material.opacity = flash * 0.65;
@@ -706,20 +1197,47 @@
         aliveTime += dt;
         fireCd = Math.max(0, fireCd - dt);
         spawnCd -= dt;
+        tankSpawnCd -= dt;
         if (firing && fireCd <= 0) shoot();
         if (spawnCd <= 0) {
-          makeDrone();
-          spawnCd = Math.max(0.28, 1.25 - Math.min(0.78, aliveTime * 0.0135) + Math.random() * 0.24);
+          if (drones.length < 7) makeDrone();
+          spawnCd = Math.max(0.6, 1.95 - Math.min(0.85, aliveTime * 0.0105) + Math.random() * 0.38);
         }
+        if (tankSpawnCd <= 0) {
+          if (tanks.length < 3) makeTank();
+          tankSpawnCd = 7.5 + Math.random() * 3.5;
+        }
+        if (!airstrike && aliveTime >= nextAirstrikeAt) {
+          launchAirstrike();
+          nextAirstrikeAt += nextAirstrikeDelay();
+        }
+        tickAirstrike(dt);
         tickBullets(dt);
         tickDrones(dt, t);
+        tickTanks(dt, t);
       } else if (restartAt && performance.now() >= restartAt) {
         reset();
       }
       tickBlasts(dt);
       tickGun(dt);
+      quake = Math.max(0, quake - dt * 1.7);
+      if (quake > 0) {
+        const amp = quake * 0.72;
+        camera.position.set(
+          cameraBasePos.x + (Math.random() - 0.5) * amp,
+          cameraBasePos.y + (Math.random() - 0.5) * amp * 0.7,
+          cameraBasePos.z + (Math.random() - 0.5) * amp * 0.45
+        );
+        camera.lookAt(
+          cameraBaseLook.x + (Math.random() - 0.5) * amp * 1.4,
+          cameraBaseLook.y + (Math.random() - 0.5) * amp,
+          cameraBaseLook.z
+        );
+      } else {
+        camera.position.copy(cameraBasePos);
+        camera.lookAt(cameraBaseLook);
+      }
       stars.rotation.y += dt * 0.006;
-      floorTx.offset.y = (floorTx.offset.y - dt * 0.35) % 1;
       warm.intensity = 0.62 + Math.sin(t * 2.4) * 0.12;
       renderer.render(scene, camera);
     }
@@ -738,6 +1256,10 @@
       if (soundOn) await audioOn();
       soundBtn.textContent = soundOn ? "Aanet: paalla" : "Aanet: pois";
     });
+    clearBestBtn.addEventListener("click", () => {
+      clearBest();
+      msgEl.textContent = "Ennatys tyhjennetty.";
+    });
     const ro = new ResizeObserver(resize);
     ro.observe(stage);
     window.addEventListener("resize", resize);
@@ -747,6 +1269,7 @@
     resize();
     clock.start();
     frame();
+    startIntro();
   </script>
 </body>
 </html>

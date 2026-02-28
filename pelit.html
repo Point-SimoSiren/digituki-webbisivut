@@ -271,6 +271,12 @@
       --card-edge: rgba(255, 222, 181, 0.57);
     }
 
+    .game-card--drone {
+      --tone-a: #c8e5ff;
+      --tone-b: #8fe0ff;
+      --card-edge: rgba(178, 214, 255, 0.62);
+    }
+
     .game-card:nth-child(1) { animation-delay: 0.18s; }
     .game-card:nth-child(2) { animation-delay: 0.26s; }
     .game-card:nth-child(3) { animation-delay: 0.34s; }
@@ -279,6 +285,8 @@
     .game-card:nth-child(6) { animation-delay: 0.58s; }
     .game-card:nth-child(7) { animation-delay: 0.66s; }
     .game-card:nth-child(8) { animation-delay: 0.74s; }
+    .game-card:nth-child(9) { animation-delay: 0.82s; }
+    .game-card:nth-child(10) { animation-delay: 0.9s; }
 
     .game-pill {
       align-self: flex-start;
@@ -296,6 +304,23 @@
       letter-spacing: 0.11em;
       position: relative;
       z-index: 1;
+    }
+
+    .game-badge {
+      position: absolute;
+      top: 0.95rem;
+      right: 0.95rem;
+      display: inline-flex;
+      padding: 0.28rem 0.62rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, rgba(255, 214, 108, 0.96), rgba(255, 140, 76, 0.96));
+      color: #1f1206;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      z-index: 1;
+      box-shadow: 0 10px 20px rgba(255, 142, 69, 0.22);
     }
 
     .game-card h3 {
@@ -492,6 +517,21 @@
       </header>
 
       <section class="game-grid">
+        <article class="game-card game-card--drone">
+          <span class="game-badge">Uutuus!</span>
+          <span class="game-pill">Arcade • Puolustus</span>
+          <h3>DroneDefend 3D</h3>
+          <p>Puolusta Tarmolan tasaa drooneilta, raskaammilta tankeilta ja yllattavasta ilmatuesta. Tahti kiihtyy, mutta tukitoimet voivat pelastaa tilanteen.</p>
+          <ul class="feature-list">
+            <li>Nopea hiiriohjaus ja kevyt 3D-taistelunakyma</li>
+            <li>Ilmavoimien tulituki, panssarit ja paikallinen ennatys</li>
+            <li>Arcade-henkinen puolustus taistelukentalla</li>
+          </ul>
+          <a class="cta" href="dronedefend.html">
+            Avaa puolustuslinja <span>>></span>
+          </a>
+        </article>
+
         <article class="game-card game-card--lotto">
           <span class="game-pill">Arvonta • Onnenpyörä</span>
           <h3>Arpakone</h3>
