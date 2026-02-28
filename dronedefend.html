@@ -228,6 +228,13 @@
       transition: opacity 0.16s ease;
     }
     #flash.on { opacity: 1; }
+    @media (max-width: 760px), (hover: none) and (pointer: coarse) {
+      header p,
+      #msg,
+      #info {
+        display: none;
+      }
+    }
     @media (max-width: 760px) {
       body { padding-top: 4.1rem; }
       header { padding-top: 0; }
@@ -242,21 +249,21 @@
   <header>
     <h1>DroneDefend 3D</h1>
     <p>
-      Ammu konekivaarilla edesta hyokkaavia drooneja. Luodit rajahtavat osumasta, ja tuhottu drooni
-      repeaa omasta rajahtelatauksestaan. Jos yksikin drooni paasee pelaajan linjalle, asema tuhoutuu ja peli alkaa alusta.
+      Ammu konekiväärillä edestä hyökkääviä drooneja. Luodit räjähtävät osumasta, ja tuhottu drooni
+      repeää omasta räjähdelatauksestaan. Jos yksikin drooni pääsee pelaajan linjalle, asema tuhoutuu ja peli alkaa alusta.
     </p>
   </header>
   <main id="shell">
     <section id="hud">
       <div id="stats">
         <span class="chip">Pisteet: <strong id="score">0</strong></span>
-        <span class="chip">Ennatys: <strong id="best">0</strong></span>
+        <span class="chip">Ennätys: <strong id="best">0</strong></span>
         <span class="chip">Ilmassa: <strong id="live">0</strong></span>
       </div>
-      <div id="msg">Liikuta tahtainta ja pida painallus pohjassa ampuaksesi.</div>
+      <div id="msg">Liikuta tähtäintä ja pidä painallus pohjassa ampuaksesi.</div>
       <div id="controls">
-        <button id="clear-best" type="button">Tyhjenna ennatys</button>
-        <button id="sound" type="button">Aanet: paalla</button>
+        <button id="clear-best" type="button">Tyhjennä ennätys</button>
+        <button id="sound" type="button">Äänet: päällä</button>
       </div>
     </section>
     <section id="stage" aria-label="3D peli">
@@ -265,15 +272,15 @@
       <div id="loadveil" aria-hidden="true">
         <div id="briefing">
           <p class="lead">Skarpens klo 03:15</p>
-          <p>Yksi Skarppi pidattelee yllatyshyokkaysta.</p>
-          <p>Ilmavoimat kiirehtivat tukemaan.</p>
+          <p>Yksi Skarppi pidättelee yllätyshyökkäystä.</p>
+          <p>Ilmavoimat kiirehtivät tukemaan.</p>
           <p class="alert">Skarppi: tuli on vapaa!</p>
-          <p>Esta vihollisen paasy Tarmolan tasalle.</p>
+          <p>Estä vihollisen pääsy Tarmolan tasalle.</p>
         </div>
       </div>
       <div id="info">
-        <div class="panel"><p>Hiiri tai sormi liikuttaa tahtainta. Pidettu painallus ampuu konekivaaria jatkuvana tulena.</p></div>
-        <div class="panel"><p>Rajahtavat osumat voivat laukaista ketjureaktioita, jos droonit lentavat liian lahella toisiaan.</p></div>
+        <div class="panel"><p>Hiiri tai sormi liikuttaa tähtäintä. Pidetty painallus ampuu konekivääriä jatkuvana tulena.</p></div>
+        <div class="panel"><p>Räjähtävät osumat voivat laukaista ketjureaktioita, jos droonit lentävät liian lähellä toisiaan.</p></div>
       </div>
       <div id="flash" aria-hidden="true"></div>
     </section>
@@ -585,7 +592,7 @@
         if (!Ctx) {
           soundOn = false;
           soundBtn.disabled = true;
-          soundBtn.textContent = "Aanet: ei tuettu";
+          soundBtn.textContent = "Äänet: ei tuettu";
           return;
         }
         audio = new Ctx();
@@ -1020,7 +1027,7 @@
       hideAirCall();
       clearAirstrike();
       bestSave();
-      msgEl.textContent = "Drooni osui. Kierros kaynnistyy uudelleen...";
+      msgEl.textContent = "Drooni osui. Kierros käynnistyy uudelleen...";
       hitFlash();
       blastAt(pos, { scale: 6.2, life: 0.9, color: 0xff4827, n: 24, light: 2.8 });
       failTone();
@@ -1049,7 +1056,7 @@
       recoil = 0;
       quake = 0;
       flash = 0;
-      msgEl.textContent = "Liikuta tahtainta ja pida painallus pohjassa ampuaksesi.";
+      msgEl.textContent = "Liikuta tähtäintä ja pidä painallus pohjassa ampuaksesi.";
       hud();
     }
 
@@ -1254,11 +1261,11 @@
     soundBtn.addEventListener("click", async () => {
       soundOn = !soundOn;
       if (soundOn) await audioOn();
-      soundBtn.textContent = soundOn ? "Aanet: paalla" : "Aanet: pois";
+      soundBtn.textContent = soundOn ? "Äänet: päällä" : "Äänet: pois";
     });
     clearBestBtn.addEventListener("click", () => {
       clearBest();
-      msgEl.textContent = "Ennatys tyhjennetty.";
+      msgEl.textContent = "Ennätys tyhjennetty.";
     });
     const ro = new ResizeObserver(resize);
     ro.observe(stage);
