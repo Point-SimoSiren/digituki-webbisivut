@@ -478,6 +478,10 @@
 
     const clock = new THREE.Clock();
     const tmp = new THREE.Vector3();
+    const aimNdc = new THREE.Vector2();
+    const aimTarget = new THREE.Vector3();
+    const aimOffset = new THREE.Vector3();
+    const aimRaycaster = new THREE.Raycaster();
     const bulletAxis = new THREE.Vector3(0, 0, 1);
     const playerHitPos = new THREE.Vector3(0, 1.35, 9.3);
     const playerHitRadius = 1.45;
@@ -1076,13 +1080,45 @@
       blastAt(tmp.clone(), { scale: 1.2, life: 0.18, color: 0xffc37d, n: 4, light: 0.35, range: 8 });
       boom(0.12);
     }
+    function updateAimTarget() {
+      aimNdc.set(pointer.x * 2 - 1, 1 - pointer.y * 2);
+      aimRaycaster.setFromCamera(aimNdc, camera);
+      let bestDist = Infinity;
+
+      for (const d of drones) {
+        if (d.dead) continue;
+        const radiusSq = d.r * d.r;
+        const distSq = aimRaycaster.ray.distanceSqToPoint(d.g.position);
+        if (distSq > radiusSq) continue;
+        const along = aimOffset.copy(d.g.position).sub(aimRaycaster.ray.origin).dot(aimRaycaster.ray.direction);
+        if (along > 0 && along < bestDist) {
+          bestDist = along;
+          aimTarget.copy(d.g.position);
+        }
+      }
+
+      for (const tank of tanks) {
+        if (tank.dead) continue;
+        const radiusSq = tank.r * tank.r;
+        const distSq = aimRaycaster.ray.distanceSqToPoint(tank.g.position);
+        if (distSq > radiusSq) continue;
+        const along = aimOffset.copy(tank.g.position).sub(aimRaycaster.ray.origin).dot(aimRaycaster.ray.direction);
+        if (along > 0 && along < bestDist) {
+          bestDist = along;
+          aimTarget.copy(tank.g.position);
+        }
+      }
+
+      if (bestDist < Infinity) return aimTarget;
+      return aimRaycaster.ray.at(140, aimTarget);
+    }
 
     function shoot() {
       if (!running) return;
       muzzle.getWorldPosition(tmp);
       const m = new THREE.Mesh(bulletGeo, bulletMat);
       m.position.copy(tmp);
-      const dir = new THREE.Vector3(aim.x, aim.y, 0.25).unproject(camera).sub(camera.position).normalize();
+      const dir = updateAimTarget().clone().sub(tmp).normalize();
       if (dir.z > -0.08) {
         dir.z = -0.08;
         dir.normalize();
