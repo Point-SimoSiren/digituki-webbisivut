@@ -1357,11 +1357,11 @@
         tankSpawnCd -= dt;
         if (firing && fireCd <= 0) shoot();
         if (spawnCd <= 0) {
-          if (drones.length < 9) makeDrone();
+          if (drones.length < 27) makeDrone();
           spawnCd = Math.max(0.6, 1.95 - Math.min(0.85, aliveTime * 0.0105) + Math.random() * 0.38);
         }
         if (tankSpawnCd <= 0) {
-          if (tanks.length < 3) makeTank();
+          if (tanks.length < 9) makeTank();
           tankSpawnCd = 7.5 + Math.random() * 3.5;
         }
         if (!airstrike && aliveTime >= nextAirstrikeAt) {
