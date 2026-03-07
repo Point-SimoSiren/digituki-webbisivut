@@ -184,6 +184,22 @@
       text-wrap: balance;
     }
 
+    .games-note {
+      margin: 0 auto 2rem;
+      max-width: 780px;
+      padding: 0.95rem 1rem;
+      border: 1px solid rgba(116, 154, 224, 0.3);
+      border-radius: 16px;
+      background: rgba(10, 18, 38, 0.7);
+      color: #d8e6ff;
+      line-height: 1.6;
+      box-shadow: var(--card-shadow);
+    }
+
+    .games-note strong {
+      color: #f5f9ff;
+    }
+
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -508,6 +524,10 @@
           Kokeile ja pelaa vapaasti!
         </p>
       </header>
+
+      <p class="games-note">
+        <strong>Huomio ennätyksistä:</strong> Osa peleistä tallentaa oman laitekohtaisen ennätyksesi paikallisesti selaimeen. Ennätystuloksen voi nollata pelin yhteydessä olevasta painikkeesta.
+      </p>
 
       <section class="game-grid">
         <article class="game-card game-card--drone">
