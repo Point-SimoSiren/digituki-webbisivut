@@ -95,8 +95,7 @@
     banner.setAttribute("aria-label", "Evästeasetukset");
     banner.innerHTML = [
       '<p><strong class="cookie-consent-banner__title">Analytiikka vain luvalla</strong>',
-      'Käytämme Google Analyticsia kävijämäärän seurantaan vain suostumuksellasi. ',
-      'Pelien ennätykset tallennetaan paikallisesti omalle laitteellesi, eikä niitä lähetetä meille.</p>',
+      'Käytämme Google Analyticsia kävijämäärän seurantaan vain suostumuksellasi.</p>',
       '<div class="cookie-consent-banner__actions">',
       '<button type="button" class="cookie-consent-button cookie-consent-button--primary" data-consent-action="accept">Hyväksy analytiikka</button>',
       '<button type="button" class="cookie-consent-button cookie-consent-button--secondary" data-consent-action="reject">Jatka ilman analytiikkaa</button>',
