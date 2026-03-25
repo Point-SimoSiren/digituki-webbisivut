@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
+  <title>Tietosuojaseloste | Tarmola Code Garage</title>
+  <meta name="description" content="Tarmola Code Garagen tietosuojaseloste. Selkeä kuvaus siitä, mitä tietoja voidaan käsitellä, mihin tarkoitukseen ja miten niitä säilytetään.">
+  <link rel="canonical" href="https://www.tarmola-code.fi/tietosuojaseloste.html">
+  <link rel="stylesheet" href="shared-nav.css">
+  <link rel="stylesheet" href="site-refresh.css">
+  <link rel="stylesheet" href="site-footer.css">
+  <link rel="stylesheet" href="cookie-consent.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b14;
+      --surface: rgba(13, 18, 32, 0.78);
+      --surface-strong: rgba(13, 18, 32, 0.9);
+      --text: #eaf0ff;
+      --muted: rgba(234, 240, 255, 0.8);
+      --border: rgba(160, 190, 255, 0.18);
+      --accent: #9dd8ff;
+      --shadow: 0 18px 55px rgba(0, 0, 0, 0.5);
+      --max-width: 980px;
+      font-family: ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(7, 11, 20, 0.88) 0%, rgba(7, 11, 20, 0.74) 42%, rgba(7, 11, 20, 0.92) 100%),
+        radial-gradient(820px 420px at 12% 0%, rgba(99, 179, 255, 0.2), transparent 58%),
+        radial-gradient(720px 360px at 92% 8%, rgba(110, 231, 255, 0.12), transparent 58%),
+        url('images/Laptop.png') center / cover no-repeat fixed;
+    }
+
+    .overlay {
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: clamp(1.25rem, 3vw, 2.5rem) 1.2rem 3rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin: 1.35rem 0 2.1rem;
+    }
+
+    .nav-link-anim {
+      opacity: 0;
+      transform: translateY(10px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.56rem 1.05rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: rgba(234, 240, 255, 0.9);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+      transition: opacity 0.28s ease-out, transform 0.28s ease-out, background 0.2s ease, border-color 0.2s ease;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .nav-link-anim.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-link-active {
+      background: rgba(110, 231, 255, 0.12);
+      border-color: rgba(157, 216, 255, 0.42);
+    }
+
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: 0.01em;
+    }
+
+    .lead {
+      margin: 0 0 1.4rem;
+      max-width: 52rem;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.03rem;
+    }
+
+    .card {
+      margin-bottom: 1rem;
+      padding: 1.2rem 1.15rem;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    h2 {
+      margin: 0 0 0.8rem;
+      font-size: 1.2rem;
+      color: #f4f8ff;
+    }
+
+    p {
+      margin: 0.55rem 0 0;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 0.7rem 0 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    li + li {
+      margin-top: 0.35rem;
+    }
+
+    .registry {
+      display: grid;
+      gap: 0.25rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-top: 0.45rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .back-link:hover,
+    .back-link:focus {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        padding: 1.15rem 1rem 2.2rem;
+      }
+    }
+  </style>
+  <script defer src="cookie-consent.js"></script>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="yritysohjelmistot.html" class="nav-link-anim" id="nav-link-3">Yritysohjelmistot</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="turvassa-huijauksilta.html" class="nav-link-anim" id="nav-link-7">Turvassa huijauksilta</a>
+        <a href="otsonointi.html" class="nav-link-anim" id="nav-link-6">Otsonikammio</a>
+        <a href="pelit.html" class="nav-link-anim" id="nav-link-5">Web-pelit</a>
+      </nav>
+
+      <main>
+        <h1>Tietosuojaseloste</h1>
+        <p class="lead">
+          Tällä sivulla kerrotaan selkeästi, mitä henkilötietoja Tarmola Code Garage voi käsitellä asiakastyön yhteydessä,
+          mihin tarkoitukseen tietoja käytetään ja missä tilanteissa tietoja voi näkyä palveluntarjoajille.
+        </p>
+
+        <section class="card">
+          <h2>Rekisterinpitäjä</h2>
+          <div class="registry">
+            <p>Tarmola Code Garage</p>
+            <p>Y-tunnus: 35722410-5</p>
+            <p>Yrittäjä: Simo Sirén</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Mitä tietoja voidaan käsitellä</h2>
+          <p>Tarmola Code Garage ei ylläpidä erillistä asiakasrekisteriä omissa järjestelmissään.</p>
+          <p>Asiakastyön yhteydessä voidaan kuitenkin käsitellä tarpeen mukaan esimerkiksi seuraavia tietoja:</p>
+          <ul>
+            <li>nimi</li>
+            <li>puhelinnumero</li>
+            <li>osoite</li>
+            <li>sähköpostiosoite</li>
+            <li>laskutuksen yhteydessä tarvittavat tiedot</li>
+            <li>asiakkaan laitteella näkyvät tiedot vain siinä laajuudessa kuin sovittu tukityö sitä edellyttää</li>
+          </ul>
+          <p>Jos asiakas soittaa kotikäynnistä, hän voi kertoa nimensä ja osoitteensa käynnin sopimista varten.</p>
+          <p>Jos asiakas maksaa MobilePaylla, maksajan nimi ja puhelinnumero voivat näkyä MobilePay-järjestelmässä maksutapahtuman yhteydessä.</p>
+          <p>Jos asiakas haluaa laskun, laskutusta varten voidaan käsitellä nimeä, puhelinnumeroa, osoitetta ja tarvittaessa sähköpostiosoitetta.</p>
+        </section>
+
+        <section class="card">
+          <h2>Mihin tarkoitukseen tietoja käsitellään</h2>
+          <p>Tietoja voidaan käsitellä vain asiakastyön hoitamiseen, yhteydenpitoon ja tarvittaessa laskutukseen.</p>
+          <p>Tietoja ei kerätä markkinointirekisteriksi.</p>
+        </section>
+
+        <section class="card">
+          <h2>Tietojen lähteet</h2>
+          <p>Tiedot saadaan pääasiassa asiakkaalta itseltään esimerkiksi puhelun, viestin, sähköpostin, kotikäynnin sopimisen tai laskutuksen yhteydessä.</p>
+          <p>Maksutapahtuman yhteydessä tietoja voi näkyä MobilePay-palvelussa.</p>
+          <p>Laskutuksen yhteydessä tietoja voi muodostua OP Kevytyrittäjä -palveluun.</p>
+        </section>
+
+        <section class="card">
+          <h2>Tietojen luovutus ja palveluntarjoajat</h2>
+          <p>Tietoja ei luovuteta tarpeettomasti ulkopuolisille.</p>
+          <p>Tietoja voidaan käsitellä seuraavien palvelujen yhteydessä siltä osin kuin palvelun käyttö sitä edellyttää:</p>
+          <ul>
+            <li>MobilePay maksutapahtumissa</li>
+            <li>OP Kevytyrittäjä laskutuksessa</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Tietojen säilytys</h2>
+          <p>Tarmola Code Garage ei säilytä asiakastietoja omissa erillisissä muistiinpanoissa asiakasrekisterinä.</p>
+          <p>Käteis- ja MobilePay-maksuissa asiakkaiden nimiä ei kirjata kirjanpitoon.</p>
+          <p>Jos laskutus tehdään, laskutukseen liittyviä tietoja voi löytyä OP Kevytyrittäjä -palvelun laskutushistoriasta. Tietoja säilyy tällöin siinä laajuudessa ja sen ajan kuin kyseinen palvelu ja laskutuksen hoitaminen edellyttävät.</p>
+        </section>
+
+        <section class="card">
+          <h2>Rekisteröidyn oikeudet</h2>
+          <p>Rekisteröidyllä on soveltuvan tietosuojalainsäädännön mukaisesti oikeus saada tieto siitä, käsitelläänkö häntä koskevia tietoja, pyytää pääsyä omiin tietoihinsa sekä pyytää virheellisen tiedon oikaisemista.</p>
+          <p>Rekisteröity voi myös pyytää tietojen poistamista tai käsittelyn rajoittamista, jos siihen on lain mukainen peruste.</p>
+          <p>Lisäksi rekisteröidyllä on oikeus tehdä valitus tietosuojavaltuutetulle.</p>
+          <p>Koska Tarmola Code Garage ei ylläpidä erillistä asiakasrekisteriä, oikeuksien toteuttaminen riippuu käytännössä siitä, mitä tietoja kulloinkin on käsitelty esimerkiksi laskutuksen yhteydessä.</p>
+        </section>
+
+        <section class="card">
+          <h2>Asiakkaan laitteella työskentely</h2>
+          <p>Asiakkaan laitteella työskentelyn tarkoitus on tehdä vain sovittu tukityö.</p>
+          <p>Asiakkaan tietoja käsitellään vain työn suorittamisen kannalta tarpeellisessa laajuudessa. Tarkoitus ei ole käydä asiakkaan tiedostoja, viestejä tai muita henkilökohtaisia tietoja läpi muuten kuin silloin, jos se on välttämätöntä sovitun ongelman ratkaisemiseksi.</p>
+        </section>
+
+        <section class="card">
+          <h2>Yhteydenotto tietosuoja-asioissa</h2>
+          <p>Tietosuojaan liittyvissä asioissa voi ottaa yhteyttä Tarmola Code Garageen.</p>
+          <p>Yrittäjä: Simo Sirén</p>
+          <a class="back-link" href="index.html">Takaisin etusivulle</a>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__links">
+        <span class="site-footer__name">Tarmola Code Garage</span>
+        <a href="tietosuojaseloste.html" aria-current="page">Tietosuojaseloste</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const links = Array.from(document.querySelectorAll('.nav-link-anim'));
+      setTimeout(() => {
+        links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
+      }, 320);
+    });
+  </script>
+</body>
+</html>
