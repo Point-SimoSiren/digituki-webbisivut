@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
+
+  <title>Auton sisäpuhdistus Porvoo | Tarmola Code Garage</title>
+  <meta name="description" content="Auton sisäpuhdistus Porvoossa Tarmolassa. Henkilöautot alk. 40 euroa, minibussit alk. 60 euroa ja otsonointi lisäpalveluna.">
+  <link rel="canonical" href="https://www.tarmola-code.fi/auton-sisapuhdistus.html">
+  <meta property="og:title" content="Auton sisäpuhdistus Porvoossa">
+  <meta property="og:description" content="Perusteellinen ja hellävarainen auton sisäsiivous Tarmolassa. Henkilöautot 40 euroa, minibussit alk. 60 euroa.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.tarmola-code.fi/auton-sisapuhdistus.html">
+  <meta property="og:image" content="https://www.tarmola-code.fi/images/sisaputsi40.png">
+  <meta property="og:locale" content="fi_FI">
+  <meta property="og:site_name" content="Tarmola Code Garage">
+
+  <link rel="stylesheet" href="shared-nav.css">
+  <link rel="stylesheet" href="site-refresh.css">
+  <link rel="stylesheet" href="site-footer.css">
+  <link rel='stylesheet' href='cookie-consent.css'>
+  <script defer src='cookie-consent.js'></script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --clean-bg: #071016;
+      --clean-surface: rgba(246, 251, 255, 0.92);
+      --clean-text: #173047;
+      --clean-muted: #385168;
+      --clean-accent: #0f8c7e;
+      --clean-accent-2: #2f6f9f;
+      --clean-border: rgba(18, 74, 94, 0.18);
+      --clean-shadow: 0 22px 55px rgba(0, 0, 0, 0.34);
+      font-family: ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body.interior-cleaning-page {
+      margin: 0;
+      min-height: 100vh;
+      color: #f3fbff;
+      background:
+        linear-gradient(180deg, rgba(7, 16, 22, 0.68) 0%, rgba(7, 16, 22, 0.76) 46%, rgba(7, 16, 22, 0.94) 100%),
+        radial-gradient(780px 420px at 16% 4%, rgba(91, 197, 177, 0.26), transparent 62%),
+        radial-gradient(680px 360px at 88% 12%, rgba(87, 152, 205, 0.22), transparent 58%),
+        url('images/sisaputsi40.png') center 30% / cover no-repeat fixed;
+    }
+
+    .overlay {
+      min-height: 100vh;
+      padding: 0;
+      background: linear-gradient(180deg, rgba(2, 8, 12, 0.12), rgba(2, 8, 12, 0.54));
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: clamp(1.25rem, 3vw, 2.4rem) 1.25rem 3.5rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+      gap: clamp(1.2rem, 4vw, 2.4rem);
+      align-items: center;
+      min-height: clamp(520px, 72vh, 700px);
+      padding: 0 0 clamp(1.2rem, 4vw, 2.2rem);
+    }
+
+    .hero-copy {
+      max-width: 630px;
+      text-shadow: 0 3px 18px rgba(0, 0, 0, 0.42);
+    }
+
+    .eyebrow {
+      margin: 0 0 0.85rem;
+      color: rgba(214, 248, 244, 0.92);
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 720px;
+      color: #ffffff;
+      font-size: clamp(2.35rem, 5.7vw, 4.45rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 1.05rem 0 0;
+      max-width: 630px;
+      color: rgba(240, 250, 255, 0.94);
+      font-size: clamp(1.03rem, 2.1vw, 1.24rem);
+      line-height: 1.62;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.35rem;
+    }
+
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0.68rem 1.08rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #f8fdff;
+      background: linear-gradient(135deg, #0f8c7e, #2f6f9f);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.26);
+      font-weight: 800;
+    }
+
+    .cta-link:hover,
+    .cta-link:focus-visible {
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .hero-photo {
+      margin: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--clean-shadow);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--clean-surface);
+      color: var(--clean-text);
+      border: 1px solid var(--clean-border);
+      border-radius: 8px;
+      box-shadow: var(--clean-shadow);
+      padding: clamp(1.05rem, 2.5vw, 1.55rem);
+      margin-bottom: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2 {
+      margin: 0 0 0.75rem;
+      color: #102d43;
+      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+      letter-spacing: 0;
+    }
+
+    .card p {
+      margin: 0 0 0.75rem;
+      color: var(--clean-text);
+      line-height: 1.65;
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .card ul {
+      margin: 0.35rem 0 0;
+      padding-left: 1.15rem;
+      color: var(--clean-text);
+      line-height: 1.65;
+    }
+
+    .card li {
+      margin: 0.35rem 0;
+    }
+
+    .price-list {
+      display: grid;
+      gap: 0.65rem;
+      margin-top: 0.85rem;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.72rem 0.85rem;
+      border-radius: 8px;
+      background: rgba(15, 140, 126, 0.10);
+      border: 1px solid rgba(15, 140, 126, 0.18);
+      color: #102d43;
+      font-weight: 800;
+    }
+
+    .note {
+      color: var(--clean-muted);
+      font-size: 0.98rem;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, rgba(15, 140, 126, 0.12), rgba(47, 111, 159, 0.11));
+      border-color: rgba(15, 140, 126, 0.24);
+    }
+
+    @media (max-width: 820px) {
+      body.interior-cleaning-page {
+        background-attachment: scroll;
+      }
+
+      .hero,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 1rem;
+      }
+
+      .hero-photo {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .price-row {
+        display: block;
+      }
+
+      .price-row span {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body class="interior-cleaning-page">
+  <div class="overlay">
+    <div class="container">
+      <nav>
+        <a href="index.html" class="nav-link-anim" id="nav-link-1">Etusivu</a>
+        <a href="esittely.html" class="nav-link-anim" id="nav-link-2">Esittely</a>
+        <a href="yritysohjelmistot.html" class="nav-link-anim" id="nav-link-3">Yritysohjelmistot</a>
+        <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
+        <a href="turvassa-huijauksilta.html" class="nav-link-anim" id="nav-link-7">Turvassa huijauksilta</a>
+        <a href="otsonointi.html" class="nav-link-anim nav-link-construction" id="nav-link-6">Otsonikammio</a>
+        <a href="auton-sisapuhdistus.html" class="nav-link-anim nav-link-active" id="nav-link-8" aria-current="page">Auton sisäpuhdistus</a>
+      </nav>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Tarmola Code Garage</p>
+            <h1>Auton sisäpuhdistus Porvoossa</h1>
+            <p class="lead">Teemme poikien kanssa autojen sisäsiivouksia pääasiassa viikonloppuisin ja kesälomakaudella. Työ tehdään perusteellisesti, mutta hellävaraisesti.</p>
+            <p class="lead">Isä kantaa vastuun ja hoitaa varovaisuutta vaativat työvaiheet. Puhdistus tapahtuu pihallamme Tarmolankatu 5:ssä.</p>
+            <div class="hero-actions" aria-label="Yhteydenotto">
+              <a class="cta-link" href="tel:+358509109926">050 910 9926</a>
+              <a class="cta-link" href="https://wa.me/358509109926" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            </div>
+          </div>
+          <figure class="hero-photo">
+            <img src="images/sisaputsi40.png" alt="Auton sisäpuhdistuksen palvelukuva" width="1536" height="1024" decoding="async">
+          </figure>
+        </section>
+
+        <div class="content-grid">
+          <div>
+            <section class="card">
+              <h2>Mitä sisäpuhdistukseen kuuluu</h2>
+              <ul>
+                <li>Roskat pois autosta.</li>
+                <li>Kumimattojen pesu.</li>
+                <li>Matkustamon ja tavaratilan imurointi.</li>
+                <li>Kovien pintojen puhdistus.</li>
+                <li>Lasien sisäpuhdistus.</li>
+                <li>Nahkapenkkien pyyhintä.</li>
+              </ul>
+            </section>
+
+            <section class="card">
+              <h2>Rajaukset ja työtapa</h2>
+              <p>Sisäpuhdistus ei sisällä kangaspenkkien pesua tekstiilipesurilla. Kangaspenkeille tehdään imurointi ja tarvittaessa kevyttä jynssäystä nihkeällä mikrokuituliinalla esimerkiksi tahrojen osalta.</p>
+              <p>Työssä edetään huolellisesti, mutta auton pintoja varoen. Varovaisuutta vaativat kohdat hoitaa isä.</p>
+            </section>
+
+            <section class="card">
+              <h2>Otsonointi lisapalveluna</h2>
+              <p>Sisätilojen tehokas hajunpoisto otsonaattorilla on mahdollinen 20 euron lisähintaan. Otsonoinnissa tehdään ensin täysi sisäpuhdistus ja käsittelyn jälkeen auto tuuletetaan. Tuuletusta viimeistellään pikaisella imuroinnilla ja pyyhinnällä.</p>
+              <p>Otsonointi auttaa tehokkaasti esimerkiksi tupakan, oksennusten ja eläinten hajuun sekä hajottaa eläinallergeenejä.</p>
+            </section>
+          </div>
+
+          <aside>
+            <section class="card">
+              <h2>Hinnat</h2>
+              <div class="price-list">
+                <div class="price-row">
+                  <span>Henkilöautot</span>
+                  <span>40 euroa</span>
+                </div>
+                <div class="price-row">
+                  <span>Minibussit</span>
+                  <span>alk. 60 euroa</span>
+                </div>
+                <div class="price-row">
+                  <span>Otsonointi</span>
+                  <span>+20 euroa</span>
+                </div>
+              </div>
+              <p class="note">Myös auton nouto ja palautus on sovittavissa.</p>
+            </section>
+
+            <section class="card contact-box">
+              <h2>Tiedustelut</h2>
+              <p>Puhelin tai viesti: <a href="tel:+358509109926">050 910 9926</a></p>
+              <p>Puhdistus tapahtuu pihallamme osoitteessa Tarmolankatu 5.</p>
+              <p class="note">Toiminta tapahtuu Y-tunnuksen 3572410-5 alla ilman arvonlisäveroa, koska kyseessä on vähäinen toiminta.</p>
+            </section>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const links = Array.from(document.querySelectorAll('.nav-link-anim'));
+      setTimeout(() => {
+        links.forEach((link, i) => setTimeout(() => link.classList.add('visible'), i * 110));
+      }, 90);
+    });
+  </script>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__links">
+        <span class="site-footer__name">Tarmola Code Garage</span>
+        <a href="tietosuojaseloste.html">Tietosuojaseloste</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
