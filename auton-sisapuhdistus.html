@@ -318,7 +318,19 @@
           "name": "Auton sisäpuhdistus Porvoossa",
           "serviceType": "Auton sisäpuhdistus",
           "areaServed": "Porvoo",
-          "description": "Henkilöauton sisäsiivous Tarmolassa: roskat pois, kumimattojen pesu, matkustamon ja tavaratilan imurointi, eläinten karvojen poisto imuroinnilla ja kumiharjalla, kojelaudan, ovien, kynnysten ja muiden muoviosien puhdistus miedolla puhdistusaineella, lasien sisäpuhdistus ja nahkapenkkien pyyhintä."
+          "description": "Henkilöauton sisäsiivous Tarmolassa: roskat pois, kumimattojen pesu, matkustamon ja tavaratilan imurointi, eläinten karvojen poisto imuroinnilla ja kumiharjalla, kojelaudan, ovien, kynnysten ja muiden muoviosien puhdistus miedolla puhdistusaineella, lasien sisäpuhdistus ja nahkapenkkien pyyhintä. Kangaspenkkien pesu on saatavilla lisäpalveluna."
+        }
+      },
+      {
+        "@type": "Offer",
+        "price": "20",
+        "priceCurrency": "EUR",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Penkkien pesu",
+          "serviceType": "Auton penkkien pesu",
+          "areaServed": "Porvoo",
+          "description": "Penkkien pesu 20 euroa penkkiriviltä tai 10 euroa yksittäiseltä istuimelta."
         }
       },
       {
@@ -345,7 +357,7 @@
         "name": "Mitä auton sisäpuhdistus maksaa Porvoossa?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Henkilöauton sisäpuhdistus maksaa 40 euroa. Minibussit ovat alk. 60 euroa ja sisätilojen otsonointi sisäpuhdistuksen yhteydessä 20 euroa lisähintaan."
+          "text": "Henkilöauton sisäpuhdistus maksaa 40 euroa. Minibussit ovat alk. 60 euroa, penkkien pesu 20 euroa penkkiriviltä tai 10 euroa yksittäiseltä istuimelta ja sisätilojen otsonointi sisäpuhdistuksen yhteydessä 20 euroa lisähintaan."
         }
       },
       {
@@ -366,10 +378,10 @@
       },
       {
         "@type": "Question",
-        "name": "Sisältyykö kangaspenkkien pesu?",
+        "name": "Saako kangaspenkit pestyä?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Palvelu ei sisällä kangaspenkkien pesua tekstiilipesurilla. Kangaspenkeille tehdään imurointi ja tarvittaessa kevyttä pyyhintää nihkeällä mikrokuituliinalla."
+          "text": "Kyllä. Penkkien pesu on saatavilla lisäpalveluna hintaan 20 euroa penkkiriviltä tai 10 euroa yksittäiseltä istuimelta."
         }
       },
       {
@@ -451,7 +463,7 @@
 
             <section class="card">
               <h2>Rajaukset ja työtapa</h2>
-              <p>Sisäpuhdistus ei sisällä kangaspenkkien pesua tekstiilipesurilla. Kangaspenkeille tehdään imurointi ja tarvittaessa kevyttä jynssäystä nihkeällä mikrokuituliinalla esimerkiksi tahrojen osalta.</p>
+              <p>Penkkien pesu on saatavilla lisäpalveluna. Penkkien pesu maksaa 20 euroa penkkiriviltä tai 10 euroa yksittäiseltä istuimelta.</p>
               <p>Työssä edetään huolellisesti, mutta auton pintoja varoen. Varovaisuutta vaativat kohdat hoitaa isä.</p>
             </section>
 
@@ -466,7 +478,7 @@
               <div class="faq-list">
                 <details>
                   <summary>Mitä auton sisäpuhdistus maksaa Porvoossa?</summary>
-                  <p>Henkilöauton sisäpuhdistus maksaa 40 euroa. Minibussit ovat alk. 60 euroa ja otsonointi sisäpuhdistuksen yhteydessä 20 euroa lisähintaan.</p>
+                  <p>Henkilöauton sisäpuhdistus maksaa 40 euroa. Minibussit ovat alk. 60 euroa. Penkkien pesu maksaa 20 euroa penkkiriviltä tai 10 euroa yksittäiseltä istuimelta, ja otsonointi sisäpuhdistuksen yhteydessä 20 euroa lisähintaan.</p>
                 </details>
                 <details>
                   <summary>Mitä auton sisäpuhdistukseen kuuluu?</summary>
@@ -477,8 +489,8 @@
                   <p>Puhdistus tehdään pihallamme osoitteessa Tarmolankatu 5, 06100 Porvoo. Auton nouto ja palautus voidaan sopia erikseen.</p>
                 </details>
                 <details>
-                  <summary>Sisältyykö kangaspenkkien pesu?</summary>
-                  <p>Ei sisällä tekstiilipesurilla tehtävää kangaspenkkien pesua. Kangaspenkeille tehdään imurointi ja tarvittaessa kevyttä pyyhintää nihkeällä mikrokuituliinalla.</p>
+                  <summary>Saako kangaspenkit pestyä?</summary>
+                  <p>Kyllä. Penkkien pesu on saatavilla lisäpalveluna hintaan 20 euroa penkkiriviltä tai 10 euroa yksittäiseltä istuimelta.</p>
                 </details>
                 <details>
                   <summary>Voiko autoon tehdä hajunpoiston?</summary>
@@ -499,6 +511,14 @@
                 <div class="price-row">
                   <span>Minibussit</span>
                   <span>alk. 60 euroa</span>
+                </div>
+                <div class="price-row">
+                  <span>Penkkien pesu</span>
+                  <span>20 euroa / penkkirivi</span>
+                </div>
+                <div class="price-row">
+                  <span>Yksittäisen istuimen pesu</span>
+                  <span>10 euroa</span>
                 </div>
                 <div class="price-row">
                   <span>Otsonointi</span>
