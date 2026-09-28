@@ -63,20 +63,7 @@ nav a.nav-link-anim {
   overflow: visible;
 }
 
-.nav-link-construction {
-  background: linear-gradient(135deg, #d4691e 0%, #e8a237 50%, #d4691e 100%);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.30);
-  position: static;
-  overflow: visible;
-}
-
-.nav-link-construction::before {
-  content: none !important;
-}
-
-.nav-link-portal::after,
-.nav-link-construction::after {
+.nav-link-portal::after {
   content: none !important;
 }
 

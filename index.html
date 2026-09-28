@@ -9,7 +9,7 @@
   
   <title>Tietokoneapu Porvoo | ATK-apu kotikäynti | Tarmola Code</title>
   <meta name="description" content="Porvoon tietokoneapu ja ATK-apu kotikäynnillä tai etänä. Rauhallinen ja selkeä opastus kotitalouksille ilman teknistä jargonia. Soita ja sovi apu.">
-  <meta name="keywords" content="linux asennus porvoo, otsonointi porvoo, digituki porvoo, it-tuki porvoo, atk-tuki porvoo, it-apu porvoo, atk-apu porvoo, tietokoneapu porvoo">
+  <meta name="keywords" content="linux asennus porvoo, digituki porvoo, it-tuki porvoo, atk-tuki porvoo, it-apu porvoo, atk-apu porvoo, tietokoneapu porvoo">
   <meta name="author" content="Simo Sirén">
   <meta name="theme-color" content="#070b14">
   <link rel="canonical" href="https://www.tarmola-code.fi/">
@@ -253,40 +253,9 @@
       transform: rotate(35deg) translateY(-42%);
     }
 
-    .nav-link-construction {
-      background: linear-gradient(135deg, rgba(255, 180, 84, 0.20), rgba(255, 120, 70, 0.12));
-      border-color: rgba(255, 180, 84, 0.55);
-      position: relative;
-      overflow: hidden;
-    }
 
-    .nav-link-construction::before {
-      content: '! ';
-      opacity: 0.95;
-    }
 
-    .nav-link-construction::after {
-      content: '';
-      position: absolute;
-      inset: -50% 0 -50% 0;
-      width: 100%;
-      height: 200%;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 12px,
-        rgba(255, 255, 255, 0.12) 12px,
-        rgba(255, 255, 255, 0.12) 24px
-      );
-      transform: translateY(0);
-      transition: transform 0.4s ease;
-      pointer-events: none;
-    }
 
-    .nav-link-construction:hover::after,
-    .nav-link-construction:focus-visible::after {
-      transform: translateY(38%);
-    }
 
     .logo-anim {
       display: inline-block;
@@ -816,7 +785,6 @@
         <a href="yritysohjelmistot.html" class="nav-link-anim" id="nav-link-3">Yritysohjelmistot</a>
         <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
         <a href="turvassa-huijauksilta.html" class="nav-link-anim" id="nav-link-7">Turvassa huijauksilta</a>
-        <a href="otsonointi.html" class="nav-link-anim nav-link-construction" id="nav-link-6">Otsonikammio</a>
         <a href="https://www-mallipohjat.onrender.com/" class="nav-link-anim nav-link-models" id="nav-link-9">Verkkosivujen mallit <span class="external-arrow" aria-hidden="true">↗</span></a>
         <!--
       -->
@@ -872,15 +840,6 @@
         </section>
 
         <section class="card">
-          <h2>Muut palvelut Tarmolassa</h2>
-          <p>Perus IT- ja digituen lisäksi tarjoan käytännönläheisiä palveluja omalla pihalla Tarmolassa.</p>
-          <ul>
-            <li><a href="otsonointi.html">Otsonikammio</a>: huonekalujen, mattojen ja irtoesineiden hajunpoistoa kuomulliseen peräkärryyn rakennetussa kammiossa.</li>
-          </ul>
-          <p class="note">Yritysohjelmistot ovat erillisiä tuotteita ja löytyvät omalta sivultaan: <a href="yritysohjelmistot.html">Yritysohjelmistot</a>.</p>
-        </section>
-
-        <section class="card">
           <h2>Luottamus ja tietosuoja</h2>
           <ul>
             <li>Sovitaan työ ja hinta etukäteen – ei yllätyslaskuja</li>
@@ -902,16 +861,6 @@
             <li>Korjaukset 50 € / h</li>
           </ul>
 
-          <div class="divider" aria-hidden="true"></div>
-
-          <h3>Otsonointi</h3>
-          <ul>
-            
-            <li>Auton sisätilojen otsonointi 50 €</li>
-            <li>Otsonikammio: kookkaat huonekalut 30 €, pienemmät esineet ja matot 20-30 € / erä</li>
-          </ul>
-          
-          <p class="note">Lisätiedot otsonointipalvelusta: <a href="otsonointi.html">Otsonointipalvelu</a></p>
           <p class="note">Palvelut ovat ALV osalta verottomia (liikevaihto alle ALV-rajan).</p>
         </section>
 

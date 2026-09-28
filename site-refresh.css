@@ -174,16 +174,7 @@ nav a.nav-link-anim:focus-visible,
   text-shadow: none !important;
 }
 
-.nav-link-construction {
-  color: #ffffff !important;
-  border-color: #8a6117 !important;
-  background: linear-gradient(145deg, #b27a1f, #8f6119) !important;
-  text-shadow: none !important;
-}
-
-.nav-link-portal::after,
-.nav-link-construction::after,
-.nav-link-construction::before {
+.nav-link-portal::after {
   content: none !important;
 }
 
@@ -409,73 +400,6 @@ nav a.nav-link-anim:focus-visible,
 
 .hint-card {
   text-align: center;
-}
-
-body.ozone-page {
-  color: #e6efff;
-  background:
-    radial-gradient(1100px 700px at 18% 8%, rgba(84, 237, 255, 0.16), transparent 62%),
-    radial-gradient(980px 640px at 84% 22%, rgba(58, 202, 255, 0.12), transparent 58%),
-    radial-gradient(900px 560px at 50% 95%, rgba(67, 255, 195, 0.10), transparent 65%),
-    linear-gradient(140deg, #06121b, #0a1d2b 45%, #0b2430 100%) !important;
-}
-
-body.ozone-page .overlay {
-  background: rgba(5, 10, 18, 0.54);
-}
-
-body.ozone-page .card {
-  border-color: rgba(126, 203, 235, 0.4);
-  background: linear-gradient(145deg, rgba(18, 32, 45, 0.64), rgba(16, 24, 41, 0.54));
-  box-shadow: 0 28px 55px rgba(4, 10, 22, 0.62);
-}
-
-body.ozone-page p,
-body.ozone-page li,
-body.ozone-page .lead {
-  color: rgba(226, 236, 255, 0.93) !important;
-}
-
-body.ozone-page h1,
-body.ozone-page h2,
-body.ozone-page h3,
-body.ozone-page h4 {
-  color: #e9f2ff;
-}
-
-body.ozone-page a {
-  color: #95deff;
-}
-
-body.ozone-page .price {
-  background: rgba(26, 255, 191, 0.16) !important;
-  border-color: rgba(159, 255, 225, 0.45) !important;
-  color: #b9ffe8 !important;
-}
-
-body.ozone-page nav a.nav-link-anim,
-body.ozone-page .nav-link-anim {
-  color: #d3e8ff;
-  background: rgba(9, 24, 40, 0.62);
-  border-color: rgba(126, 203, 235, 0.32);
-}
-
-body.ozone-page .nav-link-active {
-  background: linear-gradient(145deg, rgba(87, 187, 234, 0.72), rgba(63, 145, 196, 0.72)) !important;
-  border-color: rgba(166, 233, 255, 0.75) !important;
-  color: #07213a !important;
-}
-
-body.ozone-page .nav-link-portal {
-  background: linear-gradient(145deg, rgba(66, 173, 220, 0.88), rgba(51, 125, 170, 0.88)) !important;
-  border-color: rgba(179, 241, 255, 0.7) !important;
-  color: #05192e !important;
-}
-
-body.ozone-page .nav-link-construction {
-  background: linear-gradient(145deg, rgba(212, 137, 61, 0.9), rgba(166, 104, 36, 0.9)) !important;
-  border-color: rgba(255, 205, 151, 0.58) !important;
-  color: #ffffff !important;
 }
 
 @media (max-width: 900px) {
