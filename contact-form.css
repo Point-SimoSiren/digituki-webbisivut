@@ -1,0 +1,106 @@
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: start;
+  margin-top: 1.2rem;
+}
+
+.contact-layout .contact {
+  min-width: 0;
+  margin-top: 0;
+  overflow-wrap: anywhere;
+}
+
+.contact-form {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-soft);
+}
+
+.contact-form h3,
+.contact-form p {
+  margin: 0;
+}
+
+.contact-form h3 {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+}
+
+.contact-form-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.contact-form-field label {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.contact-form-field input,
+.contact-form-field textarea {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+
+.contact-form-field textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.contact-form-field input:focus-visible,
+.contact-form-field textarea:focus-visible,
+.contact-form-submit:focus-visible {
+  outline: 3px solid #6da4d7;
+  outline-offset: 2px;
+}
+
+.contact-form .contact-form-note,
+.contact-form .contact-form-status {
+  font-size: 0.92rem;
+}
+
+.contact-form-submit {
+  justify-self: start;
+  padding: 0.72rem 1.2rem;
+  border: 1px solid #264f77;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #356898, #28527d);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.contact-form-submit:hover:not(:disabled) {
+  background: linear-gradient(145deg, #285b8b, #1e4268);
+}
+
+.contact-form-submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.contact-form-status[data-state="success"] {
+  color: #23683d;
+}
+
+.contact-form-status[data-state="error"] {
+  color: #a12727;
+}
+
+@media (max-width: 720px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -763,6 +763,8 @@
   <link rel="stylesheet" href="shared-nav.css">
   <link rel="stylesheet" href="site-refresh.css">
   <link rel="stylesheet" href="home-services.css?v=1">
+  <link rel="stylesheet" href="contact-form.css?v=1">
+  <script defer src="contact-form.js?v=1"></script>
 
     <link rel="stylesheet" href="site-footer.css">
   <link rel='stylesheet' href='cookie-consent.css'>
@@ -786,6 +788,7 @@
         <a href="yritysohjelmistot.html" class="nav-link-anim" id="nav-link-3">Yritysohjelmistot</a>
         <a href="videot.html" class="nav-link-anim" id="nav-link-4">Linux esittely</a>
         <a href="turvassa-huijauksilta.html" class="nav-link-anim" id="nav-link-7">Turvassa huijauksilta</a>
+        <a href="#yhteys" class="nav-link-anim" id="nav-link-10">Yhteystiedot</a>
         <a href="https://www-mallipohjat.onrender.com/" class="nav-link-anim nav-link-models" id="nav-link-9">Verkkosivujen mallit <span class="external-arrow" aria-hidden="true">↗</span></a>
         <!--
       -->
@@ -826,6 +829,7 @@
             </a>
             <a class="cta-link" href="https://wa.me/358509109926" target="_blank" rel="noopener noreferrer">WhatsApp</a>
             <a class="cta-link" href="mailto:simosiren1@gmail.com">Sähköposti</a>
+            <a class="cta-link" href="#yhteys">Lähetä viesti</a>
             <a class="cta-link" href="#palvelut-porvoo">Palvelut Porvoossa</a>
             <a class="cta-link" href="#verkkosivut">Verkkosivujen toteutus</a>
           </div>
@@ -907,15 +911,37 @@
           <p class="note">Palvelut ovat ALV osalta verottomia (liikevaihto alle ALV-rajan).</p>
         </section>
 
-        <section class="card">
-          <h2>Yhteystiedot</h2>
-          <div class="contact">
-            Sovithan tapaamisesta aina etukäteen:<br>
-            Puhelin ja WhatsApp: <a href="tel:+358509109926">050 910 9926</a><br>
-            Sähköposti: <a href="mailto:simosiren1@gmail.com">simosiren1@gmail.com</a><br>
-            Uusi osoite: Lupiinikuja 3, 06100 PORVOO<br>
-            Y-tunnus: 3572410-5<br>
-            <a href="https://www.tarmola-code.fi/">https://www.tarmola-code.fi</a>
+        <section class="card" id="yhteys" aria-labelledby="yhteys-otsikko">
+          <h2 id="yhteys-otsikko">Yhteystiedot</h2>
+          <div class="contact-layout">
+            <div class="contact">
+              Sovithan tapaamisesta aina etukäteen:<br>
+              Puhelin ja WhatsApp: <a href="tel:+358509109926">050 910 9926</a><br>
+              Sähköposti: <a href="mailto:simosiren1@gmail.com">simosiren1@gmail.com</a><br>
+              Uusi osoite: Lupiinikuja 3, 06100 PORVOO<br>
+              Y-tunnus: 3572410-5<br>
+              <a href="https://www.tarmola-code.fi/">https://www.tarmola-code.fi</a>
+            </div>
+            <form class="contact-form" id="tarmola-contact-form" action="https://tcg-lomakeapi.onrender.com/contact" method="post" aria-labelledby="contact-form-title">
+              <h3 id="contact-form-title">Lähetä viesti</h3>
+              <p>Voit kysyä digitukipalveluista tai verkkosivujen toteutuksesta myös tällä lomakkeella.</p>
+              <div class="contact-form-field">
+                <label for="contact-name">Nimi</label>
+                <input id="contact-name" name="name" type="text" autocomplete="name" maxlength="120" required>
+              </div>
+              <div class="contact-form-field">
+                <label for="contact-email">Sähköposti</label>
+                <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+              </div>
+              <div class="contact-form-field">
+                <label for="contact-message">Viesti</label>
+                <textarea id="contact-message" name="message" rows="5" maxlength="5000" aria-describedby="contact-form-note" required></textarea>
+              </div>
+              <p class="contact-form-note" id="contact-form-note">Älä kirjoita viestiin salasanoja, pankkitunnuksia tai muita arkaluonteisia tietoja.</p>
+              <button class="contact-form-submit" type="submit" disabled>Lähetä viesti</button>
+              <p class="contact-form-status" id="contact-form-status" role="status" aria-live="polite"></p>
+              <noscript><p class="contact-form-note">Lomakkeen lähetys tarvitsee JavaScriptin. Voit ottaa yhteyttä myös sähköpostitse.</p></noscript>
+            </form>
           </div>
           <p class="note">Tietoa henkilötietojen käsittelystä löytyy <a href="tietosuojaseloste.html">tietosuojaselosteesta</a>.</p>
         </section>
