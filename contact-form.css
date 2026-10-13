@@ -99,6 +99,27 @@
   color: #a12727;
 }
 
+.contact-form-retry {
+  justify-self: start;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  color: #28527d;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.contact-form-retry[hidden] {
+  display: none;
+}
+
+.contact-form-retry:focus-visible {
+  outline: 3px solid #6da4d7;
+  outline-offset: 2px;
+}
+
 @media (max-width: 720px) {
   .contact-layout {
     grid-template-columns: 1fr;
