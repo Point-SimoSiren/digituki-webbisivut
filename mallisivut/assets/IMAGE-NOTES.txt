@@ -1,0 +1,10 @@
+New images for models 09 and 10
+
+Created with the built-in imagegen tool. Both are original AI-generated
+illustrative assets; the portrait depicts a fictional person.
+
+aino-portrait.png
+Prompt: Use case: photorealistic-natural. Create a realistic editorial portrait for a fictional Finnish brief-therapy website. A fictional friendly woman around 45 years old, shoulder-length dark blond hair, natural smile and direct relaxed eye contact, wearing a soft muted blue linen blouse, seated comfortably in a welcoming Nordic room. No medical coat. Soft window light, warm skin, subtle natural texture, understated pale blue and warm walnut environment. Waist-up portrait with hands relaxed naturally, centered with some breathing room. Portrait orientation 2:3. Authentic approachable professional photography, not glamour. No text, no logos, no watermarks. This is a fictional example person, not anyone real.
+
+pilke-conversation.png
+Prompt: Use case: illustration-story. Create an original playful but grown-up editorial illustration for a Finnish talk-therapy website. Two friendly stylized adults sitting opposite one another in comfortable chairs, a small leafy plant between them, one relaxed curved line connecting simple abstract speech shapes overhead. Flat gouache and cut-paper visual style with subtly irregular handmade edges and paper texture, confident shapes, deep violet outlines, warm coral, butter yellow and lilac accents on pale cream background. A positive, human scene about listening and conversation; no childish characters or medical symbols. Landscape 3:2 composition, clean open margins. No words, no letters, no logos, no watermark, no interface.

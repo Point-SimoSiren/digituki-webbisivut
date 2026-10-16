@@ -1,0 +1,35 @@
+LYHYTTERAPIAN MALLISIVUT
+
+Avaa index.html selaimessa. Sieltä pääset kaikkiin kahteentoista malliin.
+Koko hakemiston voi kopioida toiselle koneelle. Säilytä assets-kansio mukana.
+Sivut eivät tarvitse asennuksia, palvelinta tai verkkoyhteyttä.
+
+01 Verso: luonnollinen ja levollinen
+02 Tyyni: syvä ja tunnelmallinen
+03 Hetki: lämmin ja persoonallinen
+04 Suunta: raikas ja selkeä
+05 Avara: pelkistetty ja ajaton
+06 Säie: pehmeä ja puhutteleva
+07 Luoto: tumma ja arvokas
+08 Kajo: aurinkoinen ja mutkaton
+09 Aino: ihminen ensin
+10 Pilke: kuvitettu ja leikkisä
+11 Selko: selkeä asiantuntijasivu
+12 Muistio: päiväkirjamainen ja persoonallinen
+
+Navigointi, mobiilivalikko, avautuvat kysymykset ja ajanvarauksen esikatselu toimivat.
+Ajanvaraus on vain esittely. Sivut eivät lähetä viestejä tai kerää henkilötietoja.
+Kaikki palvelut, hinnat, henkilöt ja yhteystiedot ovat kuvitteellisia.
+Sivujen kuvat ovat tekoälyllä luotuja. Ne eivät esitä oikeaa vastaanottoa.
+
+Vertailusivun inspiraatio: https://terapiapalvelujyvanen.fi/
+Sivujen tekstejä, kuvia tai logoa ei ole kopioitu vertailusivulta.
+Kirjasimet: DM Sans, Instrument Serif ja Caveat / Google Fonts, SIL Open Font License.
+Paikalliset kirjasimet ja käyttöoikeustekstit löytyvät assets/fonts-kansiosta.
+
+Oikeaa sivustoa varten vaihdetaan nimi, palvelunkuvaukset, koulutustiedot,
+hinnat, yhteystiedot ja mahdolliset valokuvat. Ajanvaraus liitetään valittuun
+palveluun. Mallien noindex-asetus poistetaan vasta julkaisuvalmiilta sivulta.
+
+Aino-mallin henkilökuva on tekoälyllä luotu eikä esitä oikeaa terapeuttia.
+Uusien kuvien luontitapa ja tarkat kehotteet: assets/IMAGE-NOTES.txt.
