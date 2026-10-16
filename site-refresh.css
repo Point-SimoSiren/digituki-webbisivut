@@ -289,7 +289,6 @@ nav a.nav-link-anim:focus-visible,
   border-color: #98b2cc !important;
 }
 
-.video-embed,
 .carousel,
 .price-card,
 .product-card,
@@ -302,9 +301,6 @@ nav a.nav-link-anim:focus-visible,
   box-shadow: var(--shadow-soft) !important;
 }
 
-.video-embed {
-  margin-top: 0.55rem;
-}
 
 .product-grid,
 .price-grid,

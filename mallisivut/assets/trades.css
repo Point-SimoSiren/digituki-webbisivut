@@ -1,0 +1,294 @@
+@import url('./fonts.css');
+
+/* Practical business templates: shared fundamentals and three distinct layouts. */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;font-family:'DM Sans',Arial,sans-serif;color:#243342;background:#fff;line-height:1.6}
+button,input,textarea,select{font:inherit}
+button,a{touch-action:manipulation}
+a{color:inherit;text-underline-offset:4px}
+button{cursor:pointer}
+img{display:block;max-width:100%;object-fit:cover}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{line-height:1.2;letter-spacing:-.025em}
+h1{font-size:clamp(2.3rem,4.4vw,3.8rem)}
+h2{font-size:clamp(1.8rem,3vw,2.5rem)}
+h3{font-size:1.15rem;letter-spacing:-.01em}
+p+p{margin-top:16px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #ce7417;outline-offset:5px}
+.trade{--accent:#153e69;--ink:#15314b;--muted:#596978;--line:#dce2e7;--soft:#f3f6f8}
+.wrap{width:min(1160px,calc(100% - 48px));margin:auto}
+.skip{position:fixed;top:-100px;left:16px;z-index:100;background:#fff;color:#172c3c;padding:12px 18px}
+.skip:focus{top:12px}
+.demo-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:9px 24px;background:#202720;color:#fff;font-size:.75rem;line-height:1.5}
+.demo-bar a{text-decoration:none;display:inline-flex;align-items:center;min-height:28px}
+.demo-bar a:hover{text-decoration:underline}
+.demo-home-links,.demo-switch{display:flex;gap:20px;white-space:nowrap}
+.demo-home-links a:first-child{font-weight:700}
+.demo-label{color:#d9e1dc;text-align:center}
+.eyebrow{font-size:.72rem;letter-spacing:.1em;font-weight:700;text-transform:uppercase;margin-bottom:15px;color:var(--accent)}
+.lead{font-size:1.04rem;line-height:1.75;color:var(--muted);margin-top:23px;max-width:570px}
+.trade-logo{display:flex;gap:13px;align-items:center;text-decoration:none;flex-shrink:0}
+.logo-symbol{display:grid;place-items:center;width:42px;height:42px;background:var(--accent);color:#fff;font-size:1.5rem;font-weight:700}
+.trade-wordmark{display:block;font-size:1.6rem;font-weight:700;letter-spacing:-.055em;line-height:1.1;color:var(--ink)}
+.trade-logo small{display:block;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-top:6px;color:var(--muted)}
+.trade-header{display:flex;align-items:center;justify-content:space-between;gap:30px;min-height:100px}
+.header-contact{text-align:right;font-size:.8rem;color:var(--muted)}
+.header-contact strong{display:block;font-size:1.3rem;color:var(--ink)}
+.site-nav{display:flex;align-items:center;gap:29px;font-size:.85rem;font-weight:600}
+.site-nav a{text-decoration:none;display:inline-flex;align-items:center;min-height:42px}
+.site-nav a:hover{text-decoration:underline}
+.menu-button{display:none;padding:10px 14px;border:1px solid var(--line);background:transparent;color:inherit;font-size:.85rem;font-weight:600;min-height:44px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:18px;min-height:48px;padding:12px 21px;border:1px solid transparent;border-radius:2px;background:var(--accent);color:white;text-decoration:none;font-size:.86rem;font-weight:700;line-height:1.4}
+.button:hover{filter:brightness(1.12)}
+.button.secondary{background:transparent;color:inherit;border-color:var(--line)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:13px;margin-top:28px}
+.small,.note{font-size:.76rem;line-height:1.7;color:var(--muted)}
+.trade-section{padding:76px 0}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:35px;margin-bottom:32px}
+.section-heading>p{max-width:390px;color:var(--muted);font-size:.94rem}
+.service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.trade-service{border:1px solid var(--line);background:#fff;padding:28px}
+.trade-service .service-num{display:block;margin-bottom:27px;font-size:.72rem;font-weight:700;color:var(--accent)}
+.trade-service p{font-size:.9rem;margin-top:13px;color:var(--muted)}
+.trade-service a{display:inline-block;margin-top:22px;font-size:.8rem;font-weight:700;color:var(--accent)}
+.split{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:60px}
+.split p:not(.eyebrow):not(.note){color:var(--muted);margin-top:20px;font-size:.94rem}
+.fact-list{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.fact-list li{padding:18px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.fact-list strong{display:block;color:var(--ink);margin-bottom:4px}
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.project{border-top:3px solid var(--accent);padding-top:20px}
+.project span{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.project p{margin-top:12px;font-size:.88rem;color:var(--muted)}
+.process{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:35px;margin-top:32px}
+.process article{border-top:1px solid var(--line);padding-top:22px}
+.process article>span{font-size:.75rem;color:var(--accent);font-weight:700;display:block;margin-bottom:13px}
+.process p{font-size:.9rem;color:var(--muted);margin-top:12px}
+.faq-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px}
+.faq-list{border-top:1px solid var(--line)}
+.faq-list details{border-bottom:1px solid var(--line)}
+.faq-list summary{display:flex;justify-content:space-between;gap:20px;list-style:none;cursor:pointer;padding:20px 0;font-size:.94rem;font-weight:600}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:'+';font-size:1.2rem}
+.faq-list details[open] summary::after{content:'−'}
+.faq-list p{padding:0 20px 22px 0;color:var(--muted);font-size:.9rem}
+.contact-section{padding:60px 0;background:var(--soft);border-block:1px solid var(--line)}
+.contact-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:70px;align-items:center}
+.contact-grid .lead{font-size:.96rem;max-width:500px}
+.contact-details{border-left:1px solid var(--line);padding-left:38px;font-size:.9rem}
+.contact-details strong{display:block;color:var(--ink);font-size:1.12rem;margin-bottom:9px}
+.contact-details p{margin-top:0;color:var(--muted)}
+.contact-details .note{margin-top:15px}
+.trade-footer{display:flex;justify-content:space-between;align-items:start;gap:35px;padding:28px 0;font-size:.72rem;color:var(--muted)}
+.trade-footer p{max-width:720px}
+.trade-footer nav{display:flex;gap:20px;white-space:nowrap}
+.demo-dialog{width:min(530px,calc(100% - 32px));max-height:90vh;overflow:auto;border:0;border-radius:4px;background:#fff;color:#243342;padding:36px;box-shadow:0 25px 90px #0005}
+.demo-dialog::backdrop{background:#101d2bc9}
+.demo-dialog h2{font-size:1.9rem;margin:15px 0 20px}
+.demo-dialog p{font-size:.94rem}
+.demo-dialog .note{font-size:.78rem;margin-top:20px}
+.demo-dialog .eyebrow{clear:both;color:#365b7d}
+.demo-dialog .close-dialog{float:right;min-width:44px;min-height:44px;border:1px solid #dce2e7;background:white;color:#243342;font-size:1.2rem}
+.demo-dialog .button{margin-top:23px;background:#153e69}
+.trade .demo-dialog{--muted:#596978;--accent:#153e69}
+.trade .demo-dialog .button{background:#153e69;color:#fff}
+
+/* Virta: a traditional, compact company site with a sidebar. */
+.virta{background:#e9edf1;--accent:#174d80;--ink:#1d3651;--soft:#f1f5f8;--muted:#536677}
+.classic-shell{width:min(1160px,calc(100% - 48px));margin:24px auto;background:white;border:1px solid #d1d9e0;box-shadow:0 4px 20px #20354d0b}
+.virta .trade-header{padding:25px 32px;min-height:110px}
+.virta .trade-wordmark{font-family:Georgia,serif;letter-spacing:.035em;font-size:2rem}
+.virta .logo-symbol{background:#e9b347;color:#173b60;font-family:Arial,sans-serif}
+.classic-nav{background:#1b426a;padding:0 32px;border-bottom:4px solid #e9b347}
+.virta .site-nav{gap:0;color:#fff}
+.virta .site-nav a{padding:14px 24px;border-right:1px solid #ffffff20;font-size:.85rem}
+.virta .site-nav a:first-child{padding-left:0;padding-right:24px}
+.classic-body{display:grid;grid-template-columns:205px minmax(0,1fr);gap:30px;padding:32px}
+.classic-sidebar h2{font-family:Georgia,serif;font-size:1.13rem;letter-spacing:0;color:var(--ink);border-bottom:2px solid var(--accent);padding-bottom:13px;margin-bottom:3px}
+.classic-sidebar>a{display:block;text-decoration:none;padding:13px 0;border-bottom:1px solid var(--line);font-size:.83rem}
+.sidebar-box{background:#eff4f8;border:1px solid #d7e1e9;padding:18px;margin-top:25px;font-size:.83rem}
+.sidebar-box strong{display:block;color:var(--ink);margin-bottom:9px}
+.sidebar-box p{font-size:.78rem;color:var(--muted)}
+.sidebar-box a{display:inline-block;margin-top:13px;font-weight:700;color:var(--accent)}
+.classic-hero{display:grid;grid-template-columns:1.05fr .95fr;border:1px solid var(--line);background:#f6f8fa}
+.classic-hero>div{padding:28px}
+.classic-hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,3vw,2.65rem);font-weight:700;letter-spacing:-.025em;color:var(--ink)}
+.classic-hero .eyebrow{font-size:.63rem;letter-spacing:.07em;margin-bottom:13px}
+.classic-hero .lead{font-size:.88rem;line-height:1.75;margin-top:18px}
+.classic-hero .actions{margin-top:22px}
+.classic-hero .button{font-size:.78rem;padding:11px 15px}
+.classic-hero img{width:100%;height:100%;min-height:350px}
+.classic-trust{display:flex;flex-wrap:wrap;gap:12px 25px;padding:16px 0;border-bottom:1px solid var(--line);font-size:.73rem;color:var(--muted)}
+.classic-trust span::before{content:'✓';color:var(--accent);font-weight:700;margin-right:8px}
+.virta .trade-section{padding:42px 0}
+.virta h2{font-family:Georgia,serif;letter-spacing:-.01em;font-size:1.8rem;color:var(--ink)}
+.virta .section-heading{display:block;margin-bottom:22px}
+.virta .section-heading>p{margin-top:13px;max-width:none;font-size:.88rem}
+.virta .service-grid{gap:12px}
+.virta .trade-service{padding:20px 16px;border-top:3px solid var(--accent)}
+.virta .trade-service h3{font-size:1rem}
+.virta .trade-service p{font-size:.8rem}
+.virta .trade-service .service-num{margin-bottom:15px}
+.virta .split{gap:30px}
+.virta .split p:not(.eyebrow):not(.note){font-size:.86rem}
+.virta .fact-list li{font-size:.82rem;padding:15px 0}
+.virta .project{padding-top:15px}
+.virta .project h3{font-size:1rem}
+.virta .project p{font-size:.8rem}
+.virta .process{gap:20px}
+.virta .process h3{font-size:1rem}
+.virta .process p{font-size:.83rem}
+.virta .faq-layout{grid-template-columns:1fr;gap:25px}
+.virta .faq-list summary{font-size:.86rem}
+.virta .faq-list p{font-size:.83rem}
+.virta .contact-section{padding:28px}
+.virta .contact-grid{gap:28px;grid-template-columns:1fr 1fr}
+.virta .contact-grid h2{font-size:1.6rem}
+.virta .contact-grid .lead{font-size:.86rem}
+.virta .contact-details{padding-left:25px;font-size:.8rem}
+.virta .trade-footer{padding:24px 32px;border-top:1px solid var(--line)}
+
+/* Runko: technical typography, a precise grid and a practical project focus. */
+.runko{background:#11191f;color:#e9eff2;--accent:#d0eb55;--ink:#edf2f4;--muted:#b2bfc8;--line:#344049;--soft:#1a242c}
+.runko .trade-header{border-bottom:1px solid var(--line)}
+.runko .logo-symbol{color:#11191f;letter-spacing:-.14em;padding-right:4px}
+.runko .trade-logo small{font-family:Consolas,monospace;font-size:.6rem}
+.runko .site-nav{font-size:.79rem;gap:24px}
+.runko .site-nav a:last-child{color:var(--accent)}
+.runko .eyebrow{font-family:Consolas,monospace;letter-spacing:.08em}
+.runko .button{background:var(--accent);color:#11191f;border-radius:0}
+.runko .button.secondary{background:transparent;color:#fff;border-color:#64707a}
+.build-hero{display:grid;grid-template-columns:1fr 1.1fr;gap:65px;align-items:center;padding:60px 0}
+.build-hero h1{font-size:clamp(2.6rem,4.8vw,4.2rem);font-weight:700;letter-spacing:-.055em}
+.build-hero h1 span{color:var(--accent)}
+.build-hero .lead{font-size:.99rem}
+.build-hero figure{margin:0;position:relative;min-width:0}
+.build-hero img{width:100%;height:490px;filter:saturate(.7)}
+.build-hero figcaption{display:flex;justify-content:space-between;gap:20px;padding:14px 0;font-family:Consolas,monospace;font-size:.66rem;border-bottom:1px solid var(--line);color:var(--muted)}
+.technical-facts{border-block:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:24px 0;margin-top:35px}
+.technical-facts div{padding-right:15px}
+.technical-facts div+div{border-left:1px solid var(--line);padding-left:20px}
+.technical-facts small{display:block;font: .62rem/1.5 Consolas,monospace;letter-spacing:.04em;color:var(--muted);margin-bottom:6px}
+.technical-facts strong{font-size:.8rem;font-weight:500}
+.build-strip{border-block:1px solid var(--line);background:#182229}
+.build-strip .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:18px;font: .7rem/1.5 Consolas,monospace;color:var(--muted)}
+.build-strip span:first-child{color:var(--accent)}
+.runko .trade-service{background:var(--soft);border-color:var(--line)}
+.runko .trade-service .service-num{font-family:Consolas,monospace}
+.runko .project{border-top-width:1px;background:#182229;padding:25px}
+.runko .project span{font-family:Consolas,monospace;color:var(--accent)}
+.build-about{background:#19242c;border-block:1px solid var(--line)}
+.runko .contact-section{border-top:3px solid var(--accent)}
+.runko .trade-footer{font-size:.71rem}
+
+/* Vaihde: a familiar local garage site, finished with a strong service hierarchy. */
+.vaihde{--accent:#d64c22;--ink:#18303e;--muted:#5b6c76;--soft:#f1f4f6;--line:#dce3e7;background:#fff}
+.garage-topbar{background:#18303e;color:#fff;font-size:.73rem}
+.garage-topbar .wrap{display:flex;justify-content:space-between;gap:20px;padding-block:9px}
+.garage-topbar span:last-child{color:#ccd6db}
+.vaihde .trade-header{min-height:94px}
+.vaihde .trade-wordmark{font-size:1.8rem;font-style:italic}
+.vaihde .logo-symbol{border-radius:50%;font-size:1.2rem}
+.vaihde .site-nav{gap:25px;font-size:.82rem}
+.vaihde .site-nav a:last-child{background:var(--accent);color:#fff;padding-inline:17px;border-radius:3px}
+.garage-hero{position:relative;background:#1a2b36;isolation:isolate;color:white;min-height:530px;display:flex;align-items:center}
+.garage-hero>img{position:absolute;z-index:-2;inset:0;width:100%;height:100%;object-position:65% center}
+.garage-hero::after{content:'';position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,#12232ff5 0%,#12232fe8 30%,#12232f91 56%,#12232f10 100%)}
+.garage-hero .wrap{padding-block:65px}
+.garage-hero .eyebrow{color:#ffc3aa}
+.garage-hero h1{font-size:clamp(2.6rem,4.6vw,3.9rem);max-width:640px;font-weight:700;letter-spacing:-.045em}
+.garage-hero .lead{color:#e1e7ec;max-width:470px;font-size:1rem}
+.garage-hero .button.secondary{color:#fff;border-color:#8e9ca6}
+.garage-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;background:#fff;border:1px solid var(--line);position:relative;margin-top:-24px;box-shadow:0 8px 24px #233b4c09}
+.garage-features div{padding:25px 28px;display:flex;align-items:center;gap:17px}
+.garage-features div+div{border-left:1px solid var(--line)}
+.garage-features b{color:var(--accent);font-size:1.35rem;line-height:1;font-family:Arial,sans-serif}
+.garage-features strong{display:block;font-size:.86rem;color:var(--ink)}
+.garage-features small{display:block;font-size:.74rem;color:var(--muted);margin-top:4px}
+.vaihde .service-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.vaihde .trade-service{background:#f5f7f8;padding:25px 22px;border-radius:4px}
+.vaihde .trade-service .service-num{width:37px;height:37px;display:grid;place-items:center;border:1px solid #e1b4a3;background:#fff7f3;border-radius:4px;font-size:.78rem;margin-bottom:22px}
+.garage-about{background:#f2f5f6}
+.garage-about .split{align-items:center}
+.garage-about img{width:100%;height:365px;border-radius:4px}
+.garage-about h2{max-width:430px}
+.garage-about .small{margin-top:16px}
+.vaihde .contact-section{background:#18303e;color:#fff;--ink:#fff;--muted:#ced8de;--line:#4a5b66;border:0}
+.vaihde .contact-section .eyebrow{color:#ffb69b}
+.vaihde .contact-details{font-size:.93rem}
+
+@media(min-width:1450px){.garage-hero>img{object-position:50% 55%}}
+@media(max-width:1050px){
+ .site-nav{gap:20px}.classic-body{grid-template-columns:170px minmax(0,1fr);gap:25px;padding:25px}
+ .classic-hero{grid-template-columns:1fr}.classic-hero img{height:250px;min-height:0;order:-1}.classic-hero>div{padding:28px}
+ .virta .service-grid{grid-template-columns:1fr}.virta .trade-service{padding:24px}.virta .trade-service p{font-size:.88rem}.virta .trade-service h3{font-size:1.1rem}
+ .virta .split{grid-template-columns:1fr;gap:30px}.virta .projects{grid-template-columns:1fr}.virta .process{grid-template-columns:1fr;gap:20px}
+ .build-hero{gap:30px}.build-hero img{height:470px}.runko .site-nav{gap:17px;font-size:.73rem}
+ .vaihde .site-nav{gap:17px;font-size:.77rem}.vaihde .service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .garage-features div{padding:23px 20px;gap:12px}.garage-features strong{font-size:.8rem}
+}
+@media(max-width:800px){
+ .demo-label{display:none}.demo-bar{padding-inline:20px}.wrap{width:calc(100% - 40px)}
+ .trade-header{min-height:88px;position:relative;flex-wrap:wrap;gap:18px;padding-block:18px}
+ .menu-button{display:inline-flex;align-items:center}.site-nav{display:none;flex-direction:column;align-items:stretch;gap:0;width:100%;padding-top:10px}
+ .site-nav.open{display:flex}.site-nav a{min-height:46px;padding:11px 0;border-top:1px solid var(--line)}
+ .header-contact{display:none}.trade-header .site-nav{flex-basis:100%}
+ .classic-shell{width:calc(100% - 30px);margin:15px auto}.virta .trade-header{padding:22px;min-height:92px}
+ .classic-nav{padding:0 22px;position:relative}.classic-nav>.menu-button{color:white;border-color:#7291ae;margin-block:12px}
+ .virta .site-nav{padding:0 0 10px}.virta .site-nav a,.virta .site-nav a:first-child{padding:12px 0;border-right:0;border-color:#ffffff30}
+ .classic-body{display:block;padding:22px}.classic-sidebar{display:none}.classic-hero{grid-template-columns:1fr 1fr}
+ .classic-hero img{order:0;height:100%;min-height:330px}.classic-hero>div{padding:24px}
+ .virta .service-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.virta .trade-service{padding:20px 16px}
+ .virta .trade-service h3{font-size:1rem}.virta .trade-service p{font-size:.82rem}
+ .virta .projects{grid-template-columns:repeat(3,minmax(0,1fr))}.virta .process{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .trade-section{padding:57px 0}.section-heading{display:block}.section-heading>p{max-width:600px;margin-top:18px}
+ .split{gap:35px}.contact-grid{gap:35px}.contact-details{padding-left:25px}.faq-layout{grid-template-columns:1fr;gap:28px}
+ .build-hero{padding-block:40px;grid-template-columns:1fr;gap:35px}.build-hero img{height:400px}.build-hero h1{font-size:3.5rem}
+ .build-hero .lead{max-width:610px}.technical-facts{max-width:600px}.build-strip .wrap{flex-wrap:wrap;gap:10px 25px}
+ .runko .service-grid{grid-template-columns:1fr}.runko .trade-service{display:grid;grid-template-columns:35px 1fr;gap:8px 20px}
+ .runko .trade-service .service-num{grid-row:1/4;margin:0}.runko .trade-service p{margin:0}.runko .trade-service a{margin-top:12px}
+ .runko .trade-service h3,.runko .trade-service p,.runko .trade-service a{grid-column:2}
+ .runko .projects{grid-template-columns:1fr}.runko .split{grid-template-columns:1fr}.runko .project{padding:24px}
+ .garage-topbar span:last-child{display:none}.vaihde .site-nav{gap:0;font-size:.85rem}.vaihde .site-nav a:last-child{margin-top:10px;padding:12px 16px}
+ .garage-hero{min-height:500px}.garage-hero::after{background:linear-gradient(90deg,#12232ff5,#12232fb0 60%,#12232f50)}
+ .garage-hero h1{max-width:550px}.garage-features div{display:block;padding:20px}.garage-features b{display:block;margin-bottom:12px}
+ .garage-about .split{grid-template-columns:1fr;gap:30px}.garage-about img{height:370px}
+ .trade-footer{flex-direction:column;gap:16px}.virta .trade-footer{padding:24px 22px}
+}
+@media(max-width:540px){
+ .wrap{width:calc(100% - 36px)}.demo-bar{padding:7px 16px;gap:10px;font-size:.68rem}.demo-home-links,.demo-switch{gap:14px}
+ .trade-logo{gap:10px}.trade-wordmark{font-size:1.5rem}.trade-logo small{font-size:.55rem;letter-spacing:.06em}.logo-symbol{width:36px;height:36px}
+ .trade-header{min-height:84px}.menu-button{font-size:.76rem;padding:9px 12px}
+ .eyebrow{font-size:.66rem}.lead{font-size:.96rem}.trade-section{padding:45px 0}
+ .section-heading{margin-bottom:25px}.section-heading>p{font-size:.87rem}.service-grid{grid-template-columns:1fr}
+ .trade-service{padding:25px}.trade-service .service-num{margin-bottom:17px}
+ .split,.projects,.process,.contact-grid{grid-template-columns:1fr;gap:27px}.process{margin-top:25px}
+ .contact-section{padding:42px 0}.contact-details{border-left:0;border-top:1px solid var(--line);padding:25px 0 0}
+ .trade-footer nav{flex-wrap:wrap;gap:15px}.trade-footer{font-size:.7rem}
+ .classic-shell{width:calc(100% - 20px);margin:10px auto}.virta .trade-header{padding:20px 18px;min-height:93px}
+ .virta .trade-wordmark{font-size:1.8rem}.virta .trade-logo small{font-size:.5rem;letter-spacing:.06em}
+ .classic-body{padding:18px}.classic-nav{padding-inline:18px}.classic-hero{grid-template-columns:1fr}
+ .classic-hero img{order:-1;height:210px;min-height:0}.classic-hero>div{padding:24px 20px}.classic-hero h1{font-size:2rem}
+ .classic-hero .lead{font-size:.87rem}.classic-trust{gap:8px 20px;font-size:.69rem;padding-block:14px}
+ .virta .service-grid,.virta .projects,.virta .process{grid-template-columns:1fr;gap:18px}.virta .trade-service{padding:23px}
+ .virta .trade-service h3{font-size:1.1rem}.virta .trade-service p{font-size:.86rem}.virta h2{font-size:1.65rem}
+ .virta .trade-section{padding:32px 0}.virta .contact-section{padding:24px 20px}.virta .contact-grid{grid-template-columns:1fr;gap:25px}
+ .virta .contact-details{padding:20px 0 0}.virta .trade-footer{padding:22px 18px}.virta .trade-footer nav{gap:15px}
+ .build-hero h1{font-size:clamp(2.5rem,10.5vw,3.3rem)}.build-hero .lead{font-size:.94rem}.build-hero img{height:300px}
+ .build-hero figcaption{font-size:.57rem;gap:12px}.technical-facts{padding-block:20px;margin-top:26px}
+ .technical-facts strong{font-size:.71rem}.technical-facts small{font-size:.54rem}.technical-facts div+div{padding-left:10px}
+ .technical-facts div{padding-right:8px}.runko .trade-service{padding:23px;grid-template-columns:23px 1fr;gap:10px 15px}
+ .build-strip .wrap{font-size:.61rem;gap:8px}.build-strip span:last-child{display:none}.runko .contact-grid h2{font-size:2rem}
+ .garage-topbar{font-size:.68rem}.garage-topbar .wrap{gap:12px}.garage-hero{min-height:550px}
+ .garage-hero .wrap{padding-block:48px 65px}.garage-hero h1{font-size:clamp(2.5rem,10.5vw,3.2rem)}
+ .garage-hero .lead{font-size:.93rem}.garage-hero::after{background:#12232fcc}.garage-hero>img{object-position:60% center}
+ .garage-features{margin-top:0;width:100%;border-inline:0;grid-template-columns:1fr;box-shadow:none}
+ .garage-features div{display:grid;grid-template-columns:27px 1fr;padding:17px 23px;gap:15px}
+ .garage-features div+div{border-left:0;border-top:1px solid var(--line)}.garage-features b{margin:0}
+ .garage-features strong{font-size:.85rem}.garage-features small{font-size:.74rem}
+ .vaihde .service-grid{grid-template-columns:1fr}.vaihde .trade-service{padding:25px}.garage-about img{height:265px}
+ .demo-dialog{padding:25px}.demo-dialog h2{font-size:1.65rem}
+}
+@media(max-width:360px){.demo-home-links a:nth-child(2){display:none}.demo-switch{gap:12px}.button{padding-inline:17px;font-size:.8rem}.technical-facts strong{font-size:.66rem}.virta .classic-hero h1{font-size:1.85rem}.runko .trade-logo small{letter-spacing:0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}

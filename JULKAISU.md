@@ -4,6 +4,11 @@ Mallisto sijaitsee tämän repositorion `mallisivut/`-kansiossa. Julkaisun jälk
 malliston osoite on https://www.tarmola-code.fi/mallisivut/ ja yksittäisen mallin
 esimerkiksi https://www.tarmola-code.fi/mallisivut/verso.html.
 
+Mallisto sisältää kymmenen yritysesimerkkiä ja viisi yhdistysesimerkkiä.
+Listauksen alussa ovat Virta (sähköasennus), Runko (rakennusala) ja Vaihde
+(autokorjaamo). Ulkoasut voi sovittaa eri toimialoille. Palvelut, toiminta, tapahtumat,
+jäsenmaksut ja yhteystiedot ovat kuvitteellista sisältöä.
+
 Pääsivuston navigointi ja etusivun mallistolinkki käyttävät suhteellista polkua
 `mallisivut/index.html`. Malliston Tarmola Code -paluulinkit johtavat polkuun
 `../index.html`. Näin linkit toimivat myös avattaessa HTML-tiedostot suoraan

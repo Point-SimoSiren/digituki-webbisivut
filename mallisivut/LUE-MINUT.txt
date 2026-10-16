@@ -1,35 +1,45 @@
-LYHYTTERAPIAN MALLISIVUT
+MALLISIVUT YRITYKSILLE JA YHDISTYKSILLE
 
-Avaa index.html selaimessa. Sieltä pääset kaikkiin kahteentoista malliin.
+Avaa index.html selaimessa. Sieltä pääset kaikkiin viiteentoista malliin.
 Koko hakemiston voi kopioida toiselle koneelle. Säilytä assets-kansio mukana.
 Sivut eivät tarvitse asennuksia, palvelinta tai verkkoyhteyttä.
+Tarmola Code -paluulinkki toimii, kun mallisivut-kansio on pääsivuston alla.
 
-01 Verso: luonnollinen ja levollinen
-02 Tyyni: syvä ja tunnelmallinen
-03 Hetki: lämmin ja persoonallinen
-04 Suunta: raikas ja selkeä
-05 Avara: pelkistetty ja ajaton
-06 Säie: pehmeä ja puhutteleva
-07 Luoto: tumma ja arvokas
-08 Kajo: aurinkoinen ja mutkaton
-09 Aino: ihminen ensin
-10 Pilke: kuvitettu ja leikkisä
-11 Selko: selkeä asiantuntijasivu
-12 Muistio: päiväkirjamainen ja persoonallinen
+Yritysesimerkit: Virta, Runko, Vaihde, Verso, Tyyni, Suunta, Avara, Luoto, Aino ja Selko.
+Yhdistysesimerkit: Hetki ry, Säie ry, Kajo ry, Pilke ry ja Muistio ry.
+Kaikkien mallien ilmeen ja sisällön voi sovittaa eri toimialoille,
+yritykselle tai yhdistykselle. Mallien nimet eivät rajaa käyttötarkoitusta.
 
-Navigointi, mobiilivalikko, avautuvat kysymykset ja ajanvarauksen esikatselu toimivat.
-Ajanvaraus on vain esittely. Sivut eivät lähetä viestejä tai kerää henkilötietoja.
-Kaikki palvelut, hinnat, henkilöt ja yhteystiedot ovat kuvitteellisia.
-Sivujen kuvat ovat tekoälyllä luotuja. Ne eivät esitä oikeaa vastaanottoa.
+01 Virta: klassinen sähköasennusyritys
+02 Runko: tekninen ja moderni rakennusyritys
+03 Vaihde: tuttu ja viimeistelty autokorjaamo
+04 Verso: luonnollinen ja levollinen
+05 Tyyni: syvä ja tunnelmallinen
+06 Hetki: lämmin ja persoonallinen
+07 Suunta: raikas ja selkeä
+08 Avara: pelkistetty ja ajaton
+09 Säie: pehmeä ja puhutteleva
+10 Luoto: tumma ja arvokas
+11 Kajo: aurinkoinen ja mutkaton
+12 Aino: ihminen ensin
+13 Pilke: kuvitettu ja leikkisä
+14 Selko: selkeä asiantuntijasivu
+15 Muistio: päiväkirjamainen ja persoonallinen
 
-Vertailusivun inspiraatio: https://terapiapalvelujyvanen.fi/
-Sivujen tekstejä, kuvia tai logoa ei ole kopioitu vertailusivulta.
+Navigointi, mobiilivalikko ja avautuvat kysymykset toimivat.
+Yhteydenotto ja osallistuminen avautuvat esittelyikkunaan. Sivut eivät lähetä
+viestejä, ilmoittautumisia tai jäsenhakemuksia eivätkä kerää henkilötietoja.
+Kaikki yritykset, yhdistykset, palvelut, toiminta, hinnat, henkilöt ja
+yhteystiedot ovat kuvitteellisia. Hinnat eivät ole Tarmola Coden hinnasto.
+Sivujen kuvat ovat tekoälyllä luotuja eivätkä esitä oikeita toimijoita.
+
 Kirjasimet: DM Sans, Instrument Serif ja Caveat / Google Fonts, SIL Open Font License.
 Paikalliset kirjasimet ja käyttöoikeustekstit löytyvät assets/fonts-kansiosta.
 
-Oikeaa sivustoa varten vaihdetaan nimi, palvelunkuvaukset, koulutustiedot,
-hinnat, yhteystiedot ja mahdolliset valokuvat. Ajanvaraus liitetään valittuun
-palveluun. Mallien noindex-asetus poistetaan vasta julkaisuvalmiilta sivulta.
+Oikeaa sivustoa varten vaihdetaan nimi, toiminnan ja palvelujen kuvaukset,
+hinnat, yhteystiedot ja mahdolliset valokuvat. Yhteydenotto, ilmoittautuminen
+ja jäsenhakemukset liitetään tarvittaviin palveluihin. Mallien noindex-asetus
+poistetaan vasta julkaisuvalmiilta oikean toimijan sivulta.
 
-Aino-mallin henkilökuva on tekoälyllä luotu eikä esitä oikeaa terapeuttia.
-Uusien kuvien luontitapa ja tarkat kehotteet: assets/IMAGE-NOTES.txt.
+Aino-mallin henkilökuva on tekoälyllä luotu eikä esitä oikeaa henkilöä.
+Alkuperäisten kuvien luontitapa ja kehotteet: assets/IMAGE-NOTES.txt.

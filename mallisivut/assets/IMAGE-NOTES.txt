@@ -1,7 +1,15 @@
-New images for models 09 and 10
+Image provenance for models 09 and 10
 
 Created with the built-in imagegen tool. Both are original AI-generated
 illustrative assets; the portrait depicts a fictional person.
+
+The collection now presents general businesses and associations. The portrait
+is used as a fictional entrepreneur, and the illustration represents community
+and collaboration. The original creation prompts below are preserved as provenance;
+their former subject does not describe the current page content.
+
+The shared indoor scene has been renamed from therapy-room.png to meeting-room.png.
+It shows two armchairs and a table and is used as a generic shared meeting space.
 
 aino-portrait.png
 Prompt: Use case: photorealistic-natural. Create a realistic editorial portrait for a fictional Finnish brief-therapy website. A fictional friendly woman around 45 years old, shoulder-length dark blond hair, natural smile and direct relaxed eye contact, wearing a soft muted blue linen blouse, seated comfortably in a welcoming Nordic room. No medical coat. Soft window light, warm skin, subtle natural texture, understated pale blue and warm walnut environment. Waist-up portrait with hands relaxed naturally, centered with some breathing room. Portrait orientation 2:3. Authentic approachable professional photography, not glamour. No text, no logos, no watermarks. This is a fictional example person, not anyone real.

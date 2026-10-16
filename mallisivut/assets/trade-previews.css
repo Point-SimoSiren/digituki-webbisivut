@@ -1,0 +1,66 @@
+/* The first three cards show practical trade-company layouts. */
+.collection .preview-trade{font-family:'DM Sans',Arial,sans-serif;text-align:left;overflow:hidden;height:255px}
+.preview-trade .trade-preview-head{display:flex;align-items:center;gap:7px;min-height:43px;padding:10px 17px;font-size:.88rem;line-height:1.2}
+.preview-trade .trade-preview-head small{margin-left:auto;font-size:.38rem;font-weight:500;letter-spacing:.04em}
+.preview-trade .trade-preview-title{font-size:1.5rem;font-weight:700;letter-spacing:-.045em;line-height:1.12}
+.preview-trade .trade-preview-button{display:inline-block;font-size:.42rem;font-weight:700;padding:8px 12px;margin-top:17px;border-radius:1px;line-height:1.1}
+.preview-trade .trade-preview-label{display:block;font-family:Consolas,monospace;font-size:.38rem;letter-spacing:.06em;margin-bottom:13px;line-height:1.4}
+.preview-trade .trade-preview-bottom{display:flex;justify-content:space-between;gap:10px;font-size:.4rem;line-height:1.5}
+
+.collection .preview-virta{background:#fff;color:#1d3651;border:8px solid #e9edf1}
+.preview-virta .trade-preview-head{min-height:43px;padding:9px 13px;color:#174d80;font-family:Georgia,serif;font-size:1rem}
+.preview-virta .trade-preview-head b{letter-spacing:.04em}
+.preview-virta .trade-preview-head small{font-family:'DM Sans',Arial,sans-serif;font-size:.45rem;letter-spacing:.06em;text-transform:uppercase}
+.preview-virta .trade-preview-nav{padding:8px 13px;background:#1b426a;color:#fff;font-size:.42rem;border-bottom:3px solid #e9b347;line-height:1.1}
+.preview-virta .trade-preview-main{display:grid;grid-template-columns:1.1fr 1fr;gap:0;margin:13px 12px 0;background:#f1f5f8;border:1px solid #dce2e7;height:120px}
+.preview-virta .trade-preview-main>div{padding:14px 10px;min-width:0}
+.preview-virta .trade-preview-title{font-family:Georgia,serif;font-size:1.12rem;letter-spacing:-.03em;line-height:1.2}
+.collection .preview-virta .trade-preview-main img{position:static;width:100%;height:118px;object-fit:cover}
+.preview-virta .trade-preview-button{background:#174d80;color:#fff;font-size:.38rem;margin-top:14px;padding:7px 9px}
+.preview-virta .trade-preview-bottom{margin:12px 14px 0;justify-content:flex-start;gap:19px;color:#536677;font-size:.38rem}
+
+.collection .preview-runko{background:#11191f;color:#edf2f4}
+.preview-runko .trade-preview-head{border-bottom:1px solid #344049;font-size:1rem}
+.preview-runko .trade-preview-head b{font-weight:600}
+.preview-runko .trade-preview-head small{color:#b2bfc8;font-family:Consolas,monospace}
+.preview-runko .trade-preview-main{display:grid;grid-template-columns:1.05fr 1fr;gap:11px;padding:18px 15px 0;align-items:center}
+.preview-runko .trade-preview-main>div{min-width:0}
+.preview-runko .trade-preview-label{color:#d0eb55;font-size:.33rem;margin-bottom:12px;letter-spacing:0}
+.preview-runko .trade-preview-title{font-size:1.48rem;letter-spacing:-.055em}
+.preview-runko .trade-preview-title span{color:#d0eb55}
+.collection .preview-runko .trade-preview-main img{position:static;width:100%;height:153px;object-fit:cover;filter:saturate(.7)}
+.preview-runko .trade-preview-button{background:#d0eb55;color:#11191f;font-size:.37rem;margin-top:15px;padding:8px 9px}
+.preview-runko .trade-preview-bottom{position:absolute;bottom:13px;left:15px;right:15px;padding-top:10px;border-top:1px solid #344049;font-family:Consolas,monospace;color:#b2bfc8;font-size:.35rem}
+
+.collection .preview-vaihde{background:#fff;color:#18303e}
+.preview-vaihde .trade-preview-head{border-top:6px solid #18303e;min-height:48px;font-size:1.05rem;font-style:italic}
+.preview-vaihde .trade-preview-head small{font-style:normal;color:#5b6c76;font-size:.35rem}
+.preview-vaihde .trade-preview-main{position:relative;isolation:isolate;min-height:167px;background:#18303e;color:white}
+.collection .preview-vaihde .trade-preview-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:65% center;z-index:-2}
+.preview-vaihde .trade-preview-main::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#12232ff2,#12232fbb 50%,#12232f20)}
+.preview-vaihde .trade-preview-main>div{padding:20px 18px}
+.preview-vaihde .trade-preview-label{color:#ffc3aa;margin-bottom:10px;font-size:.33rem}
+.preview-vaihde .trade-preview-title{font-size:1.6rem;line-height:1.1}
+.preview-vaihde .trade-preview-button{background:#d64c22;color:#fff;margin-top:13px;padding:8px 11px}
+.preview-vaihde .trade-preview-bottom{padding:12px 17px;font-size:.39rem;color:#5b6c76}
+
+@media(max-width:1100px) and (min-width:801px){
+ .preview-trade .trade-preview-head small{font-size:.31rem}
+ .preview-virta .trade-preview-title{font-size:.95rem}.preview-virta .trade-preview-main{margin-inline:9px}
+ .preview-virta .trade-preview-nav{font-size:.35rem}.preview-virta .trade-preview-bottom{gap:10px;font-size:.33rem}
+ .preview-runko .trade-preview-title{font-size:1.15rem}.preview-runko .trade-preview-label{font-size:.27rem}
+ .preview-runko .trade-preview-main{gap:9px;padding-inline:12px}
+ .preview-runko .trade-preview-button{font-size:.31rem;padding-inline:7px}
+ .preview-vaihde .trade-preview-title{font-size:1.3rem}
+}
+@media(max-width:800px) and (min-width:541px){
+ .preview-virta .trade-preview-title{font-size:1.2rem}.preview-runko .trade-preview-title{font-size:1.6rem}
+}
+@media(max-width:360px){
+ .preview-virta .trade-preview-title{font-size:1rem}.preview-virta .trade-preview-main{margin-inline:9px}
+ .preview-virta .trade-preview-main>div{padding:13px 9px}.preview-virta .trade-preview-nav{font-size:.35rem}
+ .preview-virta .trade-preview-bottom{font-size:.33rem;gap:15px}
+ .preview-runko .trade-preview-title{font-size:1.2rem}.preview-runko .trade-preview-label{font-size:.28rem}
+ .preview-runko .trade-preview-main{gap:8px;padding-inline:12px}.preview-runko .trade-preview-button{font-size:.32rem;padding-inline:8px}
+ .preview-vaihde .trade-preview-title{font-size:1.4rem}.preview-trade .trade-preview-head small{font-size:.32rem}
+}

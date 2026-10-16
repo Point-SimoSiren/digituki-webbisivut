@@ -80,3 +80,8 @@
  .preview-aino .preview-title{font-size:2.5rem}.preview-pilke .preview-title{font-size:2.1rem}.preview-muistio .preview-title{font-size:2.3rem}.preview-selko .preview-title{font-size:1.7rem}.preview-selko .mini-booking{width:86px}
 }
 @media(max-width:360px){.preview-aino .preview-title,.preview-muistio .preview-title{font-size:2rem}.preview-pilke .preview-title{font-size:1.7rem}.preview-selko .preview-title{font-size:1.3rem}.pilke .contact h2{font-size:2.45rem}.pilke .contact .button{width:100%;font-size:.8rem}.aino-portrait img{height:390px}.selko-intro .wrap{grid-template-columns:minmax(0,1fr)}.selko-intro .wrap>div{min-width:0}.selko-intro h1{font-size:1.95rem}}
+
+/* Keep the new preview copy inside the fixed-height cards. */
+.collection .preview-aino .preview-title{font-size:1.9rem}
+.collection .preview-kajo .preview-title{font-size:1.9rem}
+.collection .preview-muistio .preview-title{font-size:2rem}
