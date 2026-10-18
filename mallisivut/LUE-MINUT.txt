@@ -1,12 +1,15 @@
 MALLISIVUT YRITYKSILLE JA YHDISTYKSILLE
 
-Avaa index.html selaimessa. Sieltä pääset kaikkiin viiteentoista malliin.
+Avaa index.html selaimessa. Sieltä pääset kaikkiin 25 malliin.
+Voit suodattaa tunnelman mukaan tai valita uusimmat ensin. Ilman JavaScriptiä
+kaikki mallit näkyvät tavallisessa järjestyksessä ja niiden linkit toimivat.
 Koko hakemiston voi kopioida toiselle koneelle. Säilytä assets-kansio mukana.
 Sivut eivät tarvitse asennuksia, palvelinta tai verkkoyhteyttä.
 Tarmola Code -paluulinkki toimii, kun mallisivut-kansio on pääsivuston alla.
 
-Yritysesimerkit: Virta, Runko, Vaihde, Verso, Tyyni, Suunta, Avara, Luoto, Aino ja Selko.
-Yhdistysesimerkit: Hetki ry, Säie ry, Kajo ry, Pilke ry ja Muistio ry.
+Yritysesimerkit: Virta, Runko, Vaihde, Verso, Tyyni, Suunta, Avara, Luoto, Aino,
+Selko, Paahto, Silmu, Galleria, Kipinä, Sointu, Polku, Kide ja Arkki.
+Yhdistysesimerkit: Hetki ry, Säie ry, Kajo ry, Pilke ry, Muistio ry, Tempo ry ja Tori ry.
 Kaikkien mallien ilmeen ja sisällön voi sovittaa eri toimialoille,
 yritykselle tai yhdistykselle. Mallien nimet eivät rajaa käyttötarkoitusta.
 
@@ -25,6 +28,16 @@ yritykselle tai yhdistykselle. Mallien nimet eivät rajaa käyttötarkoitusta.
 13 Pilke: kuvitettu ja leikkisä
 14 Selko: selkeä asiantuntijasivu
 15 Muistio: päiväkirjamainen ja persoonallinen
+16 Paahto: nostalginen ja kodikas kahvila
+17 Silmu: hellä ja harmoninen hyvinvointipalvelu
+18 Galleria: mustavalkoinen ja toimituksellinen portfolio
+19 Kipinä: rohkea ja graafinen luova toimisto
+20 Tempo: energinen ja urheilullinen seura
+21 Sointu: elegantti ja tunnelmallinen ravintola
+22 Polku: maanläheinen ja seikkailullinen luontopalvelu
+23 Kide: pastellinen ja digitaalinen ohjelmistopalvelu
+24 Tori: värikäs ja yhteisöllinen kyläyhdistys
+25 Arkki: perinteinen ja luotettava tilitoimisto
 
 Navigointi, mobiilivalikko ja avautuvat kysymykset toimivat.
 Yhteydenotto ja osallistuminen avautuvat esittelyikkunaan. Sivut eivät lähetä
@@ -35,6 +48,9 @@ Sivujen kuvat ovat tekoälyllä luotuja eivätkä esitä oikeita toimijoita.
 
 Kirjasimet: DM Sans, Instrument Serif ja Caveat / Google Fonts, SIL Open Font License.
 Paikalliset kirjasimet ja käyttöoikeustekstit löytyvät assets/fonts-kansiosta.
+
+Malliston koontisivu on hakukoneiden indeksoitavissa. Yksittäiset kuvitteelliset
+mallit käyttävät noindex,follow-asetusta. Niitä ei lisätä sivustokarttaan.
 
 Oikeaa sivustoa varten vaihdetaan nimi, toiminnan ja palvelujen kuvaukset,
 hinnat, yhteystiedot ja mahdolliset valokuvat. Yhteydenotto, ilmoittautuminen

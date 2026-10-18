@@ -1,0 +1,55 @@
+/* Website service page, in the existing Tarmola Code colour palette. */
+.web-service-page .container { max-width: 1160px; }
+.web-service-page a { color: #244c73; text-underline-offset: 4px; }
+.web-service-page .service-brand { display: flex; align-items: center; justify-content: center; gap: 16px; color: #172638; font-size: clamp(1.4rem,3vw,2rem); font-weight: 700; text-decoration: none; margin-bottom: 28px; }
+.service-brand img { width: 75px; height: 75px; object-fit: contain; }
+.web-service-page .service-nav { margin-bottom: 35px; }
+.web-service-page .service-nav a { border: 1px solid #c2ccda; padding: 10px 17px; border-radius: 99px; text-decoration: none; background: #fff9; font-weight: 600; }
+.web-service-page .service-nav [aria-current] { background: #244c73; color: #fff; }
+.web-service-page .web-hero { display: grid; grid-template-columns: 1.35fr 1fr; align-items: center; gap: 44px; padding-block: 35px 65px; }
+.web-service-page .web-hero > * { min-width: 0; }
+.web-service-page .web-hero h1 { font-size: clamp(2.5rem,4.5vw,3.9rem); letter-spacing: -.045em; line-height: 1.18; }
+.web-hero h1 em { color: #3a7287; font-style: normal; }
+.web-service-page .web-lead { font-size: 1.2rem; max-width: 630px; }
+.web-service-page .eyebrow { color: #2f5f90; text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; font-weight: 700; margin-bottom: 20px; }
+.web-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.web-service-page .web-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 22px; min-height: 48px; color: #fff; background: #244c73; text-decoration: none; border: 1px solid #244c73; border-radius: 10px; font-weight: 600; }
+.web-service-page .web-button.secondary { color: #244c73; background: #fff; }
+.web-button:hover { filter: brightness(1.12); }
+.web-service-page :is(a,summary):focus-visible { outline: 3px solid #244c73; outline-offset: 5px; }
+.web-proof { padding: 28px; border: 1px solid #cbd9e2; border-radius: 20px; background: #e8f0f9; }
+.web-proof > p { font-size: .85rem; margin: 0 0 18px; }
+.web-proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.web-service-page .web-proof-grid a { min-height: 130px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; border-radius: 8px; }
+.web-proof-grid strong { font-size: 1.45rem; font-family: Georgia,serif; }
+.web-proof-grid span { font-size: .75rem; }
+.web-proof-grid .proof-classic { background: #fafbf9; color: #233a58; border-top: 4px solid #233a58; }
+.web-proof-grid .proof-soft { background: #edceca; color: #573e49; border-radius: 50px 50px 8px 8px !important; }
+.web-proof-grid .proof-bold { background: #f8ee36; color: #202020; }
+.web-proof-grid .proof-dark { background: #422430; color: #f3dfb1; }
+.web-service-page .web-proof > a { display: inline-block; margin-top: 20px; font-size: .9rem; }
+.web-promise { display: grid; grid-template-columns: repeat(3,1fr); gap: 26px; border-block: 1px solid #c2ccda; padding-block: 28px; }
+.web-promise p { font-size: 1rem; margin-bottom: 0; }
+.web-promise h2 { font-size: 1.18rem; }
+.web-section { padding-block: 65px; scroll-margin-top: 24px; }
+.web-section > h2 { max-width: 790px; }
+.web-service-page .web-section > p { max-width: 780px; }
+.web-service-page .website-packages { margin-block: 28px 20px; }
+.web-service-page .website-package { padding: 32px; }
+.web-service-page .website-package h3 { margin-top: 0; }
+.web-service-page .website-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; color: #244c73; }
+.web-service-page .website-package ul { padding-left: 20px; margin-bottom: 0; }
+.web-process { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 30px; }
+.web-process article { border-top: 2px solid #3a7287; padding-top: 20px; }
+.web-process article > span { font-size: .85rem; color: #2f5f90; }
+.web-faq details { border-bottom: 1px solid #c2ccda; }
+.web-faq summary { cursor: pointer; padding: 22px 5px; font-weight: 600; color: #172638; }
+.web-faq details p { margin-top: 0; padding: 0 5px 15px; max-width: 850px; }
+.web-contact { padding: 38px; border-radius: 20px; background: #e5eff4; border: 1px solid #c3d6e1; }
+.web-contact > p { max-width: 750px; }
+.web-service-page .note { font-size: .9rem; }
+.web-service-page .skip { position: absolute; left: 15px; top: -100px; background: #fff; padding: 15px; z-index: 10; }
+.web-service-page .skip:focus { top: 15px; }
+@media (max-width: 800px) { .web-service-page .web-hero { grid-template-columns: 1fr; gap: 30px; padding-top: 15px; } .web-proof { max-width: 580px; } }
+@media (max-width: 600px) { .web-promise,.web-process { grid-template-columns: 1fr; gap: 25px; } .web-section { padding-block: 45px; } .web-service-page .website-package,.web-contact { padding: 24px; } .web-actions { flex-direction: column; align-items: stretch; } .web-service-page .service-brand { gap: 10px; } .service-brand img { width: 55px; height: 55px; } }
+@media (max-width: 380px) { .web-service-page .web-hero h1 { font-size: 2.1rem; } }

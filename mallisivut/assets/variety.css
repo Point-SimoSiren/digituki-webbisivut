@@ -1,0 +1,250 @@
+/* Ten additional directions. Each uses its own composition and visual language. */
+.edition { background: var(--paper); color: var(--ink); --line: color-mix(in srgb, var(--ink) 23%, transparent); }
+.edition .site-head { border-bottom: 1px solid var(--line); }
+.edition .brand-name { font-weight: 600; }
+.edition .lead { margin: 24px 0 30px; max-width: 540px; }
+.edition .edition-hero { padding-block: 64px 80px; }
+.edition .hero-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 64px; align-items: center; }
+.edition h1 { font-size: clamp(3.4rem, 6.5vw, 6.6rem); }
+.edition .hero-art { min-width: 0; }
+.edition :is(.hero-grid, .contact-grid, .edition-story > .wrap) > * { min-width: 0; }
+.edition h1, .edition h2 { overflow-wrap: anywhere; }
+.edition .hero-art img { height: 480px; }
+.edition .hero-caption { display: flex; justify-content: space-between; gap: 16px; padding-block: 18px; font-size: .8rem; border-bottom: 1px solid var(--line); }
+.edition .hero-stamp { display: inline-flex; align-items: center; justify-content: center; aspect-ratio: 1; width: 160px; border: 1px solid currentColor; border-radius: 50%; text-align: center; padding: 25px; font: 1.8rem/1.1 var(--serif); }
+.edition .ribbon { padding: 20px 0; border-block: 1px solid var(--line); }
+.edition .ribbon .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; font-size: .85rem; }
+.edition .edition-services { padding-block: 80px; }
+.edition .edition-services h2 { max-width: 780px; margin-bottom: 36px; }
+.edition .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.edition .offering { padding: 30px; border: 1px solid var(--line); }
+.edition .offering > span { display: block; margin-bottom: 34px; font-size: .8rem; }
+.edition .offering h3 { margin-bottom: 18px; }
+.edition .offering p { font-size: .95rem; }
+.edition .offering .offering-detail { display: block; margin: 24px 0 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: .9rem; font-weight: 600; }
+.edition .edition-story { padding-block: 75px; border-block: 1px solid var(--line); }
+.edition .edition-story > .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 90px; }
+.edition .edition-story h2 { margin-bottom: 24px; }
+.edition .edition-story .story-copy { max-width: 660px; }
+.edition .edition-story .story-copy p:last-child { margin-bottom: 0; }
+.edition .contact { background: var(--ink); color: var(--paper); }
+.edition .contact .button { background: var(--paper); color: var(--ink); }
+.edition .site-footer { align-items: start; }
+.edition .site-footer a { white-space: normal; }
+
+/* 16 / Paahto: an old café menu, warm paper and a drawn cup. */
+.paahto { --ink: #653522; --paper: #fff2d9; --accent: #a63d29; }
+.paahto h1, .paahto h2, .paahto h3, .paahto .brand-name { font-family: Georgia, serif; font-weight: 700; }
+.paahto .site-head { border-bottom: 3px double var(--ink); }
+.paahto .brand-name { font-style: italic; }
+.paahto .button { border-radius: 999px; background: var(--accent); color: #fff8ec; }
+.paahto .hero-art { background: #ecd6b1; border: 2px solid var(--ink); border-radius: 190px 190px 0 0; min-height: 490px; display: grid; place-content: center; text-align: center; }
+.coffee-cup { width: 180px; height: 148px; border: 5px solid #653522; border-top: 15px solid #653522; border-radius: 10px 10px 72px 72px; position: relative; margin: 45px auto; background: #fff2d9; }
+.coffee-cup::after { content: ''; position: absolute; right: -59px; top: 6px; width: 54px; height: 76px; border: 5px solid #653522; border-radius: 0 40px 40px 0; }
+.paahto .hero-art p { font: italic 2.5rem Georgia, serif; margin: 0; }
+.paahto .service-grid { gap: 0; border-block: 3px double var(--ink); }
+.paahto .offering { border: 0; }
+.paahto .offering + .offering { border-left: 1px solid var(--line); }
+
+/* 17 / Silmu: soft blush, an oval still life and generous spacing. */
+.silmu { --ink: #573e49; --paper: #fff6f3; --accent: #e5bcbb; }
+.silmu h1, .silmu h2, .silmu h3 { font-family: var(--serif); }
+.silmu .brand-name { font-style: italic; font-size: 3rem; }
+.silmu .hero-grid { grid-template-columns: 1fr 1.1fr; }
+.silmu .button { border-radius: 40px; }
+.silmu .hero-art { min-height: 490px; border-radius: 50% 50% 4px 4px; background: #edceca; display: grid; place-items: center; position: relative; }
+.silmu .hero-art::before { content: ''; width: 55%; aspect-ratio: .72; border-radius: 48% 48% 42% 42%; background: #fff6f3; box-shadow: 28px 18px 0 #d6a8aa; transform: rotate(12deg); }
+.silmu .hero-art .hero-stamp { position: absolute; bottom: 25px; right: 22px; background: #fff6f3; width: 145px; }
+.silmu .offering { border: 0; border-radius: 100px 100px 10px 10px; background: #f5e4e0; padding-top: 55px; text-align: center; }
+
+/* 18 / Galleria: a photo editorial with oversized type and contact sheet. */
+.galleria { --ink: #202020; --paper: #f6f6f3; }
+.galleria .brand-name { font-family: 'DM Sans', sans-serif; letter-spacing: -.06em; }
+.galleria .edition-hero { padding-top: 35px; }
+.galleria .editorial-top { display: flex; justify-content: space-between; gap: 30px; align-items: end; margin-bottom: 35px; }
+.galleria .editorial-top h1 { font: clamp(3.7rem, 9vw, 9rem)/.95 var(--serif); }
+.galleria .editorial-top .lead { max-width: 290px; margin-bottom: 0; font-size: 1rem; }
+.galleria .contact-sheet { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+.galleria .contact-sheet img { height: 460px; filter: grayscale(1); }
+.galleria .contact-sheet figure { margin: 0; }
+.galleria .contact-sheet figure:last-child { padding-top: 70px; }
+.galleria .contact-sheet figure:last-child img { height: 330px; }
+.galleria figcaption { font-size: .78rem; padding-top: 12px; }
+.galleria .service-grid { display: block; }
+.galleria .offering { display: grid; grid-template-columns: 40px 1fr 1fr 160px; gap: 20px; padding: 28px 0; border: 0; border-top: 1px solid var(--line); align-items: baseline; }
+.galleria .offering > span, .galleria .offering h3, .galleria .offering p, .galleria .offering .offering-detail { margin: 0; padding: 0; border: 0; }
+
+/* 19 / Kipinä: yellow, heavy type, hard edges and offset borders. */
+.kipina { --ink: #202020; --paper: #f8ee36; }
+.kipina h1, .kipina h2, .kipina h3 { font-family: 'DM Sans', sans-serif; font-weight: 700; letter-spacing: -.065em; }
+.kipina .brand-name { font-family: 'DM Sans', sans-serif; font-weight: 700; text-transform: uppercase; }
+.kipina .edition-hero h1 { font-size: clamp(4rem, 10vw, 10rem); max-width: 1000px; line-height: .95; text-transform: uppercase; }
+.kipina .hero-bottom { display: flex; justify-content: space-between; align-items: end; gap: 35px; margin-top: 25px; }
+.kipina .hero-stamp { font: 700 4rem 'DM Sans',sans-serif; background: #f9f8ed; border-radius: 0; transform: rotate(-8deg); box-shadow: 8px 8px 0 var(--ink); }
+.kipina .ribbon { background: var(--ink); color: var(--paper); }
+.kipina .offering { background: #faf9ee; border: 2px solid var(--ink); box-shadow: 7px 7px 0 var(--ink); }
+.kipina .button { border: 2px solid var(--ink); }
+
+/* 20 / Tempo: a dark sports club, score board and electric orange. */
+.tempo { --ink: #f4f4ec; --paper: #14191c; --accent: #ffad74; }
+.tempo h1, .tempo h2, .tempo h3 { font-family: 'DM Sans',sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: -.055em; }
+.tempo .brand-name { font-family: 'DM Sans',sans-serif; text-transform: uppercase; font-style: italic; font-weight: 700; }
+.tempo .button { background: var(--accent); color: #14191c; }
+.tempo .hero-art { background: #ffad74; color: #14191c; min-height: 470px; padding: 40px; display: flex; flex-direction: column; justify-content: space-between; clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 12%); }
+.tempo .hero-art strong { font-size: clamp(7rem, 15vw, 14rem); letter-spacing: -.08em; line-height: 1; font-style: italic; }
+.tempo .hero-art p { font-size: .85rem; border-top: 2px solid #14191c; padding-top: 18px; margin-bottom: 0; }
+.tempo .offering { border-top: 4px solid var(--accent); background: #20282c; }
+.tempo .offering .offering-detail { color: var(--accent); }
+.tempo .contact { background: var(--accent); color: #14191c; }
+.tempo .contact .button { background: #14191c; color: #f4f4ec; }
+
+/* 21 / Sointu: a burgundy restaurant with a centred, fine dining menu. */
+.sointu { --ink: #f3dfb1; --paper: #422430; }
+.sointu h1, .sointu h2, .sointu h3 { font-family: var(--serif); }
+.sointu .brand-name { text-transform: uppercase; letter-spacing: .15em; font-weight: 400; }
+.sointu .edition-hero { text-align: center; max-width: 1000px; margin: auto; padding: 70px 50px 85px; border: 1px solid var(--line); margin-top: 35px; }
+.sointu .edition-hero h1 { font-size: clamp(4.5rem, 9vw, 8rem); font-style: italic; }
+.sointu .edition-hero .lead { margin-inline: auto; }
+.sointu .menu-ornament { display: block; font-size: 3.2rem; margin-bottom: 28px; }
+.sointu .button { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.sointu .ribbon { border-top: 0; }
+.sointu .service-grid { gap: 0; }
+.sointu .offering { border: 0; text-align: center; }
+.sointu .offering + .offering { border-left: 1px solid var(--line); }
+.sointu .contact { background: #f3dfb1; color: #422430; }
+.sointu .contact .button { background: #422430; color: #f3dfb1; }
+
+/* 22 / Polku: an outdoor journal with an asymmetrical landscape. */
+.polku { --ink: #293f33; --paper: #f2e8d7; }
+.polku h1, .polku h2, .polku h3 { font-family: Georgia,serif; }
+.polku .brand-name { font-family: Georgia,serif; font-style: italic; }
+.polku .hero-grid { grid-template-columns: .85fr 1.2fr; align-items: end; }
+.polku .hero-art img { height: 530px; border-radius: 180px 4px 4px 4px; }
+.polku .button { background: #293f33; color: #f2e8d7; border-radius: 6px; }
+.polku .offering { border: 0; border-top: 2px solid var(--ink); padding-inline: 0; }
+.polku .offering > span { font-family: Georgia,serif; font-size: 2rem; font-style: italic; }
+
+/* 23 / Kide: a light digital product, lavender panels and a dashboard. */
+.kide { --ink: #343064; --paper: #f8f7fe; }
+.kide h1, .kide h2, .kide h3 { font-family: 'DM Sans',sans-serif; font-weight: 600; letter-spacing: -.055em; }
+.kide .brand-name { font-family: 'DM Sans',sans-serif; font-weight: 700; }
+.kide .button { border-radius: 12px; background: #5146a3; color: #fff; }
+.kide .hero-art { background: #e8e2fc; padding: 32px; border-radius: 28px; transform: rotate(3deg); }
+.kide .dashboard { background: #fff; border: 1px solid #d0c9e9; border-radius: 18px; padding: 25px; box-shadow: 0 20px 40px #34306412; }
+.kide .dashboard .dash-heading { font-size: .85rem; font-weight: 600; padding-bottom: 18px; border-bottom: 1px solid #ded8ef; }
+.kide .dashboard strong { display: block; font-size: 4.5rem; letter-spacing: -.07em; margin-block: 20px; }
+.kide .chart-bars { display: flex; align-items: end; height: 120px; gap: 12px; }
+.kide .chart-bars i { flex: 1; height: var(--bar); background: #8172c5; border-radius: 6px 6px 0 0; }
+.kide .chart-bars i:last-child { background: #5146a3; }
+.kide .dashboard p { font-size: .8rem; margin: 18px 0 0; }
+.kide .offering { background: #fff; border-radius: 20px; }
+.kide .offering:nth-child(2) { background: #e8e2fc; border-color: #b2a3db; }
+
+/* 24 / Tori: a community notice board, stickers and an event calendar. */
+.tori { --ink: #382c59; --paper: #fff9eb; }
+.tori h1, .tori h2, .tori h3 { font-family: 'DM Sans',sans-serif; font-weight: 700; letter-spacing: -.05em; }
+.tori .brand-name { font-family: 'DM Sans',sans-serif; font-size: 2.8rem; font-weight: 700; }
+.tori .button { background: #382c59; color: #fff9eb; border-radius: 99px; }
+.tori .hero-art { display: grid; gap: 18px; padding: 20px; }
+.tori .notice { padding: 30px; background: #e1d6fa; box-shadow: 5px 7px 0 #382c591c; transform: rotate(-5deg); }
+.tori .notice + .notice { background: #ffc3a0; transform: rotate(4deg); margin-left: 35px; }
+.tori .notice strong { display: block; font-size: 2rem; margin-block: 10px; }
+.tori .notice span { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; }
+.tori .notice p { font-size: .9rem; margin: 0; }
+.tori .offering { background: #e1d6fa; border: 0; border-radius: 5px; }
+.tori .offering:nth-child(2) { background: #ffc3a0; }
+.tori .offering:nth-child(3) { background: #f4df91; }
+
+/* 25 / Arkki: a traditional navy and white professional practice. */
+.arkki { --ink: #233a58; --paper: #fafbf9; }
+.arkki h1, .arkki h2, .arkki h3 { font-family: Georgia,serif; }
+.arkki .brand-name { font-family: Georgia,serif; font-variant: small-caps; letter-spacing: .08em; }
+.arkki .edition-hero { padding-block: 60px; }
+.arkki .hero-art { border: 1px solid #c6cdd7; background: #e7ebee; padding: 35px; }
+.arkki .ledger { padding: 35px; background: #fff; border-top: 5px solid #233a58; }
+.arkki .ledger strong { display: block; font: 2.3rem Georgia,serif; margin-bottom: 25px; }
+.arkki .ledger p { display: flex; justify-content: space-between; gap: 20px; font-size: .85rem; border-bottom: 1px solid #c6cdd7; padding-bottom: 14px; }
+.arkki .ledger small { display: block; font-size: .75rem; }
+.arkki .ribbon { background: #233a58; color: #fafbf9; }
+.arkki .offering { background: #fff; border-top: 4px solid #233a58; }
+
+/* Gallery previews are miniature compositions of their corresponding pages. */
+.variety-preview { padding: 22px; color: var(--preview-ink); background: var(--preview-paper); display: flex; flex-direction: column; position: relative; }
+.variety-preview .mini-head { font-size: 14px; font-weight: 600; padding-bottom: 12px; border-bottom: 1px solid currentColor; }
+.variety-preview .mini-head small { float: right; font-size: 6px; font-weight: 400; padding-top: 5px; }
+.variety-preview .mini-stage { display: flex; flex: 1; align-items: center; gap: 12px; }
+.variety-preview .mini-title { font: 33px/1.02 var(--serif); letter-spacing: -.025em; position: relative; z-index: 1; }
+.variety-preview .mini-title span { display: block; font: 7px 'DM Sans',sans-serif; margin-top: 15px; letter-spacing: 0; }
+.variety-preview .mini-art { flex: 0 0 38%; aspect-ratio: .85; background: var(--preview-accent); display: grid; place-items: center; font-size: 58px; }
+.variety-preview .mini-lines { display: flex; gap: 8px; }
+.variety-preview .mini-lines i { height: 18px; flex: 1; border-top: 1px solid currentColor; opacity: .5; }
+.preview-paahto { --preview-ink: #653522; --preview-paper: #fff2d9; --preview-accent: #ecd6b1; }
+.preview-paahto .mini-art { border-radius: 70px 70px 0 0; }
+.preview-paahto .mini-title { font: bold 27px Georgia,serif; }
+.preview-silmu { --preview-ink: #573e49; --preview-paper: #fff6f3; --preview-accent: #edceca; }
+.preview-silmu .mini-art { border-radius: 90px 90px 3px 3px; color: #fff6f3; }
+.preview-galleria { --preview-ink: #202020; --preview-paper: #f6f6f3; --preview-accent: #ccc; }
+.preview-galleria .mini-art { background: url('lake.png') center/cover; filter: grayscale(1); }
+.preview-galleria .mini-title { font-size: 43px; }
+.preview-kipina { --preview-ink: #202020; --preview-paper: #f8ee36; --preview-accent: #faf9ee; }
+.preview-kipina .mini-title { font: 700 39px/.95 'DM Sans',sans-serif; text-transform: uppercase; letter-spacing: -.06em; }
+.preview-kipina .mini-art { flex-basis: 25%; aspect-ratio: 1; font-size: 45px; border: 2px solid #202020; box-shadow: 4px 4px #202020; transform: rotate(-8deg); }
+.preview-tempo { --preview-ink: #f4f4ec; --preview-paper: #14191c; --preview-accent: #ffad74; }
+.preview-tempo .mini-title { font: italic 700 34px/.95 'DM Sans',sans-serif; text-transform: uppercase; }
+.preview-tempo .mini-art { color: #14191c; font-size: 65px; font-weight: 700; font-style: italic; clip-path: polygon(15% 0,100% 0,100% 85%,85% 100%,0 100%,0 15%); }
+.preview-sointu { --preview-ink: #f3dfb1; --preview-paper: #422430; --preview-accent: #422430; }
+.preview-sointu .mini-stage { justify-content: center; text-align: center; border-inline: 1px solid #f3dfb140; margin-top: 12px; }
+.preview-sointu .mini-title { font-style: italic; font-size: 40px; }
+.preview-sointu .mini-art { display: none; }
+.preview-polku { --preview-ink: #293f33; --preview-paper: #f2e8d7; --preview-accent: #293f33; }
+.preview-polku .mini-art { background: url('lake.png') center/cover; border-radius: 60px 0 0; }
+.preview-kide { --preview-ink: #343064; --preview-paper: #f8f7fe; --preview-accent: #e8e2fc; }
+.preview-kide .mini-title { font: 600 29px/1 'DM Sans',sans-serif; letter-spacing: -.055em; }
+.preview-kide .mini-art { border-radius: 15px; font: 600 35px 'DM Sans',sans-serif; transform: rotate(5deg); border: 7px solid #e8e2fc; background: #fff; }
+.preview-tori { --preview-ink: #382c59; --preview-paper: #fff9eb; --preview-accent: #e1d6fa; }
+.preview-tori .mini-title { font: 700 32px/1 'DM Sans',sans-serif; }
+.preview-tori .mini-art { font-size: 42px; transform: rotate(-8deg); box-shadow: 12px 15px #ffc3a0; }
+.preview-arkki { --preview-ink: #233a58; --preview-paper: #fafbf9; --preview-accent: #e7ebee; }
+.preview-arkki .mini-title { font: 26px/1.1 Georgia,serif; }
+.preview-arkki .mini-art { font: 30px Georgia,serif; border-top: 4px solid #233a58; outline: 8px solid #e7ebee; background: #fff; }
+.preview-arkki .mini-lines { background: #233a58; color: #fff; padding-inline: 10px; }
+
+@media (max-width: 1000px) {
+  .edition .hero-grid { gap: 35px; }
+  .edition .hero-art img { height: 400px; }
+  .edition .edition-story > .wrap { gap: 40px; }
+  .edition .offering { padding: 24px; }
+  .galleria .offering { grid-template-columns: 30px 1fr 1fr; padding: 24px 0; }
+  .galleria .offering .offering-detail { grid-column: 2 / -1; }
+}
+@media (max-width: 760px) {
+  .edition .hero-grid { grid-template-columns: 1fr; }
+  .edition .edition-hero { padding-block: 40px 50px; }
+  .edition .hero-art { max-width: 580px; width: 100%; margin: auto; }
+  .edition .hero-art img { height: 380px; }
+  .paahto .hero-art, .silmu .hero-art { min-height: 370px; }
+  .tempo .hero-art { min-height: 330px; }
+  .edition .service-grid { grid-template-columns: 1fr; }
+  .edition .edition-services { padding-block: 55px; }
+  .edition .edition-story > .wrap { grid-template-columns: 1fr; gap: 18px; }
+  .edition .offering + .offering { border-left: 0; }
+  .galleria .editorial-top { display: block; }
+  .galleria .editorial-top .lead { max-width: 500px; margin-top: 22px; }
+  .galleria .contact-sheet { gap: 12px; }
+  .galleria .contact-sheet img { height: 290px; }
+  .galleria .contact-sheet figure:last-child img { height: 210px; }
+  .galleria .offering { display: block; }
+  .galleria .offering h3, .galleria .offering p { margin-block: 16px; }
+  .kipina .hero-stamp { width: 110px; flex-shrink: 0; font-size: 3rem; }
+  .sointu .edition-hero { padding: 40px 20px; }
+  .sointu .offering + .offering { border-top: 1px solid var(--line); }
+  .arkki .hero-art { padding: 20px; }
+  .arkki .ledger { padding: 24px; }
+}
+@media (max-width: 420px) {
+  .edition h1 { font-size: 3.2rem; }
+  .kipina .hero-bottom { align-items: start; }
+  .kipina .hero-stamp { width: 72px; font-size: 2rem; padding: 12px; }
+  .kide .hero-art { padding: 20px; transform: none; }
+  .tori .hero-art { padding-inline: 0; }
+}

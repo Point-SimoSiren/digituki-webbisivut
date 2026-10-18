@@ -1,0 +1,17 @@
+.gallery-service-link { display: inline-flex; padding-block: 10px; font-size: .85rem; text-decoration: underline; text-underline-offset: 4px; }
+.gallery-head-actions { flex-wrap: wrap; max-width: 100%; }
+.gallery-tools { padding: 26px 0; border-block: 1px solid #d3d8cd; margin-bottom: 35px; }
+.gallery-tools[hidden], .design-card[hidden] { display: none; }
+.gallery-tools h2 { font-size: 1rem; font-family: 'DM Sans',Arial,sans-serif; margin-bottom: 16px; }
+.gallery-filters { display: flex; flex-wrap: wrap; gap: 9px; }
+.gallery-filters button { border: 1px solid #bcc8b6; border-radius: 99px; padding: 10px 16px; min-height: 44px; background: transparent; color: #344e35; font-size: .85rem; }
+.gallery-filters button[aria-pressed="true"] { color: #fff; background: #344e35; border-color: #344e35; }
+.gallery-filters button:hover { border-color: #344e35; }
+.gallery-count { font-size: .85rem; margin: 18px 0 0; }
+.gallery-order { display: flex; gap: 12px; align-items: center; margin-top: 18px; font-size: .85rem; flex-wrap: wrap; }
+.gallery-order select { padding: 10px 12px; min-height: 44px; color: #344e35; background: #fff; border: 1px solid #bcc8b6; border-radius: 6px; max-width: 100%; }
+.gallery-offer { display: flex; align-items: center; justify-content: space-between; gap: 30px; border: 1px solid #c8d3c1; padding: 35px; margin-top: 55px; background: #edf1e7; }
+.gallery-offer h2 { font-family: var(--serif); font-size: clamp(2rem,4vw,3.2rem); margin-bottom: 12px; }
+.gallery-offer p { margin: 0; max-width: 650px; }
+.gallery-offer .button { flex-shrink: 0; }
+@media (max-width: 760px) { .gallery-offer { display: block; padding: 25px; } .gallery-offer .button { margin-top: 25px; } }
